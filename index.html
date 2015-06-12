@@ -1,654 +1,72 @@
 <!DOCTYPE html>
-<html lang='en'>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title></title>
-<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<script src="js/crossfilter.min.js" charset="utf-8"></script>
-<link rel="stylesheet" href="css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<style>
-body {
-    font-family: Times New Roman, Times, serif; 
-}
-.header {
-    background: #F0E080;  
-}
-.link { 
-    color: #0000FF;
-}
-ul, #versus .metadata {
-    padding-left: 0px;
-}
-li {
-    list-style-type: none;
-}
-li.filter { 
-    background: #88C0C0;
-    font-weight: bold;
-}
-.key {
-    display: inline-block; 
-    min-width: 1em; 
-    margin-right: 1em; 
-}
-#fabulae .key, #versus .fabula {
-    font-style: italic;
-}
-.value {
-    display: inline-block;  
-    float: right;
-}
-.fabula, .line_number_first, .line_number_last, .numlines, 
-.meter, .meter_before, .meter_after {
-    display: inline-block; 
-}
-
-#versus .metadata {
-    background: #CCC;
-}
-#versus .metadata span { 
-    display: inline-block;
-}
-
-#versus li {
-    margin: 5px 0 5px 0;
-}
-#versus .fabula { 
-    width: 110px;
-    margin: 0px;
-    padding: 0px;
-}
-
-#versus .personae { 
-    display: block;
-    background: #EEE;
-    width: 240px;
-    margin-left: 30px;
-    padding-left: 10px;
-    border-bottom: 1px solid #888;
-}
-#versus .line_number_first, #versus .line_number_last, #versus .numlines { 
-    width: 50px; 
-    text-align: right;
-    margin: 0px;
-    padding: 0px;
-}
-#versus .meter,    #versus .meter_before,  #versus .meter_after {
-    width: 80px; 
-    text-align: right;
-}
-#versus .l_first {
-    border-bottom: 1px dotted #BBB;
-}
-
-#versus .l_last {
-    border-bottom: 1px solid #BBB;
-}
-
-#versus .l_first, #versus .l_last { 
-    background: #EEEEEE; 
-    display: block; 
-    margin-left: 30px;
-    padding: 0 10px;
-    font-size: 90%;
-}
-#versus .rowcount, #versus .linecount {
-    display: inline-block;
-    width: 10em;
-}
-
-.pagin { 
-    background: #AAAAAA;
-}
-.pagin .prev, .pagin .next {
-    width: 24%; 
-    display: inline-block; 
-    text-align: center;
-    background: #999999;
-}
-.pagin .pagecounter { 
-    display: inline-block; 
-    text-align: center; 
-    width: 50%;
-}
-
-#oneverse {
-    width: 500px; 
-    display: block; 
-    position: fixed;
-    top: 80px;
-    left: 100px;
-    background: #EEEECC;
-    visibility: hidden;
-    padding: 20px 10px;
-    box-shadow: 1px 3px 9px 0 #777700;
-}
-#oneverse div {
-    display: block;
-    overflow: hidden;
-}
-#oneverse span.label {
-    display: inline-block;
-    width: 70px;
-    text-align: right;
-    color: #448080; 
-}
-#oneverse span.value {
-    text-align: left;
-    width: 400px;
-}
-
-</style>
-    </head>
-    <body>
-    <script>
-    var versusdata;
-var cf;
-var dims = {};
-var filterdims = {};
-var filters = {};
-
-function pad(n, width, z) {
-    z = z || '0';
-    n = n + '';
-    return n.length >= width ? n :
-    new Array(width - n.length + 1).join(z) + n;
-}
-
-function keysort(a, b) {
-    if (a.key > b.key) { return 1 };
-    if (a.key < b.key) { return -1};
-    return 0;};
-
-function nonzerokeysort(a, b) {
-    if (a.value === 0 && b.value !== 0) {return 1 };
-    if (b.value === 0 && a.value !== 0) {return -1};
-    if ((a.key > b.key)) { return 1 };
-    if (a.key < b.key  ) { return -1};
-    return 0;
-};
-
-d3.tsv("flat.csv", function(d) {
-    start(d);
-});
-
-function listupdate(listid, dim) {
-    
-    var sorteddata = dim.group()
-    .reduce(
-        function(a, d){
-            /* we need to keep track of which FPIDs (verse IDs)
-           we have seen in order not to count 
-           the same verse twice */
-            if (d.fpid in a.fpids) {return a; }
-            else {
-                a.fpids[d.fpid] = 1;
-                a.numlines += +d.numlines;
-                return a; 
-            }},
-        function (a, d) {
-            a.fpids[d.fpid]--;
-            if(a.fpids[d.fpid] === 0)
-                delete a.fpids[d.fpid];
-            return a;
-        },
-        function(){return {'fpids':{}, 'numlines': 0}})
-        .all().sort(keysort);
-    
-    // show only nonzero elements of lists
-    sorteddata = sorteddata.filter(function(d){
-        return d.value.numlines > 0;
-    });
-    var list = d3.select("#" + listid + " ul")
-        .selectAll("li")
-        .data(sorteddata);
-    list.classed("filter", function(d) {
-        if (filters.hasOwnProperty(listid)) {
-            return filters[listid].indexOf(d.key) > -1;
-        };
-        return false;
-    });
-    list.select("span.key")
-        .text(function(d){return d.key==="" ? "[blank]" : d.key;});
-    list.select("span.value")
-        .text(function(d){return d.value.numlines;});
-    var enterlist = list.enter().append("li");
-    enterlist.classed("filter", function(d) {
-        if (filters.hasOwnProperty(listid)) {
-            return filters[listid].indexOf(d.key) > -1;
-        };
-        return false;
-    });
-    enterlist
-        .append("span")
-        .classed("key", true)
-        .text(function(d){return d.key==="" ? "[blank]" : d.key;});
-    enterlist
-        .append("span")
-        .classed("value", true)
-        .text(function(d){return d.value.numlines;});
-    list.exit().remove();
-}
-
-function updateversus(){
-    versusdata = dims.versus.group().reduce(
-        function(a, d){return {
-            "fabula": d.fabula, 
-            "line_number_first": d.line_number_first,
-            "line_number_last": d.line_number_last,
-            "numlines": d.numlines,
-            "meter": d.meter,
-            "meter_before": d.meter_before,
-            "meter_after": d.meter_after,
-            "l_first": d.line_first.replace(/(\\n)+/g, "\\n"),
-            "l_last": d.line_last.replace(/(\\n)+/g, "\\n")//,
-        };}, 
-        function(a, d){return {
-            "fabula": d.fabula,
-            "line_number_first": d.line_number_first,
-            "line_number_last": d.line_number_last,
-            "numlines": d.numlines,
-            "meter": d.meter,
-            "meter_before": d.meter_before,
-            "meter_after": d.meter_after,
-            "l_first": d.line_first,
-            "l_last": d.line_last//,
-        };}, 
-        function(){return {}}
-    )
-        .all()
-        .sort(
-            function (a, b) {
-                var asortkey = a.value.fabula + 
-                    pad(a.value['line_number_first'], 4);
-                var bsortkey = b.value.fabula + 
-                    pad(b.value['line_number_first'], 4);
-                if ((asortkey > bsortkey)) {return 1};
-                if ((asortkey < bsortkey)) {return -1};
-                return 0;
-            });
-    
-    // show only nonzero elements of lists
-    versusdata = versusdata.filter(function(d){
-        return d.value.hasOwnProperty("fabula");
-    });
-    d3.select("#versus .rowcount").text(versusdata.length + 
-                                        " instances");
-    var linecount = dims.versus.group()
-        .reduce(function(a, d){return +d.numlines;}, 
-                function(a, d){return +d.numlines;}, 
-                function(){return 0})
-        .all()
-        .reduce(  /* this is array.reduce rather than crossfilter reduce */
-            function(a, d){return a + d.value}, 0);
-    d3.select("#versus .linecount").text(linecount + " lines");
-    showversuspage(0);
-};
-
-function showversuspage(page) {
-    var perpage = 100;
-    var pagecount = parseInt(versusdata.length/perpage);
-    var pagedata = versusdata.slice(perpage*page, perpage *(page+1));
-    var list = d3.select("#versus ul")
-        .selectAll("li")
-        .data(pagedata);
-    list.select("span.fabula")
-        .text(function(d){return d.value.fabula;});
-    list.select("span.line_number_first")
-        .text(function(d){return d.value.line_number_first;});
-    list.select("span.line_number_last")
-        .text(function(d){return d.value.line_number_last;});
-    list.select("span.numlines")
-        .text(function(d){return d.value.numlines;});
-    list.select("span.meter")
-        .text(function(d){return d.value.meter;});
-    list.select("span.meter_before")
-        .text(function(d){return d.value.meter_before;});
-    list.select("span.meter_after")
-        .text(function(d){return d.value.meter_after;});
-    list.select("span.personae")
-        .html(function(d){
-            var ptmp = filterdims.versus_per_personam.group().reduce(
-                function(a, dd){
-                    return {
-                        'nomen':dd.nomen,
-                        'genus_personae':dd.genus_personae,
-                        'fabula':dd.fabula,
-                        'line_number_first':dd.line_number_first}
-                },
-                function(a, dd){
-                    return {
-                        'nomen':dd.nomen,
-                        'genus_personae':dd.genus_personae,
-                        'fabula':dd.fabula,
-                        'line_number_first':dd.line_number_first}
-                },
-                function(){}
-            )
-                .all().filter(function(dd){
-                    return dd.value && 
-                        (dd.value.line_number_first === 
-                         d.value.line_number_first) &&
-                        (dd.value.fabula === d.value.fabula);});
-            return ptmp.map(function(p){
-                return p.value.nomen + ": " + p.value.genus_personae;
-            }).join("<br/>");
-        });
-    list.select("span.l_first")
-        .html(function(d){
-            return d.value.l_first.replace(/\\n/g, "<br />");});
-    list.select("span.l_last")
-        .html(function(d){
-            return d.value.l_last.replace(/\\n/g, "<br />");});
-    var enterlist = 
-        list
-        .enter()
-        .append("li");
-    enterlist
-        .append("span")
-        .classed("fabula", true)
-        .text(function(d){return d.value.fabula;});
-    enterlist
-        .append("span")
-        .classed("line_number_first", true)
-        .text(function(d){return d.value.line_number_first;});
-    enterlist
-        .append("span")
-        .classed("line_number_last", true)
-        .text(function(d){ 
-            return d.value.line_number_last;
-        });
-    enterlist
-        .append("span")
-        .classed("numlines", true)
-        .text(function(d){return d.value.numlines;});
-    enterlist
-        .append("span")
-        .classed("meter", true)
-        .text(function(d){return d.value.meter;});
-    enterlist
-        .append("span")
-        .classed("meter_before", true)
-        .text(function(d){return d.value.meter_before;});
-    enterlist
-        .append("span")
-        .classed("meter_after", true)
-        .text(function(d){
-            return d.value.meter_after;});
-    enterlist
-        .append("span")
-        .classed("personae", true)
-        .html(function(d){
-            var ptmp = filterdims.versus_per_personam.group().reduce(
-                function(a, dd){
-                    return {
-                        'genus_personae':dd.genus_personae,
-                        'nomen':dd.nomen,
-                        'fabula':dd.fabula,
-                        'line_number_first':dd.line_number_first}
-                },
-                function(a, dd){
-                    return {
-                        'nomen':dd.nomen,
-                        'genus_personae':dd.genus_personae,
-                        'fabula':dd.fabula,
-                        'line_number_first':dd.line_number_first}
-                },
-                function(){}
-            )
-                .all().filter(function(dd){
-                    return dd.value && 
-                        (dd.value.line_number_first === 
-                         d.value.line_number_first) && 
-                        (dd.value.fabula === d.value.fabula);});
-            return ptmp.map(function(p){
-                return p.value.nomen + ": " + p.value.genus_personae;
-            }).join("<br/>");
-            
-        }
-             );
-    
-    enterlist
-        .append("span")
-        .classed("l_first", true)
-        .html(function(d){
-            return d.value.l_first.replace(/\\n/g, "<br />");});
-    enterlist
-        .append("span")
-        .classed("l_last", true)
-        .html(function(d){
-            if((+d.value.numlines) > 1) {
-                return d.value.l_last.replace(/\\n/g, "<br />");
-            } else {
-                return "";
-            };
-        });
-    list.exit().remove();
-    
-    d3.select(".pagin")
-        .style("visibility",  pagecount > 0 ? "visible" : "hidden");
-    
-    d3.select(".pagin .prev")
-        .style("visibility",  page > 0 ? "visible" : "hidden")
-        .on("click", function(d){showversuspage(page-1)});
-    
-    d3.select(".pagin .pagecounter")
-        .style("visibility",  pagecount > 0 ? "visible" : "hidden")
-        .text("page " + (+page+1) + " of " + (+pagecount+1));
-    
-    d3.select(".pagin .next")
-        .style("visibility",  page < pagecount ? "visible" : "hidden")
-        .on("click", function(d){showversuspage(page+1)});
-};
-
-
-function update(){
-    listupdate("poeta", dims.poeta);
-    listupdate("fabulae", dims.fabulae);
-    listupdate("personae", dims.personae);
-    listupdate("genus_personae", dims.genus_personae);
-    listupdate("meter", dims.meter);
-    listupdate("metertype", dims.metertype);
-    updateversus();
-};
-
-function addfilter(category, filtername){
-    filters[category] = filtername; 
-    filterdims[category].filter(filtername);
-};
-
-function removefilter(category, filtername){
-    if (filters.hasOwnProperty(category)) {
-        delete(filters[category]);
-        filterdims[category].filterAll();
-    } else {
-        console.log("Can't remove filter " + filtername + 
-                    "; no category " + category);
-    };
-};
-
-function addpopupfield(popup, field, label, value) {
-    var fielddiv = popup.append("div")
-        .classed(field, true);
-    fielddiv.append("span").classed("label", true)
-        .text(label);
-    if (field != "l_first" && field != "l_last") {
-        fielddiv.append("span").classed("value", true)
-            .text(value);
-    } else {
-        fielddiv.append("span").classed("value", true)
-            .html(value.replace(/\\n/g, "<br />"));
-    }
-}
-
-function activateli() {
-    d3.selectAll("ul li").on("click", function(d) {
-        var category = d3.select(this)[0][0].parentNode.parentNode.id;
-        // add popup with verse listing
-        if (category === 'versus') {
-            var popup = d3.select("#oneverse");
-            popup.text("");
-            addpopupfield(popup, "fabula", "Fabula", d.value.fabula);
-            addpopupfield(popup, "line_number_first", "Start", 
-                          d.value.line_number_first);
-            addpopupfield(popup, "line_number_last", "End", 
-                          d.value.line_number_last);
-            addpopupfield(popup, "numlines", "# lines", d.value.numlines);
-            addpopupfield(popup, "meter", "Meter", d.value.meter);
-            addpopupfield(popup, "metertype", "Meter Type", 
-                          d.value.metertype);
-            addpopupfield(popup, "meter_before", "Before", 
-                          d.value.meter_before);
-            addpopupfield(popup, "meter_after", "After", 
-                          d.value.meter_after);
-            addpopupfield(popup, "l_first", "First line", d.value.l_first);
-            addpopupfield(popup, "l_last", "Last line", d.value.l_last);
-            addpopupfield(popup, "closure", "Closure", d.value.closure);
-            addpopupfield(popup, "comments_on_length", "Comments", 
-                          d.value.comments_on_length);
-            addpopupfield(popup, "comments_other", "Other", 
-                          d.value.comments_other);
-            
-            popup.style("visibility", "visible");
-            popup.on("click", function(d){
-                d3.select(this).style("visibility", "hidden");
-            })
-            return;
-        };
-        if (!d3.select(this).classed("filter")) {
-            addfilter(category, d.key);
-        } else {
-            removefilter(category, d.key);
-        };
-        update();
-        activateli();
-    });
-}
-
-function start(dd) {
-    cf = crossfilter(dd);
-    /* dimensions for display */
-    dims['poeta'] = cf.dimension(function(d){return d.poeta});
-    dims['fabulae'] = cf.dimension(function(d){return d.fabula});
-    dims['personae'] = cf.dimension(function(d){return d.nomen});
-    dims['genus_personae'] = cf.dimension(function(d){
-        return d.genus_personae});
-    dims['meter'] = cf.dimension(function(d){return d.meter});
-    dims['metertype'] = cf.dimension(function(d){return d.metertype});
-    dims['versus'] = cf.dimension(function(d){return d.fpid});
-    dims['versus_per_personam'] = cf.dimension(function(d){
-        return d.fpid + d.nomen});
-    
-    /* separate dimensions just for filtering */
-    filterdims['poeta'] = cf.dimension(function(d){return d.poeta});
-    filterdims['fabulae'] = cf.dimension(function(d){return d.fabula});
-    filterdims['personae'] = cf.dimension(function(d){return d.nomen});
-    filterdims['genus_personae'] = cf.dimension(function(d){
-        return d.genus_personae});
-    filterdims['meter'] = cf.dimension(function(d){return d.meter});
-    filterdims['metertype'] = cf.dimension(function(d){
-        return d.metertype});
-    filterdims['versus'] = cf.dimension(function(d){return d.fpid});
-    filterdims['versus_per_personam'] = cf.dimension(function(d){
-        return d.fpid + d.nomen});
-    
-    d3.select("#poeta").append("ul");
-    d3.select("#fabulae").append("ul");
-    d3.select("#personae").append("ul");
-    d3.select("#genus_personae").append("ul");
-    d3.select("#meter").append("ul");
-    d3.select("#metertype").append("ul");
-    d3.select("#versus").append("ul");
-    
-    update();
-    activateli();
-    d3.select("#reset").on("click", function(){
-        for (filter in filters){
-            filterdims[filter].filterAll();
-        };
-        filters = {};
-        update();
-    })
-        .classed("link", true)
-        .text("Reset");
-}
-
-</script>
+<html lang="en">
+  <head>
+    <title>Music in Roman Comedy</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/index.css" rel="stylesheet" charset="utf-8">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" charset="utf-8">
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js" charset="utf-8"></script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/js/bootstrap.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.11/crossfilter.min.js" charset="utf-8"></script>
+    <script src="js/index.js" charset="utf-8"></script
+  </head>
+  <body>
     <div class="container" id="toplevel">
-    <div class="header">
-    <!--// -->      <h1>Tim Moore's data; experimental interface</h1>
-    
-</div>
-    <div id="reset"></div>
-    <div class="col-md-3">
-      <div id="poeta">
-        <h3>Poeta</h3>
+      <div class="header">
+	<h1>Tim Moore's data; experimental interface</h1>
       </div>
-      <div id="fabulae">
-        <h3>Fabulae</h3>
+      <div id="reset"></div>
+      <div class="col-md-3">
+	<div id="poeta">
+          <h3>Poeta</h3>
+	</div>
+	<div id="fabulae">
+          <h3>Fabulae</h3>
+	</div>
+	<div id="genus_personae">
+          <h3>Genera Personae</h3>
+	</div>
+	<div id="personae">
+          <h3>Personae</h3>
+	</div>
       </div>
-      <div id="genus_personae">
-        <h3>Genera Personae</h3>
+      <div class="col-md-2">
+	<div id="metertype">
+          <h3>Meter Type</h3>
+	</div>
+	<div id="meter">
+          <h3>Meter</h3>
+	</div>
       </div>
-      <div id="personae">
-        <h3>Personae</h3>
-      </div>
-    </div>
-    <div class="col-md-2">
-      <div id="metertype">
-        <h3>Meter Type</h3>
-      </div>
-      <div id="meter">
-        <h3>Meter</h3>
-      </div>
-    </div>
-    <div class="col-md-7">
-      <div id="versus">
-        <h3>Versus</h3>
-        <div class="counts">
-          <span class="rowcount"></span>
-          <span class="linecount"></span>
-        </div>
-        <div class="pagin">
-             <span class="prev link">&lt; previous</span>
-             <span class="pagecounter"></span>
-             <span class="next link">next &gt;</span>
-        </div>
-        <div class="metadata">
+      <div class="col-md-7">
+	<div id="versus">
+          <h3>Versus</h3>
+          <div class="counts">
+            <span class="rowcount"></span>
+            <span class="linecount"></span>
+          </div>
+          <div class="pagin">
+            <span class="prev link">&lt; previous</span>
+            <span class="pagecounter"></span>
+            <span class="next link">next &gt;</span>
+          </div>
+          <div class="metadata">
             <span class="fabula">Fabula</span>
-<!--            <span class="nomen">Nomen</span> -->
+	    <span class="nomen">Nomen</span>
             <span class="line_number_first">start</span>
             <span class="line_number_last">end</span>
             <span class="numlines"># lines</span>
             <span class="meter">meter</span>
             <span class="meter_before">met. bef.</span>
             <span class="meter_after">met. aft.</span>
-        </div>
+          </div>
+	</div>
       </div>
-    </div>
-    <div id="oneverse">
-      <span class="fabula">Fabula</span>
-    </div>
+      <div id="oneverse">
+	<span class="fabula">Fabula</span>
+      </div>
     </div>
   </body>
 </html>
-
-
-<!--
-/* 
-TODO:
---- generalize list update as a function
---- tablify verses and others
---- modify verses updating to use filter
---- make filters (and classes to toggle) from entries
---- drop zeros from filtered lists
---- properly tablify verses
---- provide headers
---- paginate verses
---- pop-up more data for single verse
---- handle verses with two or more characters
-*/
--->

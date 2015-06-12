@@ -1,0 +1,130 @@
+body {
+    font-family: Times New Roman, Times, serif; 
+}
+.header {
+    background: #F0E080;  
+}
+.link { 
+    color: #0000FF;
+}
+ul, #versus .metadata {
+    padding-left: 0px;
+}
+li {
+    list-style-type: none;
+}
+li.filter { 
+    background: #88C0C0;
+    font-weight: bold;
+}
+.key {
+    display: inline-block; 
+    min-width: 1em; 
+    margin-right: 1em; 
+}
+#fabulae .key, #versus .fabula {
+    font-style: italic;
+}
+.value {
+    display: inline-block;  
+    float: right;
+}
+.fabula, .line_number_first, .line_number_last, .numlines, 
+.meter, .meter_before, .meter_after {
+    display: inline-block; 
+}
+
+#versus .metadata {
+    background: #CCC;
+}
+#versus .metadata span { 
+    display: inline-block;
+}
+
+#versus li {
+    margin: 5px 0 5px 0;
+}
+#versus .fabula { 
+    width: 110px;
+    margin: 0px;
+    padding: 0px;
+}
+
+#versus .personae { 
+    display: block;
+    background: #EEE;
+    width: 240px;
+    margin-left: 30px;
+    padding-left: 10px;
+    border-bottom: 1px solid #888;
+}
+#versus .line_number_first, #versus .line_number_last, #versus .numlines { 
+    width: 50px; 
+    text-align: right;
+    margin: 0px;
+    padding: 0px;
+}
+#versus .meter,    #versus .meter_before,  #versus .meter_after {
+    width: 80px; 
+    text-align: right;
+}
+#versus .l_first {
+    border-bottom: 1px dotted #BBB;
+}
+
+#versus .l_last {
+    border-bottom: 1px solid #BBB;
+}
+
+#versus .l_first, #versus .l_last { 
+    background: #EEEEEE; 
+    display: block; 
+    margin-left: 30px;
+    padding: 0 10px;
+    font-size: 90%;
+}
+#versus .rowcount, #versus .linecount {
+    display: inline-block;
+    width: 10em;
+}
+
+.pagin { 
+    background: #AAAAAA;
+}
+.pagin .prev, .pagin .next {
+    width: 24%; 
+    display: inline-block; 
+    text-align: center;
+    background: #999999;
+}
+.pagin .pagecounter { 
+    display: inline-block; 
+    text-align: center; 
+    width: 50%;
+}
+
+#oneverse {
+    width: 500px; 
+    display: block; 
+    position: fixed;
+    top: 80px;
+    left: 100px;
+    background: #EEEECC;
+    visibility: hidden;
+    padding: 20px 10px;
+    box-shadow: 1px 3px 9px 0 #777700;
+}
+#oneverse div {
+    display: block;
+    overflow: hidden;
+}
+#oneverse span.label {
+    display: inline-block;
+    width: 70px;
+    text-align: right;
+    color: #448080; 
+}
+#oneverse span.value {
+    text-align: left;
+    width: 400px;
+}
