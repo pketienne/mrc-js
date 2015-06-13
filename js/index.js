@@ -90,8 +90,8 @@ function updateversus(){
     versusdata = dims.versus.group().reduce(
         function(a, d){return {
             "fabula": d.fabula, 
-            "line_number_first": d.line_number_first,
-            "line_number_last": d.line_number_last,
+            "line_number_first_label": d.line_number_first_label,
+            "line_number_last_label": d.line_number_last_label,
             "numlines": d.numlines,
             "meter": d.meter,
             "meter_before": d.meter_before,
@@ -101,8 +101,8 @@ function updateversus(){
         };}, 
         function(a, d){return {
             "fabula": d.fabula,
-            "line_number_first": d.line_number_first,
-            "line_number_last": d.line_number_last,
+            "line_number_first_label": d.line_number_first_label,
+            "line_number_last_label": d.line_number_last_label,
             "numlines": d.numlines,
             "meter": d.meter,
             "meter_before": d.meter_before,
@@ -116,9 +116,9 @@ function updateversus(){
         .sort(
             function (a, b) {
                 var asortkey = a.value.fabula + 
-                    pad(a.value['line_number_first'], 4);
+                    pad(a.value['line_number_first_label'], 4);
                 var bsortkey = b.value.fabula + 
-                    pad(b.value['line_number_first'], 4);
+                    pad(b.value['line_number_first_label'], 4);
                 if ((asortkey > bsortkey)) {return 1};
                 if ((asortkey < bsortkey)) {return -1};
                 return 0;
@@ -150,10 +150,10 @@ function showversuspage(page) {
         .data(pagedata);
     list.select("span.fabula")
         .text(function(d){return d.value.fabula;});
-    list.select("span.line_number_first")
-        .text(function(d){return d.value.line_number_first;});
-    list.select("span.line_number_last")
-        .text(function(d){return d.value.line_number_last;});
+    list.select("span.line_number_first_label")
+        .text(function(d){return d.value.line_number_first_label;});
+    list.select("span.line_number_last_label")
+        .text(function(d){return d.value.line_number_last_label;});
     list.select("span.numlines")
         .text(function(d){return d.value.numlines;});
     list.select("span.meter")
@@ -170,21 +170,21 @@ function showversuspage(page) {
                         'nomen':dd.nomen,
                         'genus_personae':dd.genus_personae,
                         'fabula':dd.fabula,
-                        'line_number_first':dd.line_number_first}
+                        'line_number_first_label':dd.line_number_first_label}
                 },
                 function(a, dd){
                     return {
                         'nomen':dd.nomen,
                         'genus_personae':dd.genus_personae,
                         'fabula':dd.fabula,
-                        'line_number_first':dd.line_number_first}
+                        'line_number_first_label':dd.line_number_first_label}
                 },
                 function(){}
             )
                 .all().filter(function(dd){
                     return dd.value && 
-                        (dd.value.line_number_first === 
-                         d.value.line_number_first) &&
+                        (dd.value.line_number_first_label === 
+                         d.value.line_number_first_label) &&
                         (dd.value.fabula === d.value.fabula);});
             return ptmp.map(function(p){
                 return p.value.nomen + ": " + p.value.genus_personae;
@@ -206,13 +206,13 @@ function showversuspage(page) {
         .text(function(d){return d.value.fabula;});
     enterlist
         .append("span")
-        .classed("line_number_first", true)
-        .text(function(d){return d.value.line_number_first;});
+        .classed("line_number_first_label", true)
+        .text(function(d){return d.value.line_number_first_label;});
     enterlist
         .append("span")
-        .classed("line_number_last", true)
+        .classed("line_number_last_label", true)
         .text(function(d){ 
-            return d.value.line_number_last;
+            return d.value.line_number_last_label;
         });
     enterlist
         .append("span")
@@ -241,21 +241,21 @@ function showversuspage(page) {
                         'genus_personae':dd.genus_personae,
                         'nomen':dd.nomen,
                         'fabula':dd.fabula,
-                        'line_number_first':dd.line_number_first}
+                        'line_number_first_label':dd.line_number_first_label}
                 },
                 function(a, dd){
                     return {
                         'nomen':dd.nomen,
                         'genus_personae':dd.genus_personae,
                         'fabula':dd.fabula,
-                        'line_number_first':dd.line_number_first}
+                        'line_number_first_label':dd.line_number_first_label}
                 },
                 function(){}
             )
                 .all().filter(function(dd){
                     return dd.value && 
-                        (dd.value.line_number_first === 
-                         d.value.line_number_first) && 
+                        (dd.value.line_number_first_label === 
+                         d.value.line_number_first_label) && 
                         (dd.value.fabula === d.value.fabula);});
             return ptmp.map(function(p){
                 return p.value.nomen + ": " + p.value.genus_personae;
@@ -345,10 +345,10 @@ function activateli() {
             var popup = d3.select("#oneverse");
             popup.text("");
             addpopupfield(popup, "fabula", "Fabula", d.value.fabula);
-            addpopupfield(popup, "line_number_first", "Start", 
-                          d.value.line_number_first);
-            addpopupfield(popup, "line_number_last", "End", 
-                          d.value.line_number_last);
+            addpopupfield(popup, "line_number_first_label", "Start", 
+                          d.value.line_number_first_label);
+            addpopupfield(popup, "line_number_last_label", "End", 
+                          d.value.line_number_last_label);
             addpopupfield(popup, "numlines", "# lines", d.value.numlines);
             addpopupfield(popup, "meter", "Meter", d.value.meter);
             addpopupfield(popup, "metertype", "Meter Type", 
