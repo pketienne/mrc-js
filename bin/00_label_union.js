@@ -27,7 +27,6 @@ d3.tsv("../tsv/index.tsv", function(data) {
     console.log(condensed);
     
 });
-*/
 
 d3.tsv("../tsv/index.tsv", function(data) {
     var line_number_first_label_values = [];
@@ -98,3 +97,4 @@ Array.prototype.unique = function() {
 
     return a;
 };
+*/
