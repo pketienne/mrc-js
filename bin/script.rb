@@ -179,15 +179,16 @@ end
 index = TSV.new("../tsv/index.tsv")
 ordinate_map = OrdinateMap.new(index.line_number_first_labels, index.line_number_last_labels)
 index.records.each do |r|
-  puts r.line_number_first_ordinate
-  puts r.line_number_last_ordinate
-  puts r.line_number_first_label
-  puts r.line_number_last_label
+  if r.line_number_first_label.include?("2019fr") || r.line_number_last_label.include?("2019fr")
+    binding.pry
+  end
+  r.line_number_first_label = r.line_number_first_label.sub!("2019fr.","2019fr")
+  r.line_number_last_label = r.line_number_last_label.sub!("2019fr.","2019fr")
+  r.line_number_first_label = r.line_number_first_label.sub!(/^0+/,"")
+  r.line_number_last_label = r.line_number_last_label.sub!(/^0+/,"")
   r.line_number_first_ordinate = ordinate_map.legend.index(r.line_number_first_label)
   r.line_number_last_ordinate = ordinate_map.legend.index(r.line_number_last_label)
-  puts r.line_number_first_ordinate
-  puts r.line_number_last_ordinate
-  puts r.line_number_first_label
-  puts r.line_number_last_label
+  if r.line_number_first_label.include?("2019fr") || r.line_number_last_label.include?("2019fr")
+    puts "First: #{r.line_number_first_label}, Last: #{r.line_number_last_label}."
+  end
 end
-
