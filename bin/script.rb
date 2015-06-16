@@ -34,6 +34,7 @@ class Record
   def initialize(record)
     @record = record.chomp!
     @fields = []
+    @poeta = ""
     # @fields = @record.split("\t")
     # assign_values
   end

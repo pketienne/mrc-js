@@ -84,3 +84,9 @@ def parse_record(record)
   end
 end
 
+array = [
+  "poeta	fabula	fpid	line_number_first_ordinate	line_number_first_label	line_number_last_ordinate	line_number_last_label	numlines	nomen	genus_personae	line_first	line_last	meter_before	meter_after	closure	comments_on_length	comments_other	meter	metertype",
+  "Terentius	Adelphoe	63279065635V467		611a		612a	3	Aeschinus	adulama	nec quid agam certum siet!	animus timore obstipuit,	cho2	cho2crcol	comma			wil	aeolic",
+  "Terentius	Adelphoe	63279066156V849		615		615	1	Aeschinus	adulama	tanta nunc suspicio de 	tanta nunc suspicio de	crcolcolreiz	wil	none			tr4	tr",
+  "Terentius	Adelphoe	63279066272V98		615a		615a	1	Aeschinus	adulama	me incidit neque ea immerito:	me incidit neque ea immerito:	tr4	cho2				wil	aeolic"
+];
