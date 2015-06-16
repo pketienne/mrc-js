@@ -8,19 +8,30 @@ class TSV
   def initialize(uri)
     @uri = uri
     @records = []
-    parse_records
-  end
 
-  def parse_records
     File.open(@uri).each do | record |
       @records.push(Record.new(record))
     end
+
+    @records.shift
   end
 
   def list
     @records.each do | record |
       puts record.inspect
     end
+  end
+
+  def size
+    @records.size
+  end
+  
+  def line_number_first_labels
+    @records.map { |r| r.line_number_first_label }
+  end
+
+  def line_number_last_labels
+    @records.map { |r| r.line_number_last_label }
   end
   
 end
@@ -32,15 +43,31 @@ class Record
                 :comments_on_length, :comments_other, :meter, :metertype
 
   def initialize(record)
-    @record = record.chomp!
-    @fields = []
     @poeta = ""
-    # @fields = @record.split("\t")
-    # assign_values
+    @fabula = ""
+    @fpid = ""
+    @line_number_first_ordinate = ""
+    @line_number_first_label = ""
+    @line_number_last_ordinate = ""
+    @line_number_last_label = ""
+    @numlines = ""
+    @nomen = ""
+    @genus_personae = ""
+    @line_first = ""
+    @line_last = ""
+    @meter_before = ""
+    @meter_after = ""
+    @closure = ""
+    @comments_on_length = ""
+    @comments_other = ""
+    @meter = ""
+    @metertype = ""
+    populate(record.chomp)
   end
-    
-  def assign_values
-    @fields.each_with_index { | val, index |
+
+  def populate(record)
+    fields = record.split("\t")
+    fields.each_with_index { | val, index |
       case index
       when 0
         @poeta = val
@@ -80,13 +107,67 @@ class Record
         @meter = val
       when 18
         @metertype = val
-      else
-        puts "Error: Case not matched."
       end
     }
   end
   
 end
 
+class OrdinateMap
+  attr_accessor :set_a, :set_b, :set_a_uniq, :set_b_uniq, :sets_a_b, :sets_a_uniq_b_uniq, :set_uniq,
+                :modifiers
+
+  
+  def initialize(set_a, set_b)
+    @set_a = set_a
+    @set_b = set_b
+    @set_a_uniq = @set_a.uniq
+    @set_b_uniq = @set_b.uniq
+    @sets_a_b = @set_a + @set_b
+    @sets_a_uniq_b_uniq = @set_a_uniq + @set_b_uniq
+    @set_uniq = @sets_a_uniq_b_uniq.uniq
+    @modifiers = ["a","b","c","d","fr"]
+    @map = []
+
+    # discover_modifiers
+    normalize_labels
+  end
+
+  def discover_modifiers
+    @modifiers = []
+    @set_uniq.each do |r|
+      if match = r.match(/(\D+)/i)
+        @modifiers.push(match.captures[0])
+      end
+    end
+    @modifiers.uniq!
+  end
+
+  def normalize_labels
+    @map = @set_uniq.map { |r|
+      r.sub!(/^0+/,"")
+
+      if match = r.match(/(\d+)(\D+)/i)
+        digit, nondigit = match.captures
+      else
+        digit = r
+        nondigit = ""
+      end
+
+      case digit.length
+      when 1
+        "000" + digit + nondigit
+      when 2
+        "00" + digit + nondigit
+      when 3
+        "0" + digit + nondigit
+      when 4
+        digit + nondigit
+      end
+    }.sort!
+  end
+
+end
+
 index = TSV.new("../tsv/index.tsv")
-index.list
+OrdinateMap.new(index.line_number_first_labels, index.line_number_last_labels)
