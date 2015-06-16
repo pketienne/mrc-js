@@ -114,25 +114,27 @@ class Record
 end
 
 class OrdinateMap
-  attr_accessor :set_a, :set_b, :set_a_uniq, :set_b_uniq, :sets_a_b, :sets_a_uniq_b_uniq, :set_uniq,
-                :modifiers
-
+  attr_accessor :legend
+                # :set_a, :set_b, :set_a_uniq, :set_b_uniq, :sets_a_b,
+                # :sets_a_uniq_b_uniq, :set_uniq, :modifiers
   
   def initialize(set_a, set_b)
-    @set_a = set_a
-    @set_b = set_b
-    @set_a_uniq = @set_a.uniq
-    @set_b_uniq = @set_b.uniq
-    @sets_a_b = @set_a + @set_b
-    @sets_a_uniq_b_uniq = @set_a_uniq + @set_b_uniq
-    @set_uniq = @sets_a_uniq_b_uniq.uniq
-    @modifiers = ["a","b","c","d","fr"]
-    @map = []
-
-    # discover_modifiers
+    @legend = (set_a + set_b).uniq!
+=begin
+    # @set_a = set_a
+    # @set_b = set_b
+    # @set_a_uniq = @set_a.uniq
+    # @set_b_uniq = @set_b.uniq
+    # @sets_a_b = @set_a + @set_b
+    # @sets_a_uniq_b_uniq = @set_a_uniq + @set_b_uniq
+    # @set_uniq = @sets_a_uniq_b_uniq.uniq
+    # @modifiers = ["a","b","c","d","fr"]
+=end
     normalize_labels
+    sort_labels
   end
 
+=begin
   def discover_modifiers
     @modifiers = []
     @set_uniq.each do |r|
@@ -142,9 +144,10 @@ class OrdinateMap
     end
     @modifiers.uniq!
   end
+=end
 
   def normalize_labels
-    @map = @set_uniq.map { |r|
+    @legend.map! { |r|
       r.sub!(/^0+/,"")
 
       if match = r.match(/(\d+)(\D+)/i)
@@ -164,10 +167,27 @@ class OrdinateMap
       when 4
         digit + nondigit
       end
-    }.sort!
+    }
+  end
+
+  def sort_labels
+    @legend.sort!
   end
 
 end
 
 index = TSV.new("../tsv/index.tsv")
-OrdinateMap.new(index.line_number_first_labels, index.line_number_last_labels)
+ordinate_map = OrdinateMap.new(index.line_number_first_labels, index.line_number_last_labels)
+index.records.each do |r|
+  puts r.line_number_first_ordinate
+  puts r.line_number_last_ordinate
+  puts r.line_number_first_label
+  puts r.line_number_last_label
+  r.line_number_first_ordinate = ordinate_map.legend.index(r.line_number_first_label)
+  r.line_number_last_ordinate = ordinate_map.legend.index(r.line_number_last_label)
+  puts r.line_number_first_ordinate
+  puts r.line_number_last_ordinate
+  puts r.line_number_first_label
+  puts r.line_number_last_label
+end
+
