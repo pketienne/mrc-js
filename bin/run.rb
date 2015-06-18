@@ -7,7 +7,10 @@ load 'legend.rb'
 
 def execute
   tsv = TSV.new("../tsv/index.tsv")
+  legend = Legend.new(tsv)
+  tsv.populate_ordinates!(legend)
   File.open("../tsv/index-updated.tsv", "w") do |f|
+    # capture all this within a new tsv class instance variable, called "column_labels" or something.
     file =
       "poeta" + "\t" +
       "fabula" + "\t" +
@@ -34,10 +37,10 @@ def execute
         r.poeta + "\t" +
         r.fabula + "\t" +
         r.fpid + "\t" +
-        r.line_number_first_ordinate + "\t" +
-        r.line_number_first_label + "\t" +
-        r.line_number_last_ordinate + "\t" +
-        r.line_number_last_label + "\t" +
+        r.line_number_first_ordinate.to_s + "\t" +
+        r.line_number_first_label.to_s + "\t" +
+        r.line_number_last_ordinate.to_s + "\t" +
+        r.line_number_last_label.to_s + "\t" +
         r.numlines + "\t" +
         r.nomen + "\t" +
         r.genus_personae + "\t" +

@@ -24,53 +24,79 @@ class Record
     @comments_other = ""
     @meter = ""
     @metertype = ""
-    populate(record.chomp)
+    populate(record)
   end
 
   def populate(record)
-    fields = record.split("\t")
-    fields.each_with_index { | val, index |
+    fields = record.chomp.split("\t")
+    fields.each_with_index { | value, index |
       case index
       when 0
-        @poeta = val
+        @poeta = value
       when 1
-        @fabula = val
+        @fabula = value
       when 2
-        @fpid = val
+        @fpid = value
       when 3
-        @line_number_first_ordinate = val
+        @line_number_first_label = normalize(value)
       when 4
-        @line_number_first_label = val
+        @line_number_last_label = normalize(value)
       when 5
-        @line_number_last_ordinate = val
+        @numlines = value
       when 6
-        @line_number_last_label = val
+        @nomen = value
       when 7
-        @numlines = val
+        @genus_personae = value
       when 8
-        @nomen = val
+        @line_first = value
       when 9
-        @genus_personae = val
+        @line_last = value
       when 10
-        @line_first = val
+        @meter_before = value
       when 11
-        @line_last = val
+        @meter_after = value
       when 12
-        @meter_before = val
+        @closure = value
       when 13
-        @meter_after = val
+        @comments_on_length = value
       when 14
-        @closure = val
+        @comments_other = value
       when 15
-        @comments_on_length = val
+        @meter = value
       when 16
-        @comments_other = val
-      when 17
-        @meter = val
-      when 18
-        @metertype = val
+        @metertype = value
       end
     }
+  end
+
+  def normalize(value)
+    if match = value.match(/(.+)(fr\.)/i)
+      digit, nondigit = match.captures
+      value = digit + "fr"
+    end
+
+    # rewrite this code. zeros not be prepended to values without non-digit characters
+=begin
+    value.sub!(/^0+/,"")
+
+    if match = value.match(/(\d+)(\D+)/i)
+      digit, nondigit = match.captures
+      case digit.length
+      when 1
+        value = "000" + digit + nondigit
+      when 2
+        value = "00" + digit + nondigit
+      when 3
+        value = "0" + digit + nondigit
+      when 4
+        value = digit + nondigit
+      end
+    else
+      
+    end
+=end
+
+    value
   end
   
 end
