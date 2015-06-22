@@ -24,7 +24,7 @@ function nonzerokeysort(a, b) {
     return 0;
 };
 
-d3.tsv("tsv/index.tsv", function(d) {
+d3.tsv("tsv/index-updated.tsv", function(d) {
     start(d);
 });
 

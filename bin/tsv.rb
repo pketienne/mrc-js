@@ -11,12 +11,20 @@ class TSV
 
   def process_file
     file_lines = IO.readlines(@uri)
-    @column_labels = file_lines.shift.split("\t")
+    @column_labels = file_lines.shift.chomp.split("\t")
+    adjust_line_number_column_labels
     file_lines.each do | record |
       @records.push(Record.new(record))
     end
   end
-  
+
+  def adjust_line_number_column_labels
+    @column_labels[3] = "line_number_first_ordinate"
+    @column_labels[4] = "line_number_first_label"
+    @column_labels.insert(5, "line_number_last_ordinate")
+    @column_labels.insert(6, "line_number_last_label")
+  end
+    
   def line_number_first_labels
     @records.map { |r| r.line_number_first_label }
   end

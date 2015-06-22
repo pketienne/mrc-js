@@ -1,4 +1,4 @@
-d3.tsv("tsv/index.tsv", function(data) {
+d3.tsv("tsv/index-updated.tsv", function(data) {
     var columns = ["poeta","fabula","fpid","line_number_first_ordinate","line_number_first_label","line_number_last_ordinate","line_number_last_label","numlines","nomen","genus_personae","line_first", "line_last","meter_before","meter_after","closure","comments_on_length","comments_other","meter","metertype"];
 
     var table = d3.select("#container").append("table"),

@@ -28,6 +28,7 @@ class Record
   end
 
   def populate(record)
+    record.gsub!(/[\r\n]/,"\t\n")
     fields = record.chomp.split("\t")
     fields.each_with_index { | value, index |
       case index
@@ -38,9 +39,9 @@ class Record
       when 2
         @fpid = value
       when 3
-        @line_number_first_label = normalize(value)
+        @line_number_first_label = normalize_labels(value)
       when 4
-        @line_number_last_label = normalize(value)
+        @line_number_last_label = normalize_labels(value)
       when 5
         @numlines = value
       when 6
@@ -64,13 +65,13 @@ class Record
       when 15
         @meter = value
       when 16
-        @metertype = value
+        @metertype = adjust_blank_metertypes(value)
       end
     }
   end
 
-  def normalize(value)
-    numeric, alpha = value.match(/([^0][0123456789]*)(\D*[^\.]*)/i)
+  def normalize_labels(value)
+    numeric, alpha = value.match(/([^0][0123456789]*)(\D*[^\.]*)/i).captures
     case numeric.length
     when 1
       "000#{numeric}#{alpha}"
@@ -82,5 +83,13 @@ class Record
       "#{numeric}#{alpha}"
     end
   end
-  
+
+  def adjust_blank_metertypes(value)
+    if value == ""
+      @meter
+    else
+      value
+    end            
+  end
+     
 end
