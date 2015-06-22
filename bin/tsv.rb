@@ -1,15 +1,22 @@
 class TSV
-  attr_accessor :uri, :records
+  attr_accessor :uri, :column_labels, :records                
 
   def initialize(uri)
     @uri = uri
+    @column_labels = []
     @records = []
-    File.open(@uri).each do | record |
-      @records.push(Record.new(record))
-    end
-    @column_labels = @records.shift
+
+    process_file
   end
 
+  def process_file
+    file_lines = IO.readlines(@uri)
+    @column_labels = file_lines.shift.split("\t")
+    file_lines.each do | record |
+      @records.push(Record.new(record))
+    end
+  end
+  
   def line_number_first_labels
     @records.map { |r| r.line_number_first_label }
   end

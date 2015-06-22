@@ -70,8 +70,7 @@ class Record
   end
 
   def normalize(value)
-    numeric, alpha = value.match(/([^0][123456789]*)(\D+)/i)
-    alpha = "fr" if alpha.match(/fr\.$/i)
+    numeric, alpha = value.match(/([^0][0123456789]*)(\D*[^\.]*)/i)
     case numeric.length
     when 1
       "000#{numeric}#{alpha}"
