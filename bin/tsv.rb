@@ -3,15 +3,11 @@ class TSV
 
   def initialize(uri)
     @uri = uri
-    # populate this labels variable with column names, to be used when writing new file version.
-    @labels = []
     @records = []
-
     File.open(@uri).each do | record |
       @records.push(Record.new(record))
     end
-
-    @records.shift
+    @column_labels = @records.shift
   end
 
   def line_number_first_labels

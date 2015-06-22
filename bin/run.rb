@@ -10,28 +10,11 @@ def execute
   legend = Legend.new(tsv)
   tsv.populate_ordinates!(legend)
   File.open("../tsv/index-updated.tsv", "w") do |f|
-    # capture all this within a new tsv class instance variable, called "column_labels" or something.
-    file =
-      "poeta" + "\t" +
-      "fabula" + "\t" +
-      "fpid" + "\t" +
-      "line_number_first_ordinate" + "\t" +
-      "line_number_first_label" + "\t" +
-      "line_number_last_ordinate" + "\t" +
-      "line_number_last_label" + "\t" +
-      "numlines" + "\t" +
-      "nomen" + "\t" +
-      "genus_personae" + "\t" +
-      "line_first" + "\t" +
-      "line_last" + "\t" +
-      "meter_before" + "\t" +
-      "meter_after" + "\t" +
-      "closure" + "\t" +
-      "comments_on_length" + "\t" +
-      "comments_other" + "\t" +
-      "meter" + "\t" +
-      "metertype" + "\n"
-
+    file = ""
+    tsv.column_labels.each do |l|
+      file += "#{l}\t"
+    end
+    file = "#{file.chop}\n"
     tsv.records.each do |r|
       file +=
         r.poeta + "\t" +

@@ -70,33 +70,18 @@ class Record
   end
 
   def normalize(value)
-    if match = value.match(/(.+)(fr\.)/i)
-      digit, nondigit = match.captures
-      value = digit + "fr"
+    numeric, alpha = value.match(/([^0][123456789]*)(\D+)/i)
+    alpha = "fr" if alpha.match(/fr\.$/i)
+    case numeric.length
+    when 1
+      "000#{numeric}#{alpha}"
+    when 2
+      "00#{numeric}#{alpha}"
+    when 3
+      "0#{numeric}#{alpha}"
+    when 4
+      "#{numeric}#{alpha}"
     end
-
-    # rewrite this code. zeros not be prepended to values without non-digit characters
-=begin
-    value.sub!(/^0+/,"")
-
-    if match = value.match(/(\d+)(\D+)/i)
-      digit, nondigit = match.captures
-      case digit.length
-      when 1
-        value = "000" + digit + nondigit
-      when 2
-        value = "00" + digit + nondigit
-      when 3
-        value = "0" + digit + nondigit
-      when 4
-        value = digit + nondigit
-      end
-    else
-      
-    end
-=end
-
-    value
   end
   
 end
