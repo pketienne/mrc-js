@@ -1,0 +1,50 @@
+CROSSFILTER
+#crossfilter([records])
+#crossfilter.add(records)
+#crossfilter.remove()
+#crossfilter.size()
+#crossfilter.groupAll()
+
+DIMENSION
+#crossfilter.dimension(value)
+#crossfilter.dimension.filter(value)
+#crossfilter.dimension.filterExact(value)
+#crossfilter.dimension.filterRange(range)
+#crossfilter.dimension.filterFunction(function)
+#crossfilter.dimension.filterAll()
+#crossfilter.dimension.top(n)
+#crossfilter.dimension.bottom(n)
+#crossfilter.dimension.dispose()
+
+GROUP
+#crossfilter.dimension.group([groupValue])
+#crossfilter.dimension.group.size()
+#crossfilter.dimension.group.reduce(add, remove, initial)
+#crossfilter.dimension.group.reduceCount()
+#crossfilter.dimension.group.reduceSum(value)
+#crossfilter.dimension.group.order(orderValue)
+#crossfilter.dimension.group.orderNatural()
+#crossfilter.dimension.group.top(n)
+#crossfilter.dimension.group.all()
+#crossfilter.dimension.group.dispose()
+
+GROUP ALL
+#crossfilter.dimension.groupAll()
+#crossfilter.dimension.groupAll.reduce(add, remove, initial)
+#crossfilter.dimension.groupAll.value()
+
+EXTRAS
+#crossfilter.bisect(array, value, lo, hi)
+#crossfilter.bisect.by(value)
+#crossfilter.bisect.right(array, value, lo, hi)
+#crossfilter.bisect.left(array, value, lo, hi)
+#crossfilter.heap(array, lo, hi)
+#crossfilter.heap.by(value)
+#crossfilter.heap.sort(array, lo, hi)
+#crossfilter.heapselect(array, lo, hi)
+#crossfilter.heapselect.by(value)
+#crossfilter.insertionsort(array, lo, hi)
+#crossfilter.insertionsort.by(accessor)
+#crossfilter.quicksort(array, lo, hi)
+#crossfilter.quicksort.by(accessor)
+#crossfilter.permute(array, index)

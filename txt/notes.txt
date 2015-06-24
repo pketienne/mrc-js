@@ -1,26 +1,3 @@
-VARIABLES
-versusdata
-cf
-dims
-filterdims
-filters
-
-UTILITY METHODS
-pad
-keysort
-nonzerokeysort
-
-METHODS
-listupdate
-updateversus
-showversuspage
-update
-addfilter
-removefilter
-addpopupfield
-activateli
-start
-
 DATA POINTS
 poeta
 	name
@@ -70,3 +47,26 @@ verse detail
 	Closure
 	Comments
 	Other
+
+VARIABLES
+versusdata
+cf
+dims
+filterdims
+filters
+
+UTILITY METHODS
+pad
+keysort
+nonzerokeysort
+
+METHODS
+listupdate
+updateversus
+showversuspage
+update
+addfilter
+removefilter
+addpopupfield
+activateli
+start

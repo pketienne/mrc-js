@@ -10,63 +10,46 @@
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/js/bootstrap.min.js" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.11/crossfilter.min.js" charset="utf-8"></script>
-    <script src="js/index.js" charset="utf-8"></script
+    <script src="js/index.js" charset="utf-8"></script>
   </head>
   <body>
-    <div class="container" id="toplevel">
-      <div class="header">
-	<h1>Tim Moore's data; experimental interface</h1>
-      </div>
-      <div id="reset"></div>
-      <div class="col-md-3">
-	<div id="poeta">
-          <h3>Poeta</h3>
-	</div>
-	<div id="fabulae">
-          <h3>Fabulae</h3>
-	</div>
-	<div id="genus_personae">
-          <h3>Genera Personae</h3>
-	</div>
-	<div id="personae">
-          <h3>Personae</h3>
-	</div>
-      </div>
-      <div class="col-md-2">
-	<div id="metertype">
-          <h3>Meter Type</h3>
-	</div>
-	<div id="meter">
-          <h3>Meter</h3>
-	</div>
-      </div>
-      <div class="col-md-7">
-	<div id="versus">
-          <h3>Versus</h3>
-          <div class="counts">
-            <span class="rowcount"></span>
-            <span class="linecount"></span>
-          </div>
-          <div class="pagin">
-            <span class="prev link">&lt; previous</span>
-            <span class="pagecounter"></span>
-            <span class="next link">next &gt;</span>
-          </div>
-          <div class="metadata">
-            <span class="fabula">Fabula</span>
-	    <span class="nomen">Nomen</span>
-            <span class="line_number_first_label">start</span>
-            <span class="line_number_last_label">end</span>
-            <span class="numlines"># lines</span>
-            <span class="meter">meter</span>
-            <span class="meter_before">met. bef.</span>
-            <span class="meter_after">met. aft.</span>
-          </div>
-	</div>
-      </div>
-      <div id="oneverse">
-	<span class="fabula">Fabula</span>
-      </div>
-    </div>
+    <h1>Header</h1>
+    <h2>Poeta</h2>
+    <table id="poeta">
+    </table>
+    <h2>Fabulae</h2>
+    <table id="fabulae">
+    </table>
+    <h2>Genus Personae</h2>
+    <table id="personae">
+    </table>
+    <h2>Nomen</h2>
+    <table id="nomen">
+    </table>
+    <h2>Meter</h2>
+    <table id="meter">
+    </table>
+    <h2>Meter Type</h2>
+    <table id="meter_type">
+    </table>
+    <h2>Verses</h2>
+    <table id="verses">
+      <thead>
+	<tr>
+	  <td>Poeta</td>
+	  <td>Fabulae</td>
+	  <td>Genus Personae</td>
+	  <td>Nomen</td>
+	  <td>First Line Number</td>
+	  <td>Last Line Number</td>
+	  <td>Number of Lines</td>
+	  <td>Meter</td>
+	  <td>Meter Type</td>
+	  <td>Preceding Meter</td>
+	  <td>Following Meter</td>
+	</tr>
+      </thead>
+    </table>
+    <h6>Footer</h6>
   </body>
 </html>
