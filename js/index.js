@@ -64,11 +64,11 @@ d3.tsv("tsv/index-updated.tsv", function(data) {
 
     var dimensions = {
 	poeta: new Dimension("poeta"),
-	fabula: new Dimension("fabula"),
+	fabula: new Dimension("fabulae"),
 	nomen: new Dimension("nomen"),
-	genus_personae: new Dimension("genus_personae"),
+	genus_personae: new Dimension("genera"),
 	meter: new Dimension("meter"),
-	metertype: new Dimension("metertype"),
+	metertype: new Dimension("meter_type"),
 	meter_before: new Dimension("meter_before"),
 	meter_after: new Dimension("meter_after"),
 	fpid: new Dimension("fpid")
