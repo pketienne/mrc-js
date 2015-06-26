@@ -164,7 +164,7 @@ function showversuspage(page) {
         .text(function(d){return d.value.meter_after;});
     list.select("span.personae")
         .html(function(d){ 
-c           var ptmp = filterdims.versus_per_personam.group().reduce(
+            var ptmp = filterdims.versus_per_personam.group().reduce(
                 function(a, dd){
                     return {
                         'nomen':dd.nomen,

@@ -196,3 +196,15 @@ d3.tsv("tsv/index-updated.tsv", function(data) {
     blah(dimensions.fpid);
     */
     
+    var dimensions = {
+	poeta: facts.dimension(function(f) { return f.poeta }),
+	fabula: facts.dimension(function(f) { return f.fabula }),
+	nomen: facts.dimension(function(f) { return f.nomen }),
+	genus_personae: facts.dimension(function(f) { return f.genus_personae }),
+	meter: facts.dimension(function(f) { return f.meter }),
+	metertype: facts.dimension(function(f) { return f.metertype }),
+	meter_before: facts.dimension(function(f) { return f.meter_before }),
+	meter_after: facts.dimension(function(f) { return f.meter_after }),
+	fpid: facts.dimension(function(f) { return f.fpid })
+    }
+
