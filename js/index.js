@@ -40,21 +40,28 @@ d3.tsv("tsv/index-updated.tsv", function(data) {
 	}
     }
     Dimension.prototype.tabulate = function(data, columns) {
-	var table = d3.select(this.name);
-	var rows = table.selectAll("tr")
+	var facets_hook = d3.select(this.name).select("div.facets");
+
+	var facet = facets_hook
+	    .selectAll("div")
 	    .data(data)
 	    .enter()
-	    .append("tr");
-	var cells = rows.selectAll("td")
-	    .data(function(row) {
-		return columns.map(function(column) {
-		    return {column: column, value: row[column]};
-		});
-	    })
-	    .enter()
-	    .append("td")
+	    .append("div")
+	    .classed("facet", true);
+
+	var name = facet
+	    .append("div")
+	    .classed("name", true)
+	    .classed("float", true)
+	    .html(function(d) { return d.name; });
+
+	var value = facet
+	    .append("div")
+	    .classed("value", true)
+	    .classed("float", true)
 	    .html(function(d) { return d.value; });
-	return table;
+	
+	return facets_hook;
     }
     Dimension.prototype.draw = function() {
 	var facets = this.facets;

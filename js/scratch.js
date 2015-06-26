@@ -208,3 +208,17 @@ d3.tsv("tsv/index-updated.tsv", function(data) {
 	fpid: facts.dimension(function(f) { return f.fpid })
     }
 
+	/*
+	var cells = facet.selectAll("td")
+	    .data(function(row) {
+		return columns.map(function(column) {
+		    return {column: column, value: row[column]};
+		});
+	    })
+	    .enter()
+	    .append("td")
+	    .html(function(d) { return d.value; });
+	*/
+
+	
+

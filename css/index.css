@@ -12,12 +12,26 @@ div#main {
 div#main div#dimensions {
     width: 25%;
 }
-div#main div#dimensions h2 {
-    background-color: #730;
+div#main div.dimension {
+    clear: both;
+}
+div#main div#dimensions div h2 {
     border-bottom: 1px solid #000;
+    background-color: #4f0;
 }
 div#main div#dimensions div.facets {
-    
+}
+div#main div#dimensions div.facets div.facet {
+}
+div#main div#dimensions div.facets div.facet div.name {
+    width: 50%;
+    text-align: left;
+    background-color: #505;
+}
+div#main div#dimensions div.facets div.facet div.value {
+    width: 50%;
+    text-align: right;
+    background-color: #050;
 }
 div#main div#fpid {
     width: 75%;
