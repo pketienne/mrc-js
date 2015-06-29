@@ -1,6 +1,20 @@
 d3.tsv("tsv/index-updated.tsv", function(data) {
     var facts = crossfilter(data);
 
+    /*
+    console.log(facts);
+    console.log(facts.dimension(function(f) { return f.fpid; }));
+    console.log(facts.dimension(function(f) { return f.fpid; }).top(Infinity));
+    console.log(facts.dimension(function(f) { return f.fpid; }).group());
+    console.log(facts.dimension(function(f) { return f.fpid; }).group().top(Infinity));
+    console.log(facts.dimension(function(f) { return f.fpid; }).group().all());
+    console.log(facts.dimension(function(f) { return f.fpid; }).group().size());
+    console.log(facts.dimension(function(f) { return f.fpid; }).groupAll());
+    console.log(facts.groupAll());
+    console.log(facts.groupAll().value());
+    console.log(facts.size());
+    */
+
     var FPID = {
 	add: function(p, v){
             if(v.fpid in p.fpids) {
@@ -39,34 +53,122 @@ d3.tsv("tsv/index-updated.tsv", function(data) {
 	    this.facets.push({ name: facet_name, value: facet_value });
 	}
     }
-    Dimension.prototype.tabulate = function(data, columns) {
-	var facets_hook = d3.select(this.name).select("div.facets");
-
-	var facet = facets_hook
-	    .selectAll("div")
+    Dimension.prototype.draw = function() {
+	var data = this.facets;
+	var columns = Object.keys(data[0]);
+	
+	var table = d3.select(this.name).select("table.facets");
+	var rows = table
+	    .selectAll("tr")
 	    .data(data)
 	    .enter()
-	    .append("div")
+	    .append("tr")
 	    .classed("facet", true);
-
-	var name = facet
-	    .append("div")
-	    .classed("name", true)
-	    .classed("float", true)
-	    .html(function(d) { return d.name; });
-
-	var value = facet
-	    .append("div")
-	    .classed("value", true)
-	    .classed("float", true)
+	var cells = rows
+	    .selectAll("td")
+	    .data(function(row) {
+		return columns.map(function(column) {
+		    var name = (column == "") ? "0" : column;
+		    var value = (row[column] == "") ? "[blank]" : row[column];
+		    return {name: name, value: value};
+		});
+	    })
+	    .enter()
+	    .append("td")
+	    .attr("class", function(d) { return d.name; })
 	    .html(function(d) { return d.value; });
-	
-	return facets_hook;
+
+	return table;
     }
-    Dimension.prototype.draw = function() {
-	var facets = this.facets;
-	var property_names = Object.keys(facets[0]);
-	this.tabulate(this.facets, property_names);
+
+    var FPID2 = {
+	add: function(p, v){
+            if(v.fpid in p.fpids) {
+		return p;
+	    } else {
+                p.fpids[v.fpid] = 1;
+                p.numlines+= +v.numlines;
+                return p;
+            }
+	},
+        remove: function (p, v) {
+            p.fpids[v.fpid]--;
+            if(p.fpids[v.fpid] === 0) {
+                delete p.fpids[v.fpid];
+	    }
+            return p;
+        },
+        init: function() {
+	    return { fpids: {}, numlines: 0}
+	}
+    }
+
+    var Dimension2 = function(dimension) {
+	this.name = "#" + dimension;
+	this.dimension = facts.dimension(function(f) { return f[dimension]; });
+	this.facets = [];
+
+	this.populate_facet2();
+	this.draw2();
+    }
+    Dimension2.prototype.populate_facet2 = function() {
+	var objects = this.dimension.top(Infinity);
+	console.log(objects);
+	objects.sort(function(a, b) {
+	    return a.line_number_first_ordinate - b.line_number_first_ordinate;
+	});
+	console.log(objects);
+	
+
+	var array = []
+	//console.log(objects);
+	for(var l = objects.length, i = 0; i < l; ++i) {
+	    array.push({ fpid: objects[i].fpid,
+			 fabulae: objects[i].fabulae,
+			 nomen: objects[i].nomen,
+			 genera: objects[i].genera,
+			 //start_ordinate: objects[i].line_number_first_ordinate,
+			 start: objects[i].line_number_first_label,
+			 //end_ordinate: objects[i].line_number_last_ordinate,
+			 end: objects[i].line_number_last_label,
+			 lines: objects[i].numlines,
+			 meter: objects[i].meter,
+			 meter_type: objects[i].meter_type,
+			 meter_before: objects[i].meter_before,
+			 meter_after: objects[i].meter_after
+		       });
+	}
+
+	this.facets = array.sort();
+    }
+    Dimension2.prototype.draw2 = function() {
+	var data = this.facets;
+	console.log(data);
+	console.log(data[0]);
+	var columns = Object.keys(data[0]);
+	
+	var table = d3.select(this.name).select("table.facets");
+	var rows = table
+	    .selectAll("tr")
+	    .data(data)
+	    .enter()
+	    .append("tr")
+	    .classed("facet", true);
+	var cells = rows
+	    .selectAll("td")
+	    .data(function(row) {
+		return columns.map(function(column) {
+		    var name = (column == "") ? "0" : column;
+		    var value = (row[column] == "") ? "[blank]" : row[column];
+		    return {name: name, value: value};
+		});
+	    })
+	    .enter()
+	    .append("td")
+	    .attr("class", function(d) { return d.name; })
+	    .html(function(d) { return d.value; });
+
+	return table;
     }
 
     var dimensions = {
@@ -78,7 +180,16 @@ d3.tsv("tsv/index-updated.tsv", function(data) {
 	metertype: new Dimension("meter_type"),
 	meter_before: new Dimension("meter_before"),
 	meter_after: new Dimension("meter_after"),
-	fpid: new Dimension("fpid")
+	fpid: new Dimension2("fpid")
     }
 
+    function compare() {
+	if (this.line_number_first_ordinate < this.line_number_first_ordinate) {
+	    return -1;
+	}
+	if (a.line_number_first_ordiante > b.line_number_first_ordinate) {
+	    return 1;
+	}
+	return 0;
+    }
 });

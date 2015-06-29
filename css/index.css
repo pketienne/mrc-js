@@ -11,9 +11,9 @@ div#main {
 }
 div#main div#dimensions {
     width: 25%;
+    float: left;
 }
 div#main div.dimension {
-    clear: both;
 }
 div#main div#dimensions div h2 {
     border-bottom: 1px solid #000;
@@ -23,28 +23,26 @@ div#main div#dimensions div.facets {
 }
 div#main div#dimensions div.facets div.facet {
 }
-div#main div#dimensions div.facets div.facet div.name {
-    width: 50%;
+div#main div#dimensions table.facets tr.facet td.name {
+    width: 80%;
     text-align: left;
     background-color: #505;
+    width: 95%;
 }
-div#main div#dimensions div.facets div.facet div.value {
-    width: 50%;
+div#main div#dimensions table.facets tr.facet td.value {
+    width: 20%;
     text-align: right;
     background-color: #050;
+    width: 5%;
 }
 div#main div#fpid {
     width: 75%;
     background-color: #777;
+    float: left;
 }
 div#footer {
     height: 100px;
     background-color: #711;
     border-top: 2px solid #000;
-}
-.float {
-    float: left;
-}
-.clear {
     clear: both;
 }
