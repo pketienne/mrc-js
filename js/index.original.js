@@ -387,26 +387,21 @@ function start(dd) {
     dims['poeta'] = cf.dimension(function(d){return d.poeta});
     dims['fabulae'] = cf.dimension(function(d){return d.fabula});
     dims['personae'] = cf.dimension(function(d){return d.nomen});
-    dims['genus_personae'] = cf.dimension(function(d){
-        return d.genus_personae});
+    dims['genus_personae'] = cf.dimension(function(d){return d.genus_personae});
     dims['meter'] = cf.dimension(function(d){return d.meter});
     dims['metertype'] = cf.dimension(function(d){return d.metertype});
     dims['versus'] = cf.dimension(function(d){return d.fpid});
-    dims['versus_per_personam'] = cf.dimension(function(d){
-        return d.fpid + d.nomen});
+    dims['versus_per_personam'] = cf.dimension(function(d){return d.fpid + d.nomen});
     
     /* separate dimensions just for filtering */
     filterdims['poeta'] = cf.dimension(function(d){return d.poeta});
     filterdims['fabulae'] = cf.dimension(function(d){return d.fabula});
     filterdims['personae'] = cf.dimension(function(d){return d.nomen});
-    filterdims['genus_personae'] = cf.dimension(function(d){
-        return d.genus_personae});
+    filterdims['genus_personae'] = cf.dimension(function(d){return d.genus_personae});
     filterdims['meter'] = cf.dimension(function(d){return d.meter});
-    filterdims['metertype'] = cf.dimension(function(d){
-        return d.metertype});
+    filterdims['metertype'] = cf.dimension(function(d){return d.metertype});
     filterdims['versus'] = cf.dimension(function(d){return d.fpid});
-    filterdims['versus_per_personam'] = cf.dimension(function(d){
-        return d.fpid + d.nomen});
+    filterdims['versus_per_personam'] = cf.dimension(function(d){return d.fpid + d.nomen});
     
     d3.select("#poeta").append("ul");
     d3.select("#fabulae").append("ul");

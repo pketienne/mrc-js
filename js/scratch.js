@@ -222,3 +222,17 @@ d3.tsv("tsv/index-updated.tsv", function(data) {
 
 	
 
+    /*
+    console.log(facts);
+    console.log(facts.dimension(function(f) { return f.fpid; }));
+    console.log(facts.dimension(function(f) { return f.fpid; }).top(Infinity));
+    console.log(facts.dimension(function(f) { return f.fpid; }).group());
+    console.log(facts.dimension(function(f) { return f.fpid; }).group().top(Infinity));
+    console.log(facts.dimension(function(f) { return f.fpid; }).group().all());
+    console.log(facts.dimension(function(f) { return f.fpid; }).group().size());
+    console.log(facts.dimension(function(f) { return f.fpid; }).groupAll());
+    console.log(facts.groupAll());
+    console.log(facts.groupAll().value());
+    console.log(facts.size());
+    */
+
