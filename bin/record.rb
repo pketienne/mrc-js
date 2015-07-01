@@ -24,12 +24,15 @@ class Record
     @comments_other = ""
     @meter = ""
     @metertype = ""
+
     populate(record)
+
   end
 
   def populate(record)
     record.gsub!(/[\r\n]/,"\t\n")
     fields = record.chomp.split("\t")
+    # Array.new(17) - Transfer values to array of fixed size
     fields.each_with_index { | value, index |
       case index
       when 0
@@ -53,9 +56,9 @@ class Record
       when 9
         @line_last = value
       when 10
-        @meter_before = value
+        @meter_before = value #normalize_meters(value)
       when 11
-        @meter_after = value
+        @meter_after = value #normalize_meters(value)
       when 12
         @closure = value
       when 13
@@ -63,9 +66,9 @@ class Record
       when 14
         @comments_other = value
       when 15
-        @meter = value
+        @meter = normalize_meters(value)
       when 16
-        @metertype = adjust_blank_metertypes(value)
+        @metertype = value #adjust_blank_metertypes(value)
       end
     }
   end
@@ -84,6 +87,20 @@ class Record
     end
   end
 
+  def normalize_meters(value)
+    if /^$/.match(value)
+      "[blank]"
+    elsif /$/.match(value)
+      "[not blank]"
+    elsif value.nil?
+      "[nil]"
+    elsif !value.nil?
+      "[not nil]"
+    else
+      value
+    end
+  end
+  
   def adjust_blank_metertypes(value)
     if value == ""
       @meter
