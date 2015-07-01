@@ -1,49 +1,51 @@
 d3.tsv('tsv/index-updated.tsv', function(data) {
     var facts = crossfilter(data);
 
-    var DIMENSIONS = ['poeta', 'fabulae', 'nomen', 'genera', 'meter',
-		      'meter_type', 'meter_before', 'meter_after'];
+    var DIMENSION_LABELS = ['poeta', 'fabulae', 'nomen', 'genera', 'meter',
+			    'meter_type', 'meter_before', 'meter_after', 'fpid'];
     var LINE_COUNT = "numlines";
 
-    var FPID = {
-	// Faster to capture fpid values on route rather than assigning 'seen' attribute for each.
-	// Uses [].includes() polyfill for ie8, etc.
-	add: function(p, v) {
-	    if(p.fpids.includes(v.fpid)) {
-		return p;
-	    } else {
-		p.fpids.push(v.fpid)
-		p.line_count += +v[LINE_COUNT];
-		return p;
-	    }
-	},
-	remove: function(p, v) {},
-	init: function(p, v) { return { fpids: [], line_count: 0 } }
+    var Reduction = function(/* args ?column? */) {}
+    Reduction.prototype.add(p, v) {
+	if(p.columns.includes(v.column)) {
+	    return p;
+	} else {
+	    p.columns.push(v.column)
+	    p.line_count += +v[LINE_COUNT];
+	    return p;
+	}
     }
-
-    var Dimension = function(dimension) {
-	this.name = "#" + dimension;
-	this.dimension = facts.dimension(function(f) { return f[dimension]; });
+    Reduction.prototype.remove(p, v) {}
+    Reduction.prototype.init(p, v) { return { columns: [], line_count: 0; } }
+    
+    var Dimension = function(label) {
+	this.name = "#" + label;
+	this.dimension = facts.dimension(function(f) { return f[label]; });
+	this.reduction = new Reduction(/* args */);
+	this.selection = this.dimension.group()
+	    .reduce(fpid.add, fpid.remove, fpid.init).all()
 	this.facets = [];
-	
-	this.populate();
-	this.draw();
+	this.columns = [];
     }
     Dimension.prototype.populate = function() {
-	// Simplifying to one ".reduce" for all dimensions not feasible due to nature of dataset.
-	var group = this.dimension.group()
-	    .reduce(FPID.add, FPID.remove, FPID.init).all();
+	var group = this.selection
 
-	// Not using 'forEach' as 'super' is not supported and the solution is inelegant without it.
 	for(var l = group.length, i = 0; i < l; ++i) {
 	    var facet_name = group[i].key;
 	    var facet_value = group[i].value.line_count;
 	    this.facets.push({ name: facet_name, value: facet_value });
 	}
+	
+	this.columns = Object.keys(this.facets[0]);
+    }
+    Dimension.prototype.reset = function() {
+	this.facets = [];
+	this.columns = [];
+	// d3.js prune table from DOM
     }
     Dimension.prototype.draw = function() {
-	var data = this.facets;
-	var columns = Object.keys(data[0]);
+	var data = this.facets
+	var columns = this.columns
 	
 	var table = d3.select(this.name).select("table.facets");
 	var rows = table
@@ -63,18 +65,29 @@ d3.tsv('tsv/index-updated.tsv', function(data) {
 	    .append("td")
 	    .attr("class", function(d) { return d.name; })
 	    .html(function(d) { return d.value; });
-
+	
 	return table;
     }
 
+    var Reference = function() {
+	this.selection = this.dimension.top(Infinity);
+    }
+    Reference.prototype = Object.create(Dimension.prototype);
+    Reference.prototype.constructor = Reference;
+    
     var Population = function() {
-	this.dimensions = {};
+	this.dimensions = [];
 	this.populate();
     }
     Population.prototype.populate = function() {
-	// Not using 'forEach' as 'super' is not supported and the solution is inelegant without it.
-	for(var l = DIMENSIONS.length, i = 0; i < l; ++i) {
-	    this.dimensions[DIMENSIONS[i]] = new Dimension(DIMENSIONS[i]);
+	for(var l = DIMENSION_LABELS.length, i = 0; i < l; ++i) {
+	    var label = DIMENSION_LABELS[i];
+
+	    if label != 'fpid' {
+		this.dimensions.push({ label: new Dimension(label) });
+	    } else {
+		this.dimensions.push({ label: new Reference(label) });
+	    }
 	}
     }
 
