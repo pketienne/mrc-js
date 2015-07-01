@@ -1,4 +1,4 @@
-#! /home/petienne/.rvm/rubies/ruby-2.2.1/bin/ruby -w
+o#! /home/petienne/.rvm/rubies/ruby-2.2.1/bin/ruby -w
 require 'pry'
 require 'pry-byebug'
 load 'tsv.rb'

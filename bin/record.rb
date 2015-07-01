@@ -31,9 +31,12 @@ class Record
 
   def populate(record)
     record.gsub!(/[\r\n]/,"\t\n")
-    fields = record.chomp.split("\t")
-    # Array.new(17) - Transfer values to array of fixed size
-    fields.each_with_index { | value, index |
+    variable_length = record.chomp.split("\t")
+    predefined_length = Array.new(17, "")
+    variable_length.each_with_index { |value, index|
+      predefined_length[index] = value
+    }
+    predefined_length.each_with_index { | value, index |
       case index
       when 0
         @poeta = value
@@ -56,9 +59,9 @@ class Record
       when 9
         @line_last = value
       when 10
-        @meter_before = value #normalize_meters(value)
+        @meter_before = normalize_meters(value)
       when 11
-        @meter_after = value #normalize_meters(value)
+        @meter_after = normalize_meters(value)
       when 12
         @closure = value
       when 13
@@ -68,7 +71,7 @@ class Record
       when 15
         @meter = normalize_meters(value)
       when 16
-        @metertype = value #adjust_blank_metertypes(value)
+        @metertype = adjust_blank_metertypes(value)
       end
     }
   end
@@ -90,12 +93,6 @@ class Record
   def normalize_meters(value)
     if /^$/.match(value)
       "[blank]"
-    elsif /$/.match(value)
-      "[not blank]"
-    elsif value.nil?
-      "[nil]"
-    elsif !value.nil?
-      "[not nil]"
     else
       value
     end
