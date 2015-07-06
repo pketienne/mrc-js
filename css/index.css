@@ -1,46 +1,59 @@
 body {
-    box-sizing: border-box;
 }
-div#header {
+body div#header {
     height: 100px;
     background-color: #933;
     border-bottom: 2px solid #000;
 }
-div#main {
+body div#main {
     width: 100%;
 }
-div#main div#dimensions {
+body div#main div#dimensions {
     width: 25%;
     float: left;
+    background-color: #444;
 }
-div#main div.dimension {
+body div#main div#dimensions div.dimension {
 }
-div#main div#dimensions div h2 {
-    border-bottom: 1px solid #000;
-    background-color: #4f0;
+body div#main div#dimensions div.dimension h2 {
+    background-color: #393;
 }
-div#main div#dimensions div.facets {
+body div#main div#dimensions div.dimension table.facets {
+    width: 100%;
 }
-div#main div#dimensions div.facets div.facet {
-}
-div#main div#dimensions table.facets tr.facet td.name {
-    width: 80%;
+body div#main div#dimensions div.dimension table.facets tr.facet td.name {
     text-align: left;
-    background-color: #505;
     width: 95%;
+    color: #ff3;
 }
-div#main div#dimensions table.facets tr.facet td.value {
-    width: 20%;
+body div#main div#dimensions div.dimension table.facets tr.facet td.value {
     text-align: right;
-    background-color: #050;
     width: 5%;
+    color: #f3f;
 }
-div#main div#fpid {
-    width: 75%;
-    background-color: #777;
-    float: left;
+body div#main div#references {
+    margin-left: 25%;
+    background-color: #999;
 }
-div#footer {
+body div#main div#references div.reference {
+}
+body div#main div#references div.reference h2 {
+    background-color: #939;
+}
+body div#main div#references div.reference table.fragments {
+    width: 100%;
+}
+body div#main div#dimensions div.dimension table.fragments tr.fragment td.PROPERTY,
+body div#main div#dimensions div.dimension table.fragments tr.fragment td.PROPERTY,
+body div#main div#dimensions div.dimension table.fragments tr.fragment td.PROPERTY,
+body div#main div#dimensions div.dimension table.fragments tr.fragment td.PROPERTY,
+body div#main div#dimensions div.dimension table.fragments tr.fragment td.PROPERTY,
+body div#main div#dimensions div.dimension table.fragments tr.fragment td.PROPERTY,
+body div#main div#dimensions div.dimension table.fragments tr.fragment td.PROPERTY,
+body div#main div#dimensions div.dimension table.fragments tr.fragment td.PROPERTY {
+    color: #f33;
+}
+body div#footer {
     height: 100px;
     background-color: #711;
     border-top: 2px solid #000;

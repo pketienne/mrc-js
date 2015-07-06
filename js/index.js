@@ -4,31 +4,38 @@ d3.tsv('tsv/index-updated.tsv', function(data) {
     var DIMENSION_LABELS = ['poeta', 'fabulae', 'nomen', 'genera', 'meter',
 			    'meter_type', 'meter_before', 'meter_after', 'fpid'];
     var LINE_COUNT = "numlines";
+    var FPID = 'fpid';
 
-    var Reduction = function(/* args ?column? */) {}
-    Reduction.prototype.add(p, v) {
-	if(p.columns.includes(v.column)) {
+    var Reduction = function() {}
+    Reduction.prototype.add = function(p, v) {
+	if(p.fpids.includes(v[FPID])) {
 	    return p;
 	} else {
-	    p.columns.push(v.column)
+	    p.fpids.push(v[FPID]);
 	    p.line_count += +v[LINE_COUNT];
 	    return p;
 	}
     }
-    Reduction.prototype.remove(p, v) {}
-    Reduction.prototype.init(p, v) { return { columns: [], line_count: 0; } }
-    
+    Reduction.prototype.remove = function(p, v) {}
+    Reduction.prototype.init = function(p, v) {
+	return { fpids: [], line_count: 0 };
+    }
+
     var Dimension = function(label) {
 	this.name = "#" + label;
 	this.dimension = facts.dimension(function(f) { return f[label]; });
-	this.reduction = new Reduction(/* args */);
-	this.selection = this.dimension.group()
-	    .reduce(fpid.add, fpid.remove, fpid.init).all()
+	this.reduction = new Reduction();
+	this.selection = this.dimension
+	    .group()
+	    .reduce(this.reduction.add,
+		    this.reduction.remove,
+		    this.reduction.init)
+	    .all()
 	this.facets = [];
 	this.columns = [];
     }
     Dimension.prototype.populate = function() {
-	var group = this.selection
+	var group = this.selection;
 
 	for(var l = group.length, i = 0; i < l; ++i) {
 	    var facet_name = group[i].key;
@@ -38,14 +45,9 @@ d3.tsv('tsv/index-updated.tsv', function(data) {
 	
 	this.columns = Object.keys(this.facets[0]);
     }
-    Dimension.prototype.reset = function() {
-	this.facets = [];
-	this.columns = [];
-	// d3.js prune table from DOM
-    }
     Dimension.prototype.draw = function() {
-	var data = this.facets
-	var columns = this.columns
+	var data = this.facets;
+	var columns = this.columns;
 	
 	var table = d3.select(this.name).select("table.facets");
 	var rows = table
@@ -68,37 +70,43 @@ d3.tsv('tsv/index-updated.tsv', function(data) {
 	
 	return table;
     }
-
-    var Reference = function() {
+    
+    var Reference = function(label) {
+	Dimension.call(this, label);
 	this.selection = this.dimension.top(Infinity);
     }
     Reference.prototype = Object.create(Dimension.prototype);
     Reference.prototype.constructor = Reference;
+    Reference.prototype.populate = function() {
+	var group = this.selection;
+
+	this.facets = group;
+	this.columns = Object.keys(this.facets[0]);
+    }
     
     var Population = function() {
-	this.dimensions = [];
+	this.dimensions = {};
+
 	this.populate();
+	this.draw();
     }
     Population.prototype.populate = function() {
 	for(var l = DIMENSION_LABELS.length, i = 0; i < l; ++i) {
 	    var label = DIMENSION_LABELS[i];
-
-	    if label != 'fpid' {
-		this.dimensions.push({ label: new Dimension(label) });
+	    if(label != 'fpid') {
+		this.dimensions[label] = new Dimension(label);
 	    } else {
-		this.dimensions.push({ label: new Reference(label) });
+		this.dimensions[label] = new Reference(label);
 	    }
 	}
     }
-
-    var current_verse_fragments = function() { return dimensions.poeta.dimension.top(Infinity); }
-
-    var VIEWS = {
-	raw: "",
-	verse: "",
-	detail: ""
+    Population.prototype.draw = function() {
+	for(var property in this.dimensions) {
+	    this.dimensions[property].populate();
+	    this.dimensions[property].draw();
+	}
     }
-
-    var population = new Population();
     
+    var population = new Population();
+
 });
