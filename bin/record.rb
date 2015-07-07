@@ -1,8 +1,8 @@
 class Record
   attr_accessor :poeta, :fabula, :fpid, :line_number_first_ordinate, :line_number_first_label,
-                :line_number_last_ordinate, :line_number_last_label, :numlines, :nomen,
-                :genus_personae, :line_first, :line_last, :meter_before, :meter_after, :closure,
-                :comments_on_length, :comments_other, :meter, :metertype
+                :line_number_last_ordinate, :line_number_last_label, :numlines, :char_numlines, :nomen,
+                :genus_personae, :line_first, :line_last, :z_old_text, :meter_before, :meter_after,
+                :closure, :comments_on_length, :comments_other, :meter, :metertype
 
   def initialize(record)
     @poeta = ""
@@ -13,10 +13,12 @@ class Record
     @line_number_last_ordinate = ""
     @line_number_last_label = ""
     @numlines = ""
+    @char_numlines = ""
     @nomen = ""
     @genus_personae = ""
     @line_first = ""
     @line_last = ""
+    @z_old_text = ""
     @meter_before = ""
     @meter_after = ""
     @closure = ""
@@ -26,13 +28,12 @@ class Record
     @metertype = ""
 
     populate(record)
-
   end
 
   def populate(record)
     record.gsub!(/[\r\n]/,"\t\n")
     variable_length = record.chomp.split("\t")
-    predefined_length = Array.new(17, "")
+    predefined_length = Array.new(19, "")
     variable_length.each_with_index { |value, index|
       predefined_length[index] = value
     }
@@ -51,26 +52,30 @@ class Record
       when 5
         @numlines = value
       when 6
-        @nomen = value
+        @char_numlines = value
       when 7
-        @genus_personae = value
+        @nomen = value
       when 8
-        @line_first = value
+        @genus_personae = value
       when 9
-        @line_last = value
+        @line_first = value
       when 10
-        @meter_before = normalize_meters(value)
+        @line_last = value
       when 11
-        @meter_after = normalize_meters(value)
+        @z_old_text = ""
       when 12
-        @closure = value
+        @meter_before = normalize_meters(value)
       when 13
-        @comments_on_length = value
+        @meter_after = normalize_meters(value)
       when 14
-        @comments_other = value
+        @closure = value
       when 15
-        @meter = normalize_meters(value)
+        @comments_on_length = value
       when 16
+        @comments_other = value
+      when 17
+        @meter = normalize_meters(value)
+      when 18
         @metertype = adjust_blank_metertypes(value)
       end
     }

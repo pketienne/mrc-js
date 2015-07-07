@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.11/crossfilter.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/dknox.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="js/dknox.js"></script>
+  </head>
+  <body>
+    <div class="container" id="toplevel">
+      <div class="header">
+	<h1>Tim Moore's data; experimental interface</h1>
+      </div>
+      <div id="reset"></div>
+      <div class="col-md-3">
+	<div id="poeta">
+	  <h3>Poeta</h3>
+	</div>
+	<div id="fabulae">
+	  <h3>Fabulae</h3>
+	</div>
+	<div id="genus_personae">
+	  <h3>Genera Personae</h3>
+	</div>
+	<div id="personae">
+	  <h3>Personae</h3>
+	</div>
+      </div>
+      <div class="col-md-2">
+	<div id="metertype">
+	  <h3>Meter Type</h3>
+	</div>
+	<div id="meter">
+	  <h3>Meter</h3>
+	</div>
+      </div>
+      <div class="col-md-7">
+	<div id="versus">
+	  <h3>Versus</h3>
+	  <div class="counts">
+	    <span class="rowcount"></span>
+	    <span class="linecount"></span>
+	  </div>
+	  <div class="pagin">
+	    <span class="prev link">&lt; previous</span>
+	    <span class="pagecounter"></span>
+	    <span class="next link">next &gt;</span>
+	  </div>
+	  <div class="metadata">
+	    <span class="fabula">Fabula</span>
+	    <span class="line_number_first">start</span>
+	    <span class="line_number_last">end</span>
+	    <span class="numlines"># lines</span>
+	    <span class="meter">meter</span>
+	    <span class="meter_before">met. bef.</span>
+	    <span class="meter_after">met. aft.</span>
+	  </div>
+	</div>
+      </div>
+      <div id="oneverse">
+	<span class="fabula">Fabula</span>
+      </div>
+    </div>
+  </body>
+</html>

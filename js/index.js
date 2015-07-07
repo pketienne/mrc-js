@@ -1,8 +1,8 @@
-d3.tsv('tsv/index-updated.tsv', function(data) {
+d3.tsv('tsv/index.tsv', function(data) {
     var facts = crossfilter(data);
 
-    var DIMENSION_LABELS = ['poeta', 'fabulae', 'nomen', 'genera', 'meter',
-			    'meter_type', 'meter_before', 'meter_after', 'fpid'];
+    var DIMENSION_LABELS = ['poeta', 'fabulae',	'nomen', 'genera', 'meter',
+			    'meter_type', 'meter_before', 'meter_after','fpid'];
     var LINE_COUNT = "numlines";
     var FPID = 'fpid';
 

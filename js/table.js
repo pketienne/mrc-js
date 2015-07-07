@@ -1,5 +1,5 @@
-d3.tsv("tsv/index-updated.tsv", function(data) {
-    var columns = ["poeta","fabulae","fpid","line_number_first_ordinate","line_number_first_label","line_number_last_ordinate","line_number_last_label","numlines","nomen","genera","line_first", "line_last","meter_before","meter_after","closure","comments_on_length","comments_other","meter","meter_type"];
+d3.tsv("tsv/index.tsv", function(data) {
+    var columns = ["poeta","fabulae","fpid","line_number_first_ordinate","line_number_first_label","line_number_last_ordinate","line_number_last_label","numlines","char_numlines","nomen","genera","line_first", "line_last","meter_before","meter_after","closure","comments_on_length","comments_other","meter","meter_type"];
 
     var table = d3.select("#container").append("table"),
 	thead = table.append("thead"),
@@ -29,4 +29,5 @@ d3.tsv("tsv/index-updated.tsv", function(data) {
         .enter()
         .append("td")
         .text(function(d) { return d.value; });
+    
 });

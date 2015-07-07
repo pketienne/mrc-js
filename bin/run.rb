@@ -1,4 +1,4 @@
-o#! /home/petienne/.rvm/rubies/ruby-2.2.1/bin/ruby -w
+#! /home/petienne/.rvm/rubies/ruby-2.2.1/bin/ruby -w
 require 'pry'
 require 'pry-byebug'
 load 'tsv.rb'
@@ -6,10 +6,10 @@ load 'record.rb'
 load 'legend.rb'
 
 def execute
-  tsv = TSV.new("../tsv/index.tsv")
+  tsv = TSV.new("../tsv/dknox.tsv")
   legend = Legend.new(tsv)
   tsv.populate_ordinates!(legend)
-  File.open("../tsv/index-updated.tsv", "w") do |f|
+  File.open("../tsv/index.tsv", "w") do |f|
     file = ""
     tsv.column_labels.each do |l|
       file += "#{l}\t"
@@ -25,10 +25,12 @@ def execute
         r.line_number_last_ordinate.to_s + "\t" +
         r.line_number_last_label.to_s + "\t" +
         r.numlines + "\t" +
+        r.char_numlines + "\t" +
         r.nomen + "\t" +
         r.genus_personae + "\t" +
         r.line_first + "\t" +
         r.line_last + "\t" +
+        r.z_old_text + "\t" +
         r.meter_before + "\t" +
         r.meter_after + "\t" +
         r.closure + "\t" +

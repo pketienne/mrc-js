@@ -24,8 +24,8 @@ class TSV
     @column_labels[4] = "line_number_first_label"
     @column_labels.insert(5, "line_number_last_ordinate")
     @column_labels.insert(6, "line_number_last_label")
-    @column_labels[9] = "genera"
-    @column_labels[18] = "meter_type"
+    @column_labels[10] = "genera"
+    @column_labels[20] = "meter_type"
   end
     
   def line_number_first_labels
