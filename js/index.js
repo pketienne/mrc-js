@@ -40,7 +40,7 @@ d3.tsv('tsv/index-updated.tsv', function(data) {
 	for(var l = group.length, i = 0; i < l; ++i) {
 	    var facet_name = group[i].key;
 	    var facet_value = group[i].value.line_count;
-	    this.facets.push({ name: facet_name, value: facet_value });
+	    this.facets.push({ Name: facet_name, Lines: facet_value });
 	}
 	
 	this.columns = Object.keys(this.facets[0]);
@@ -48,9 +48,21 @@ d3.tsv('tsv/index-updated.tsv', function(data) {
     Dimension.prototype.draw = function() {
 	var data = this.facets;
 	var columns = this.columns;
-	
-	var table = d3.select(this.name).select("table.facets");
-	var rows = table
+
+	var table = d3.select(this.name).append("table");
+	var thead = table
+	    .append("thead")
+	    .append("tr")
+	    .classed("label", true)
+	    .selectAll("th")
+	    .data(columns)
+	    .enter()
+	    .append("th")
+	    .attr("class", function(d) { return d; })
+	    .html(function(d) { return d; });
+	var tbody = table
+	    .append("tbody");
+	var rows = tbody
 	    .selectAll("tr")
 	    .data(data)
 	    .enter()
@@ -68,7 +80,7 @@ d3.tsv('tsv/index-updated.tsv', function(data) {
 	    .attr("class", function(d) { return d.name; })
 	    .html(function(d) { return d.value; });
 	
-	return table;
+	return tbody;
     }
     
     var Reference = function(label) {
@@ -80,10 +92,25 @@ d3.tsv('tsv/index-updated.tsv', function(data) {
     Reference.prototype.populate = function() {
 	var group = this.selection;
 
-	this.facets = group;
+	for(var l = group.length, i = 0; i < l; ++i) {
+	    this.facets.push({
+		Poeta: group[i].poeta,
+		Fabulae: group[i].fabulae,
+		Nomen: group[i].nomen,
+		Genera: group[i].genera,
+		Start: group[i].line_number_first_label,
+		End: group[i].line_number_last_label,
+		Lines: group[i].numlines,
+		Meter: group[i].meter,
+		Meter_Type: group[i].meter_type,
+		Meter_Before: group[i].meter_before,
+		Meter_After: group[i].meter_after
+	    });
+	}
+
 	this.columns = Object.keys(this.facets[0]);
     }
-    
+
     var Population = function() {
 	this.dimensions = {};
 

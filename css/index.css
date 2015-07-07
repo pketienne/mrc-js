@@ -1,4 +1,8 @@
+* {
+    box-sizing: border-box;
+}
 body {
+    min-width: 1350px;
 }
 body div#header {
     height: 100px;
@@ -6,53 +10,59 @@ body div#header {
     border-bottom: 2px solid #000;
 }
 body div#main {
-    width: 100%;
 }
 body div#main div#dimensions {
-    width: 25%;
+    width: 250px;
     float: left;
     background-color: #444;
 }
-body div#main div#dimensions div.dimension {
-}
+body div#main div#dimensions div.dimension {}
 body div#main div#dimensions div.dimension h2 {
     background-color: #393;
 }
-body div#main div#dimensions div.dimension table.facets {
+body div#main div#dimensions div.dimension table {
     width: 100%;
 }
-body div#main div#dimensions div.dimension table.facets tr.facet td.name {
+body div#main div#dimensions div.dimension table thead tr {
+    background-color: #333;
+}
+body div#main div#dimensions div.dimension table .Name {
     text-align: left;
-    width: 95%;
     color: #ff3;
 }
-body div#main div#dimensions div.dimension table.facets tr.facet td.value {
+body div#main div#dimensions div.dimension table .Lines {
     text-align: right;
-    width: 5%;
     color: #f3f;
 }
 body div#main div#references {
-    margin-left: 25%;
+    margin-left: 250px;
     background-color: #999;
 }
 body div#main div#references div.reference {
+
 }
 body div#main div#references div.reference h2 {
     background-color: #939;
 }
-body div#main div#references div.reference table.fragments {
+body div#main div#references div.reference table {
     width: 100%;
 }
-body div#main div#dimensions div.dimension table.fragments tr.fragment td.PROPERTY,
-body div#main div#dimensions div.dimension table.fragments tr.fragment td.PROPERTY,
-body div#main div#dimensions div.dimension table.fragments tr.fragment td.PROPERTY,
-body div#main div#dimensions div.dimension table.fragments tr.fragment td.PROPERTY,
-body div#main div#dimensions div.dimension table.fragments tr.fragment td.PROPERTY,
-body div#main div#dimensions div.dimension table.fragments tr.fragment td.PROPERTY,
-body div#main div#dimensions div.dimension table.fragments tr.fragment td.PROPERTY,
-body div#main div#dimensions div.dimension table.fragments tr.fragment td.PROPERTY {
-    color: #f33;
+
+body div#main div#references div.reference table tr .Poeta,
+body div#main div#references div.reference table tr .Fabulae,
+body div#main div#references div.reference table tr .Nomen,
+body div#main div#references div.reference table tr .Genera,
+body div#main div#references div.reference table tr .Start,
+body div#main div#references div.reference table tr .End,
+body div#main div#references div.reference table tr .Lines,
+body div#main div#references div.reference table tr .Meter,
+body div#main div#references div.reference table tr .Meter_Type,
+body div#main div#references div.reference table tr .Meter_Before,
+body div#main div#references div.reference table tr .Meter_After {
+    text-align: left;
+    color: #252;
 }
+
 body div#footer {
     height: 100px;
     background-color: #711;
