@@ -7,9 +7,7 @@ var FPID = 'fpid';
 
 d3.tsv('tsv/index.tsv', function(data) {
     var Crossfilter = crossfilter(data);
-    var reference_dimension = Crossfilter
-	.dimension(function(f) { return f['meter_after']; });
-    
+
     var Population = function(crossfilter) {
 	this.components = {};
 	this.populate();
@@ -32,7 +30,8 @@ d3.tsv('tsv/index.tsv', function(data) {
     }
     
     
-    // static class. never instantiated, no constructor.
+    // never instantiated, no constructor.
+    /*
     var Reduction = {
 	add: function(p, v) {
 	    if(p.fpids.includes(v[FPID])) {
@@ -48,19 +47,23 @@ d3.tsv('tsv/index.tsv', function(data) {
 	    return { fpids: [], line_count: 0 };
 	}
     }
-
-
+    */
+    
+    
     var Model = function(label) {
 	this.label = label;
 	this.dimension;
 	this.selection;
 	this.data;
 	
-	this.set_dimension(label /* d3 bug */);
-	this.set_selection();
-	this.set_data();
+	this.set_dimension(label);
+	// this.set_selection();
+	// this.set_data();
+	
     }
     Model.prototype.set_dimension = function(label) {
+	this.dimension = Crossfilter.dimension(function(f) { return f[label]; });
+	/*
 	switch(this.label) {
 	case "poeta":
 	case 'fabulae':
@@ -69,16 +72,18 @@ d3.tsv('tsv/index.tsv', function(data) {
 	case 'meter':
 	case 'meter_type':
 	case 'meter_before':
-	    this.dimension = Crossfilter.dimension(function(f) { return f[label]; });
-	    break;
 	case 'meter_after':
+	    this.dimension = Crossfilter.dimension(function(f) { return f[this.label]; });
+	    break;
 	case 'raw':
 	case 'refined':
 	case 'popup':
-	    this.dimension = reference_dimension;
+	    this.dimension = population.components['poeta'].model.dimension;
 	    break;
 	}
+	*/
     }
+    /*
     Model.prototype.set_selection = function() {
 	switch(this.label) {
 	case 'poeta':
@@ -94,34 +99,19 @@ d3.tsv('tsv/index.tsv', function(data) {
 	    break;
 	case 'nomen':
 	    this.selection = this.dimension.group()
-		.reduceSum(function(d) { return d[CHARACTER_LINE_COUNT]; })
+		.reduceSum(CHARACTER_LINE_COUNT)
 		.all();
-	    break;
-	case 'raw':
-	case 'refined':
-	case 'popup':
-	    this.selection = this.dimension.top(Infinity);
 	    break;
 	}
     }
     Model.prototype.set_data = function() {
-	switch(this.label) {
-	case 'poeta':
-	case 'fabulae':
-	case 'nomen':
-	case 'genera':
-	case 'meter':
-	case 'meter_type':
-	case 'meter_before':
-	case 'meter_after':
-	case 'raw':
-	case 'refined':
-	case 'popup':
-	}
+	console.log(this.label);
+	console.log(this.dimension);
     }
 
-    var View = function(label) {
-	this.label = label;
+
+    var View = function(label_p) {
+	this.label = label_p;
 	this.status;
 	this.location;
     }
@@ -138,9 +128,35 @@ d3.tsv('tsv/index.tsv', function(data) {
     Controller.prototype.add = function(filter) {}
     Controller.prototype.remove = function(filter) {}
     Controller.prototype.reset = function() {}
-
+    */
     
     var population = new Population();
     
 });
-
+    Model.prototype.set_dimension = function() {
+	var label = this.label
+	if(this.label == ('poeta' || 'fabulae' || 'nomen' || 'genera' || 'meter')) {
+	    this.dimension = Crossfilter.dimension(function(f) { return f[label]; });
+	} else if(this.label == ('raw' || 'refined' || 'popup')) {
+	    // this.dimension = population.components['poeta'].model.dimension;
+	}
+	/*
+	switch(this.label) {
+	case "poeta":
+	case 'fabulae':
+	case 'nomen':
+	case 'genera':
+	case 'meter':
+	case 'meter_type':
+	case 'meter_before':
+	case 'meter_after':
+	    this.dimension = Crossfilter.dimension(function(f) { return f[this.label]; });
+	    break;
+	case 'raw':
+	case 'refined':
+	case 'popup':
+	    this.dimension = population.components['poeta'].model.dimension;
+	    break;
+	}
+	*/
+    }

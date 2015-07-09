@@ -46,6 +46,41 @@ d3.tsv('tsv/index.tsv', function(data) {
 	this.columns = Object.keys(this.facets[0]);
     }
     Dimension.prototype.draw = function() {
+	var data = this.facets;
+	var columns = this.columns;
+
+	var table = d3.select(this.name).append('table');
+	var thead = table
+	    .append('thead')
+	    .append('tr')
+	    .classed('label', true)
+	    .selectAll('th')
+	    .data(columns)
+	    .enter()
+	    .append('th')
+	    .attr('class', function(d) { return d; })
+	    .html(function(d) { return d; });
+	var tbody = table
+	    .append('tbody');
+	var rows = tbody
+	    .selectAll('tr')
+	    .data(data)
+	    .enter()
+	    .append('tr')
+	    .classed('facet', true);
+	var cells = rows
+	    .selectAll('td')
+	    .data(function(row) {
+		return columns.map(function(column) {
+		    return {name: column, value: row[column]};
+		});
+	    })
+	    .enter()
+	    .append('td')
+	    .attr('class', function(d) { return d.name; })
+	    .html(function(d) { return d.value; });
+
+	return tbody;
     }
     
     var Reference = function(label) {
