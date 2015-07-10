@@ -30,26 +30,37 @@ d3.tsv('tsv/index.tsv', function(data) {
 
     var Component = function(label) {
 	this.label = label;
-	this.model = new Model(this.label);
-	this.view = new View(this.label, this.model.data, this.model.columns);
-	this.controller = new Controller(this.label, this.model, this.view);
+	this.model = new Model();
+	this.view = new View();
+	this.controller = new Controller();
+    }
+    Component.prototype.populate = function() {
+	this.model.populate(this.label);
+
+    }
+    Compoment.prototype.something = function() {
+	/*
+	.on("click", function(facet, index) {
+	    this.controller.toggle(facet);
+	});
+	*/
     }
 
-    var Model = function(label) {
-	this.label = label;
+    var Model = function() {
+	this.label;
 	this.dimension;
 	this.selection;
 	this.transmutation;
 	this.data;
 	this.columns;
-
+    }
+    Model.prototype.populate = function(label) {
 	this.set_dimension(label);
 	this.set_selection();
 	this.transmutation = new Transmutation(this.selection);
 	this.set_transmutation();
 	this.data = this.transmutation.data;
 	this.columns = this.transmutation.columns;
-
     }
     Model.prototype.set_dimension = function(label) {
 	switch(this.label) {
@@ -206,10 +217,8 @@ d3.tsv('tsv/index.tsv', function(data) {
 	}
     }
 
-    var View = function(label, data, columns) {
-	this.label = label;
-	this.data = data;
-	this.columns = columns;
+    var View = function() {
+	this.label;
 	this.status = 'on';
 	this.location = "#" + this.label;
     }
@@ -258,10 +267,7 @@ d3.tsv('tsv/index.tsv', function(data) {
 	    .enter()
 	    .append('tr')
 	    .classed('facet', true)
-	    .on("click", function(d, i) {
-		console.log(d);
-		console.log(i);
-	    });
+	// ".on('click', function() {})" goes here
 	var cells = rows
 	    .selectAll('td')
 	    .data(function(row) {
@@ -277,11 +283,12 @@ d3.tsv('tsv/index.tsv', function(data) {
     View.prototype.structure_two = function() {}
     View.prototype.structure_three = function() {}
 
-    var Controller = function(label) {
-	this.label = label;
+    var Controller = function() {
+	this.label;
 	this.filters = [];
     }
-    Controller.prototype.toggle = function() {}
+    Controller.prototype.set_handlers = function() {}
+    Controller.prototype.toggle = function(facet) {}
     Controller.prototype.add = function(filter) {}
     Controller.prototype.remove = function(filter) {}
     Controller.prototype.reset = function() {}
