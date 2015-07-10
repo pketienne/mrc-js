@@ -32,7 +32,7 @@ d3.tsv('tsv/index.tsv', function(data) {
 	this.label = label;
 	this.model = new Model(this.label);
 	this.view = new View(this.label, this.model.data, this.model.columns);
-	this.controller = new Controller(this.label);
+	this.controller = new Controller(this.label, this.model, this.view);
     }
 
     var Model = function(label) {
@@ -239,10 +239,6 @@ d3.tsv('tsv/index.tsv', function(data) {
 	var columns = this.columns;
 	var location = this.location;
 
-	console.log(data);
-	console.log(columns);
-	console.log(location);
-
 	var table = d3.select(location).append('table');
 	var thead = table
 	    .append('thead')
@@ -261,7 +257,11 @@ d3.tsv('tsv/index.tsv', function(data) {
 	    .data(data)
 	    .enter()
 	    .append('tr')
-	    .classed('facet', true);
+	    .classed('facet', true)
+	    .on("click", function(d, i) {
+		console.log(d);
+		console.log(i);
+	    });
 	var cells = rows
 	    .selectAll('td')
 	    .data(function(row) {
@@ -281,6 +281,7 @@ d3.tsv('tsv/index.tsv', function(data) {
 	this.label = label;
 	this.filters = [];
     }
+    Controller.prototype.toggle = function() {}
     Controller.prototype.add = function(filter) {}
     Controller.prototype.remove = function(filter) {}
     Controller.prototype.reset = function() {}
