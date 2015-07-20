@@ -1,0 +1,50 @@
+.grid-container {
+    width: 100%;
+    max-width: 1200px;
+}    
+.row:before,
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+[class*='col-'] {
+    float: left;
+    min-height: 1px;
+}
+.col-1-1 { width: 100%; }
+.col-2-1 { width: 50%; }
+.col-2-2 { width: 100%; }
+.col-3-1 { width: 33.333%; }
+.col-3-2 { width: 66.666%; }
+.col-3-3 { width: 100%; }
+.col-4-1 { width: 25%; }
+.col-4-2 { width: 50%; }
+.col-4-3 { width: 75%; }
+.col-4-4 { width: 100%; }
+.col-5-1 { width: 20%; }
+.col-5-2 { width: 40%; }
+.col-5-3 { width: 60%; }
+.col-5-4 { width: 80%; }
+.col-5-5 { width: 100%; }
+.col-6-1 { width: 16.666%; }
+.col-6-2 { width: 33.333%; }
+.col-6-3 { width: 50%; }
+.col-6-4 { width: 66.666%; }
+.col-6-5 { width: 83.333%; }
+.col-6-6 { width: 100%; }
+.col-7-1 { width: 14.285%; }
+.col-7-2 { width: 28.571%; }
+.col-7-3 { width: 42.857%; }
+.col-7-4 { width: 57.142%; }
+.col-7-5 { width: 71.428%; }
+.col-7-6 { width: 85.714%; }
+.col-7-7 { width: 100%; }
+.col-8-1 { width: 12.5%; }
+.col-8-2 { width: 25%; }
+.col-8-3 { width: 37.5%; }
+.col-8-4 { width: 50%; }
+.col-8-5 { width: 62.5%; }
+.col-8-6 { width: 75%; }
+.col-8-7 { width: 87.5%; }
+.col-8-8 { width: 100%; }
