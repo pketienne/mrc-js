@@ -1,10 +1,27 @@
-var COMPONENT_LABELS = [
-    'poeta', 'fabulae', 'genera', 'nomen', 'meter', 'meter_type', 'meter_before',
-    'meter_after', 'verse', 'detail'
-];
-var LINE_COUNT = 'numlines';
-var CHARACTER_LINE_COUNT = 'char_numlines';
 var FPID = 'fpid';
+var POETA = 'poeta'
+var FABULAE = 'fabulae';
+var LINE_COUNT = 'numlines';
+var STARTING_LINE_NUMBER_LABEL = 'line_number_first_label';
+var STARTING_LINE_NUMBER_ORDINATE = 'line_number_first_ordinate';
+var STARTING_LINE = 'line_first';
+var ENDING_LINE_NUMBER_LABEL = 'line_number_last_label';
+var ENDING_LINE_NUMBER_ORDINATE = 'line_number_last_ordinate';
+var ENDING_LINE = 'line_last';
+var CLOSURE = 'closure';
+var COMMENTS_ON_LENGTH = 'comments_on_length';
+var COMMENTS_ON_OTHER = 'comments_other';
+var NOMEN = 'nomen';
+var NOMEN_LINE_COUNT = 'char_numlines';
+var GENERA = 'genera';
+var METER = 'meter';
+var METER_TYPE = 'meter_type';
+var METER_BEFORE = 'meter_before';
+var METER_AFTER = 'meter_after';
+var COMPONENT_LABELS = [
+    POETA, FABULAE, GENERA, NOMEN, METER, METER_TYPE, METER_BEFORE, METER_AFTER,
+    'verse'//, 'detail'
+];
 
 var crossfilter;
 var population;
@@ -17,16 +34,16 @@ var Population = function() {
 	label = COMPONENT_LABELS[ i ];
 
 	switch( label ) {
-	case 'poeta':
-	case 'fabulae':
-	case 'genera':
-	case 'meter':
-	case 'meter_type':
-	case 'meter_before':
-	case 'meter_after':
+	case POETA:
+	case FABULAE:
+	case GENERA:
+	case METER:
+	case METER_TYPE:
+	case METER_BEFORE:
+	case METER_AFTER:
 	    this.components[ label ] = new ComponentA( label );
 	    break;
-	case 'nomen':
+	case NOMEN:
 	    this.components[ label ] = new ComponentB( label );
 	    break;
 	case 'verse':
@@ -46,6 +63,14 @@ Population.prototype.setup = function() {
 	model = component.model;
 	view = component.view;
 	controller = component.controller;
+
+	if( model instanceof ModelC ) {
+	    model.reference = population.components[ POETA ].model.reference;
+	    model.group = model.reference
+		.groupAll()
+		.reduce( model.add, model.remove, model.init )
+		.value();
+	}
 
 	model.transmute();
 	
@@ -72,13 +97,11 @@ var Component = function( label ) {
 }
 Component.prototype.update = function() {
     if( !( this instanceof ComponentD ) ) {
-	console.log( this.label );
 	this.view.erase();
     }
     if( this instanceof ComponentA ||
 	this instanceof ComponentB ) {
 	this.controller.filter();
-	console.log( this.label );
     }
     this.model.transmute();
     /*
@@ -169,8 +192,8 @@ Model.prototype.zero_out = function() {
 var ModelA = function( label ) {
     Model.call( this, label );
 
-    var label = this.label
-
+    var label = this.label;
+    
     this.operable = crossfilter
 	.dimension( function( d ) { return d[ label ]; } );
     this.reference = crossfilter
@@ -216,7 +239,7 @@ var ModelB = function( label ) {
 	.dimension( function( d ) { return d[ label ]; } );
     this.group = this.reference
 	.group()
-	.reduceSum( function ( d ) { return d[ CHARACTER_LINE_COUNT ]; } )
+	.reduceSum( function ( d ) { return d[ NOMEN_LINE_COUNT ]; } )
 	.all();
     this.schema = { 'Name': 'key', 'Lines': 'value' }
 }
@@ -225,11 +248,6 @@ ModelB.prototype.constructor = ModelB;
 
 var ModelC = function( label ) {
     Model.call( this, label );
-
-    var label = this.label;
-    
-    this.reference = crossfilter
-	.dimension( function( d ) { return d[ label ]; } );
 }
 ModelC.prototype = Object.create( Model.prototype );
 ModelC.prototype.constructor = ModelC;
@@ -237,55 +255,101 @@ ModelC.prototype.constructor = ModelC;
 var ModelC1 = function( label ) {
     ModelC.call( this, label );
 
-    this.group = this.reference.group().top( Infinity );
+    var label = this.label
+
     this.schema = {
-	'Poeta': 'poeta', 'Fabulae': 'fabulae', 'Genera': 'genera',
-	'Nomen': 'nomen', 'Meter': 'meter', 'Meter Type': 'meter_type',
-	'Meter Before': 'meter_before', 'Meter After': 'meter_after',
-	'Start': 'line_number_first_label', 'End': 'line_number_last_label',
-	'Lines': 'numlines', 'Character Lines': 'char_numlines'	
+	'Poeta': POETA, 'Fabulae': FABULAE, 'Genera': GENERA,
+	'Nomen': NOMEN, 'Meter': METER, 'Meter Type': METER_TYPE,
+	'Meter Before': METER_BEFORE, 'Meter After': METER_AFTER,
+	'Start': STARTING_LINE_NUMBER_LABEL, 'End': ENDING_LINE_NUMBER_LABEL,
+	'Lines': LINE_COUNT, 'Character Lines': NOMEN_LINE_COUNT
     };
 }
 ModelC1.prototype = Object.create( ModelC.prototype );
 ModelC1.prototype.constructor = ModelC1;
 ModelC1.prototype.add = function( p, v ) {
-    if( !p.v[FPID] ) {
-	p.v[FPID] = [];
+    var found, sub;
+
+    found = population
+	.components[ label ]
+	.model
+	.find_array_index_containing_object_property_value(
+	    v[ FPID ], p, v
+	);
+    
+    if( found ) {
+	p[ found ].sub.push( {
+	    nomen: v[ NOMEN ],
+	    genera: v[ GENERA ],
+	    line_count: v[ NOMEN_LINE_COUNT ],
+	    meter: v[ METER ],
+	    meter_type: v[ METER_TYPE ],
+	    meter_before: v[ METER_BEFORE ],
+	    meter_after: v[ METER_AFTER ]
+	} );
+    } else {
+	sub = [];
+	sub.push( {
+	    nomen: v[ NOMEN ],
+	    genera: v[ GENERA ],
+	    line_count: v[ NOMEN_LINE_COUNT ],
+	    meter: v[ METER ],
+	    meter_type: v[ METER_TYPE ],
+	    meter_before: v[ METER_BEFORE ],
+	    meter_after: v[ METER_AFTER ]
+	} );
+	p.push( {
+	    fpid: v[ fpid ],
+	    fabulae: v[ FABULAE ],
+	    starting_line_number: v[ STARTING_LINE_NUMBER_LABEL ],
+	    ending_line_number: v[ ENDING_LINE_NUMBER_LABEL ],
+	    line_count: v[ NOMEN_LINE_COUNT ],
+	    starting_line: v[ STARTING_LINE ],
+	    ending_line: v[ ENDING_LINE ],
+	    sub: sub
+	} );
     }
-    p[FPID].push( {
-	poeta: 'poeta',
-	fabulae: 'fabulae',
-	genera: 'genera',
-	nomen: 'nomen',
-	meter: 'meter',
-	meter_type: 'meter_type',
-	meter_after: 'meter_after',
-	meter_before: 'meter_before',
-	start: 'line_number_first_label',
-	end: 'line_number_last_label',
-	numlines: 'numlines'
-    } );
+    return p;
+}
+ModelC1.prototype.find_array_index_containing_object_property_value = function(
+    property, array, object
+) {
+    var found, lost;
+    
+    if( array.length == 0 ) {
+	return undefined;
+    } else {
+	found = false;
+	do {
+	    lost = 0;
+	    if( p[ lost ].fpid == v[ property ] ) {
+		return lost;
+	    } else {
+		++lost;
+	    }	
+	} while ( !found );
+    }
+    return false;
 }
 ModelC1.prototype.remove = function( p, v ) {
-    // removal code
+    return p;
 }
 ModelC1.prototype.init = function( p, v ) {
-    return {};
+    return [];
 }
 
 var ModelC2 = function( label ) {
     ModelC.call( this, label );
 
-    this.group = this.reference.group().top( Infinity );
     this.schema = {
-	'FPID': 'fpid', 'Poeta': 'poeta', 'Fabulae': 'fabulae', 'Nomen': 'nomen',
-	'Genera': 'genera', 'Meter': 'meter', 'Meter Type': 'meter_type',
-	'Meter Before': 'meter_before',	'Meter After': 'meter_after',
-	'Start': 'line_number_first_label', 'End': 'line_number_last_label',
-	'Line Count': 'numlines', 'Line Count per Character': 'char_numlines',
-	'First Line': 'line_first', 'Last Line': 'line_last',
-	'Closure': 'closure', 'Comments on Length': 'comments_on_length',
-	'Other Comments': 'comments_other'	
+	'FPID': FPID, 'Poeta': POETA, 'Fabulae': FABULAE, 'Nomen': NOMEN,
+	'Genera': GENERA, 'Meter': METER, 'Meter Type': METER_TYPE,
+	'Meter Before': METER_BEFORE, 'Meter After': METER_AFTER,
+	'Start': STARTING_LINE_NUMBER_LABEL, 'End': ENDING_LINE_NUMBER_LABEL,
+	'Line Count': LINE_COUNT, 'Line Count per Character': NOMEN_LINE_COUNT,
+	'First Line': STARTING_LINE, 'Last Line': ENDING_LINE,
+	'Closure': CLOSURE, 'Comments on Length': COMMENTS_ON_LENGTH,
+	'Other Comments': COMMENTS_ON_OTHER
     };
 }
 ModelC2.prototype = Object.create( ModelC.prototype );
