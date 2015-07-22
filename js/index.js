@@ -20,13 +20,13 @@ var METER_BEFORE = 'meter_before';
 var METER_AFTER = 'meter_after';
 var COMPONENT_LABELS = [
     POETA, FABULAE, GENERA, NOMEN, METER, METER_TYPE, METER_BEFORE, METER_AFTER,
-    'verse'//, 'detail'
+    'verse', 'detail'
 ];
 
 var crossfilter;
 var population;
 
-var UTILITY = {
+var CROSSFILTER = {
     index_search: function( p, v ) {
 	var lost = p.length;
 
@@ -72,30 +72,15 @@ var Population = function() {
     }
 }
 Population.prototype.setup = function() {
-    var property, component, controller, data, view;
-
+    var property;
+    
     for( property in this.components ) {
-	component = this.components[ property ];
-	model = component.model;
-	view = component.view;
-	controller = component.controller;
-
-	if( model instanceof ModelC ) {
-	    model.setup();
-	}
-	model.transmute();
-	if( !( model instanceof ModelC ) ) {
-	    model.setup();
-	}
-	if( controller instanceof ControllerA ) {
-	    controller.setup();
-	}
-	if( !( component instanceof ComponentD ) ) {
-	    view.setup();
-	}
+	this.components[ property ].setup();
     }
 }
 Population.prototype.update = function() {
+    var property;
+
     for( property in this.components ) {
 	this.components[ property ].update();
     }
@@ -107,17 +92,28 @@ var Component = function( label ) {
     this.view;
     this.controller;
 }
-Component.prototype.update = function() {
-    if( !( this instanceof ComponentD ) ) {
-	this.view.erase();
+Component.prototype.setup = function() {
+    if( this.model instanceof ModelC ) {
+	this.model.setup();
     }
-    if( this instanceof ComponentA ||
-	this instanceof ComponentB ) {
-	this.controller.filter();
-    }
+
     this.model.transmute();
+
+    if( this.controller instanceof ControllerA ) {
+	this.controller.setup( this.model.data );
+    }
+}
+Component.prototype.update = function() {
+    this.view.erase();
+
+    if( this.controller instanceof ControllerA ) {
+	this.model.filter( this.controller.filters_active );
+    }
+
+    this.model.transmute();
+
     if( !( this instanceof ComponentD ) ) {
-	this.view.draw();
+	this.view.draw( this.controller, this.model.data );
     }
 }
 
@@ -169,12 +165,13 @@ var Model = function( label ) {
     this.schema;
     this.data;
 }
-Model.prototype.setup = function() {
-//    this.zero_out();
+Model.prototype.filter = function( filters ) {
+    this.filterable.filter(
+	function( d ) { return filters.indexOf( d ) > -1; }
+    );
 }
 Model.prototype.transmute = function() {
     this.data = [];
-
     var l, i, packet, group, property, value;
 
     for( l = this.group.length, i = 0; i < l; ++i ) {
@@ -190,15 +187,6 @@ Model.prototype.transmute = function() {
 	}
 	this.data.push( packet );
     }
-}
-Model.prototype.zero_out = function() {
-/*
-    var l, i;
-
-    for( l = this.data.length, i = 0; i < l; ++i ) {
-	this.data[ i ].Lines = 0;
-    }
-*/
 }
 
 var ModelA = function( label ) {
@@ -260,7 +248,6 @@ ModelB.prototype.constructor = ModelB;
 
 var ModelC = function( label ) {
     Model.call( this, label );
-
 }
 ModelC.prototype = Object.create( Model.prototype );
 ModelC.prototype.constructor = ModelC;
@@ -309,7 +296,7 @@ ModelC1.prototype.add = function( p, v ) {
 	meter_after: v[ METER_AFTER ]
     }
 
-    found = UTILITY.index_search( p, v );
+    found = CROSSFILTER.index_search( p, v );
 
     if( found ) {
 	p[ found ].sub.push( sub );
@@ -317,7 +304,7 @@ ModelC1.prototype.add = function( p, v ) {
 	sup.sub = [ sub ];
 	p.push( sup );
     }
-    
+
     return p;
 }
 ModelC1.prototype.remove = function( p, v ) {
@@ -328,7 +315,6 @@ ModelC1.prototype.init = function( p, v ) {
 }
 ModelC1.prototype.transmute = function() {
     this.data = [];
-
     var l, i, packet, group, property, value;
 
     for( l = this.group.length, i = 0; i < l; ++i ) {
@@ -361,10 +347,18 @@ var ModelC2 = function( label ) {
 }
 ModelC2.prototype = Object.create( ModelC.prototype );
 ModelC2.prototype.constructor = ModelC2;
+ModelC2.prototype.add = function( p, v ) {
+    return p;
+}
+ModelC2.prototype.remove = function( p, v ) {
+    return p;
+}
+ModelC2.prototype.init = function( p, v ) {
+    return [];
+}
 
 var View = function( label ) {
     this.label = label;
-    this.data;
 }
 View.prototype.erase = function() {
     d3.select( '#' + this.label ).remove();
@@ -375,11 +369,10 @@ var ViewA = function( label ) {
 }
 ViewA.prototype = Object.create( View.prototype );
 ViewA.prototype.constructor = ViewA;
-ViewA.prototype.setup = function() {
+ViewA.prototype.draw = function( controller, data ) {
     var columns, label, table, thead, tbody, rows, cells;
-
-    this.data = population.components[ this.label ].model.data;
-    columns = Object.keys( this.data[0] );
+    
+    columns = Object.keys( data[0] );
     label = this.label;
 
     dimensions = d3.select( '#dimensions' );
@@ -402,64 +395,12 @@ ViewA.prototype.setup = function() {
     tbody = table.append( 'tbody' );
     rows = tbody
 	.selectAll( 'tr' )
-	.data( this.data )
+	.data( data )
 	.enter()
 	.append( 'tr' )
 	.classed( 'facet', true )
 	.on('click', function( facet, index ) {
-	    population.components[ label ].controller.toggle( facet.Name );
-	} );
-    cells = rows
-	.selectAll( 'td' )
-	.data( function( row ) {
-	    return columns.map( function( column ) {
-		return { name: column, value: row[ column ] };
-	    } );
-	} )
-	.enter()
-	.append( 'td' )
-	.attr( 'class', function( d ) { return d.name; } )
-	.html( function( d ) { return d.value; } );
-}
-ViewA.prototype.draw = function() {
-    var columns, label, table, thead, tbody, rows, cells;
-
-    this.data = population.components[ this.label ].model.data;
-    columns = Object.keys( this.data[0] );
-    label = this.label;
-
-    dimensions = d3.select( '#dimensions' );
-    dimension = dimensions.append( 'div' )
-	.classed( 'dimension', true )
-	.attr( 'id', this.label);
-    title = dimension.append( 'h3' )
-	.html( this.label );
-    table = dimension.append( 'table' );
-    thead = table
-	.append( 'thead' )
-	.append( 'tr' )
-	.classed( label, true )
-	.selectAll( 'th' )
-	.data( columns )
-	.enter()
-	.append( 'th' )
-	.attr( 'class', function( d ) { return d; } )
-	.html( function( d ) { return d; } );
-    tbody = table.append( 'tbody' );
-    rows = tbody
-	.selectAll( 'tr' )
-	.data( this.data )
-	.enter()
-	.append( 'tr' )
-	.classed( 'facet', true )
-	.on('click', function() {
-	    population.components[ POETA ].model.filterable.filter( 'Terentius' );
-	    population.components[ FABULAE ].model.filterable.filter( 'Adelphoe' );
-	    population.components[ GENERA ].model.filterable.filter( 'adulama' );
-	    population.components[ NOMEN ].model.filterable.filter( 'Aeschinus' );
-	    population.components[ METER ].model.filterable.filter( 'wil' );
-	    population.components[ METER_TYPE ].model.filterable.filter( 'aeolic' );
-	    population.update();
+	    controller.toggle( facet.Name );
 	} );
     cells = rows
 	.selectAll( 'td' )
@@ -479,14 +420,12 @@ var ViewB = function( label ) {
 }
 ViewB.prototype = Object.create( View.prototype );
 ViewB.prototype.constructor = ViewB;
-ViewB.prototype.setup = function() {
+ViewB.prototype.draw = function( data ) {
     var verses, verse, title,
 	section1, fabula, starts, ends, total, poeta,
 	section2, first, last,
 	section3, nomen, genera, ch_lines, meter, meter_t, meter_b, meter_a;
     
-    this.data = population.components[ this.label ].model.data;
-
     verses = d3.select( '#verses' );
     verse = verses.append( 'div' )
 	.classed( 'verse', true )
@@ -570,25 +509,13 @@ ViewB.prototype.setup = function() {
     meter_a            .append( 'div' ).classed( 'col-2-1 label', true )
 	.html( 'Example' );
 }
-ViewB.prototype.draw = function() {
-    var example, variables;
-
-    verses = d3.select( '#verses' );
-    verse = verses.append( 'div' )
-	.classed( 'verse', true )
-	.html( 'testing' );
-    
-}
 
 var ViewC = function( label ) {
     View.call( this, label );
 }
 ViewC.prototype = Object.create( View.prototype );
 ViewC.prototype.constructor = ViewC;
-ViewC.prototype.setup = function() {
-    this.data = population.components[ this.label ].model.data;
-}    
-ViewC.prototype.draw = function() {
+ViewC.prototype.draw = function( data ) {
     // View for pop-up details
 }
 
@@ -599,27 +526,22 @@ var Controller = function( label ) {
 var ControllerA = function( label ) {
     Controller.call( this, label );
 
-    this.data;
     this.filters_all;
     this.filters_active;
 }
 ControllerA.prototype = Object.create( Controller.prototype );
 ControllerA.prototype.constructor = ControllerA;
-ControllerA.prototype.setup = function() {
-    this.data = population.components[ this.label ].model.data;
-    this.filters_all = [];
-    this.filters_active = [];
-/*
-    var l, data, i;
+ControllerA.prototype.setup = function( data ) {
+    var filters, l, i;
 
-    this.data = population.components[ this.label ].model.data;
-    this.filters_all = [];
-    this.filters_active = [];
-    
-    for( l = this.data.length, i = 0; i < l; ++i ) {
-	this.filters_all.push( this.data[ i ].Name );
+    filters = [];
+
+    for( l = data.length, i = 0; i < l; ++i ) {
+	filters.push( data[ i ].Name );
     }
-*/
+
+    this.filters_all = filters;
+    this.filters_active = filters;
 }
 ControllerA.prototype.toggle = function( facet ) {
     if( this.filters_active.includes( facet ) ) {
@@ -627,6 +549,7 @@ ControllerA.prototype.toggle = function( facet ) {
     } else {
 	this.add( facet );
     }
+
     population.update();
 }
 ControllerA.prototype.add = function( facet ) {
@@ -636,16 +559,6 @@ ControllerA.prototype.remove = function( facet ) {
     var index = this.filters_active.indexOf( facet );
     
     this.filters_active.splice( index, 1 );
-}
-ControllerA.prototype.filter = function() {
-    var filters_active = this.filters_active;
-
-    console.log( this.filters_active );
-    /*
-    population.components[ this.label ].model.filterable.filter(
-	function( d ) { return filters_active.indexOf( d ) > -1; }
-    );
-    */
 }
 
 var ControllerB = function( label ) {
@@ -665,4 +578,5 @@ d3.tsv( 'tsv/index.tsv', function( data ) {
 
     population = new Population();
     population.setup();
+    population.update();
 });
