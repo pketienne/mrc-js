@@ -65,22 +65,19 @@ Population.prototype.setup = function() {
 	controller = component.controller;
 
 	if( model instanceof ModelC ) {
-	    model.reference = population.components[ POETA ].model.reference;
-	    model.group = model.reference
-		.groupAll()
-		.reduce( model.add, model.remove, model.init )
-		.value();
+	    model.setup();
 	}
-
 	model.transmute();
-	
+	if( !( model instanceof ModelC ) ) {
+	    model.setup();
+	}
 	if( controller instanceof ControllerA ) {
 	    controller.setup();
-	    model.setup();
 	}
 	if( !( component instanceof ComponentD ) ) {
 	    view.setup();
 	}
+	console.log( model.group );
     }
 }
 Population.prototype.update = function() {
@@ -248,14 +245,20 @@ ModelB.prototype.constructor = ModelB;
 
 var ModelC = function( label ) {
     Model.call( this, label );
+
 }
 ModelC.prototype = Object.create( Model.prototype );
 ModelC.prototype.constructor = ModelC;
+ModelC.prototype.setup = function() {
+    this.reference = population.components[ POETA ].model.reference;
+    this.group = this.reference
+	.groupAll()
+	.reduce( this.add, this.remove, this.init )
+	.value();
+}
 
 var ModelC1 = function( label ) {
     ModelC.call( this, label );
-
-    var label = this.label
 
     this.schema = {
 	'Poeta': POETA, 'Fabulae': FABULAE, 'Genera': GENERA,
@@ -263,73 +266,69 @@ var ModelC1 = function( label ) {
 	'Meter Before': METER_BEFORE, 'Meter After': METER_AFTER,
 	'Start': STARTING_LINE_NUMBER_LABEL, 'End': ENDING_LINE_NUMBER_LABEL,
 	'Lines': LINE_COUNT, 'Character Lines': NOMEN_LINE_COUNT
-    };
+    }
 }
 ModelC1.prototype = Object.create( ModelC.prototype );
 ModelC1.prototype.constructor = ModelC1;
 ModelC1.prototype.add = function( p, v ) {
-    var found, sub;
+    var sup, sub, blah;
 
-    found = population
-	.components[ label ]
-	.model
-	.find_array_index_containing_object_property_value(
-	    v[ FPID ], p, v
-	);
-    
-    if( found ) {
-	p[ found ].sub.push( {
-	    nomen: v[ NOMEN ],
-	    genera: v[ GENERA ],
-	    line_count: v[ NOMEN_LINE_COUNT ],
-	    meter: v[ METER ],
-	    meter_type: v[ METER_TYPE ],
-	    meter_before: v[ METER_BEFORE ],
-	    meter_after: v[ METER_AFTER ]
-	} );
-    } else {
-	sub = [];
-	sub.push( {
-	    nomen: v[ NOMEN ],
-	    genera: v[ GENERA ],
-	    line_count: v[ NOMEN_LINE_COUNT ],
-	    meter: v[ METER ],
-	    meter_type: v[ METER_TYPE ],
-	    meter_before: v[ METER_BEFORE ],
-	    meter_after: v[ METER_AFTER ]
-	} );
-	p.push( {
-	    fpid: v[ fpid ],
-	    fabulae: v[ FABULAE ],
-	    starting_line_number: v[ STARTING_LINE_NUMBER_LABEL ],
-	    ending_line_number: v[ ENDING_LINE_NUMBER_LABEL ],
-	    line_count: v[ NOMEN_LINE_COUNT ],
-	    starting_line: v[ STARTING_LINE ],
-	    ending_line: v[ ENDING_LINE ],
-	    sub: sub
-	} );
+    sup = {
+	fpid: v[ FPID ],
+	fabulae: v[ FABULAE ],
+	starting_line_number: v[ STARTING_LINE_NUMBER_LABEL ],
+	ending_line_number: v[ ENDING_LINE_NUMBER_LABEL ],
+	line_count: v[ NOMEN_LINE_COUNT ],
+	starting_line: v[ STARTING_LINE ],
+	ending_line: v[ ENDING_LINE ]
     }
-    return p;
-}
-ModelC1.prototype.find_array_index_containing_object_property_value = function(
-    property, array, object
-) {
-    var found, lost;
-    
-    if( array.length == 0 ) {
-	return undefined;
-    } else {
+
+    sub = {
+	nomen: v[ NOMEN ],
+	genera: v[ GENERA ],
+	line_count: v[ NOMEN_LINE_COUNT ],
+	meter: v[ METER ],
+	meter_type: v[ METER_TYPE ],
+	meter_before: v[ METER_BEFORE ],
+	meter_after: v[ METER_AFTER ]
+    }
+
+    blah = function( found ) {
+	if( found ) {
+	    p[ found ].sub.push( sub );
+	} else {
+	    sup.sub = [ sub ];
+	    p.push( sup );
+	}
+	console.log( found );
+    }
+
+    foo = function() {
+	var found, index, limit;
+
 	found = false;
+	index = 0;
+	limit = p.length;
+
 	do {
-	    lost = 0;
-	    if( p[ lost ].fpid == v[ property ] ) {
-		return lost;
+	    if( p[ index ][ FPID ] == v[ FPID ] ) {
+		found = true;
 	    } else {
-		++lost;
-	    }	
-	} while ( !found );
+		++index;
+	    }
+	} while ( !found && ( index < limit ) )
+
+	return found;
     }
-    return false;
+    
+    if( p.length == 0 ) {
+	sup.sub = [ sub ];
+	p.push( sup );
+    } else {
+	blah( foo() );
+    }
+
+    return p;
 }
 ModelC1.prototype.remove = function( p, v ) {
     return p;
@@ -350,7 +349,7 @@ var ModelC2 = function( label ) {
 	'First Line': STARTING_LINE, 'Last Line': ENDING_LINE,
 	'Closure': CLOSURE, 'Comments on Length': COMMENTS_ON_LENGTH,
 	'Other Comments': COMMENTS_ON_OTHER
-    };
+    }
 }
 ModelC2.prototype = Object.create( ModelC.prototype );
 ModelC2.prototype.constructor = ModelC2;
@@ -552,7 +551,6 @@ ControllerA.prototype.setup = function() {
     for( l = this.data.length, i = 0; i < l; ++i ) {
 	this.filters_all.push( this.data[ i ].Name );
     }
-
 }
 ControllerA.prototype.toggle = function( facet ) {
     if( this.filters_active.includes( facet ) ) {
