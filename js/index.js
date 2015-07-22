@@ -26,6 +26,22 @@ var COMPONENT_LABELS = [
 var crossfilter;
 var population;
 
+var UTILITY = {
+    index_search: function( p, v ) {
+	var lost = p.length;
+
+	if( lost == false ) { return false; }
+	
+	do {
+	    if( p[ lost - 1 ][ FPID ] == v[ FPID ] ) {
+		return ( lost - 1 );
+	    } else {
+		--lost;
+	    }
+	} while ( lost )
+    }
+}
+
 var Population = function() {
     this.components = {};
     var l, i, label;
@@ -77,7 +93,6 @@ Population.prototype.setup = function() {
 	if( !( component instanceof ComponentD ) ) {
 	    view.setup();
 	}
-	console.log( model.group );
     }
 }
 Population.prototype.update = function() {
@@ -101,11 +116,9 @@ Component.prototype.update = function() {
 	this.controller.filter();
     }
     this.model.transmute();
-    /*
     if( !( this instanceof ComponentD ) ) {
 	this.view.draw();
     }
-    */
 }
 
 var ComponentA = function( label ) {
@@ -150,14 +163,14 @@ ComponentD.prototype.constructor = ComponentD;
 
 var Model = function( label ) {
     this.label = label;
-    this.operable;
+    this.filterable;
     this.reference;
     this.group;
     this.schema;
     this.data;
 }
 Model.prototype.setup = function() {
-    this.zero_out();
+//    this.zero_out();
 }
 Model.prototype.transmute = function() {
     this.data = [];
@@ -179,11 +192,13 @@ Model.prototype.transmute = function() {
     }
 }
 Model.prototype.zero_out = function() {
+/*
     var l, i;
 
     for( l = this.data.length, i = 0; i < l; ++i ) {
 	this.data[ i ].Lines = 0;
     }
+*/
 }
 
 var ModelA = function( label ) {
@@ -191,7 +206,7 @@ var ModelA = function( label ) {
 
     var label = this.label;
     
-    this.operable = crossfilter
+    this.filterable = crossfilter
 	.dimension( function( d ) { return d[ label ]; } );
     this.reference = crossfilter
 	.dimension( function( d ) { return d[ label ]; } );
@@ -230,14 +245,14 @@ var ModelB = function( label ) {
 
     var label = this.label
     
-    this.operable = crossfilter
+    this.filterable = crossfilter
 	.dimension( function( d ) { return d[ label ]; } );
     this.reference = crossfilter
 	.dimension( function( d ) { return d[ label ]; } );
     this.group = this.reference
 	.group()
-	.reduceSum( function ( d ) { return d[ NOMEN_LINE_COUNT ]; } )
-	.all();
+	.reduceSum( function( d ) { return d[ NOMEN_LINE_COUNT ]; } )
+ 	.all();
     this.schema = { 'Name': 'key', 'Lines': 'value' }
 }
 ModelB.prototype = Object.create( Model.prototype );
@@ -271,16 +286,17 @@ var ModelC1 = function( label ) {
 ModelC1.prototype = Object.create( ModelC.prototype );
 ModelC1.prototype.constructor = ModelC1;
 ModelC1.prototype.add = function( p, v ) {
-    var sup, sub, blah;
+    var sup, sub, found;
 
     sup = {
-	fpid: v[ FPID ],
 	fabulae: v[ FABULAE ],
 	starting_line_number: v[ STARTING_LINE_NUMBER_LABEL ],
 	ending_line_number: v[ ENDING_LINE_NUMBER_LABEL ],
 	line_count: v[ NOMEN_LINE_COUNT ],
 	starting_line: v[ STARTING_LINE ],
-	ending_line: v[ ENDING_LINE ]
+	ending_line: v[ ENDING_LINE ],
+	poeta: v[ POETA ],
+	fpid: v[ FPID ]
     }
 
     sub = {
@@ -293,41 +309,15 @@ ModelC1.prototype.add = function( p, v ) {
 	meter_after: v[ METER_AFTER ]
     }
 
-    blah = function( found ) {
-	if( found ) {
-	    p[ found ].sub.push( sub );
-	} else {
-	    sup.sub = [ sub ];
-	    p.push( sup );
-	}
-	console.log( found );
-    }
+    found = UTILITY.index_search( p, v );
 
-    foo = function() {
-	var found, index, limit;
-
-	found = false;
-	index = 0;
-	limit = p.length;
-
-	do {
-	    if( p[ index ][ FPID ] == v[ FPID ] ) {
-		found = true;
-	    } else {
-		++index;
-	    }
-	} while ( !found && ( index < limit ) )
-
-	return found;
-    }
-    
-    if( p.length == 0 ) {
+    if( found ) {
+	p[ found ].sub.push( sub );
+    } else {
 	sup.sub = [ sub ];
 	p.push( sup );
-    } else {
-	blah( foo() );
     }
-
+    
     return p;
 }
 ModelC1.prototype.remove = function( p, v ) {
@@ -336,7 +326,25 @@ ModelC1.prototype.remove = function( p, v ) {
 ModelC1.prototype.init = function( p, v ) {
     return [];
 }
+ModelC1.prototype.transmute = function() {
+    this.data = [];
 
+    var l, i, packet, group, property, value;
+
+    for( l = this.group.length, i = 0; i < l; ++i ) {
+	packet = {};
+	group = this.group[ i ];
+	for( property in this.schema ) {
+	    value = this.schema[ property ]
+	    if( value instanceof Array ) {
+		packet[ property ] = group[ value[ 0 ] ][ value[ 1 ] ];
+	    } else {
+		packet[ property ] = group[ value ];
+	    }
+	}
+	this.data.push( packet );
+    }
+}
 var ModelC2 = function( label ) {
     ModelC.call( this, label );
 
@@ -414,8 +422,56 @@ ViewA.prototype.setup = function() {
 	.html( function( d ) { return d.value; } );
 }
 ViewA.prototype.draw = function() {
-    // values should have been changed
-    // repopulate values
+    var columns, label, table, thead, tbody, rows, cells;
+
+    this.data = population.components[ this.label ].model.data;
+    columns = Object.keys( this.data[0] );
+    label = this.label;
+
+    dimensions = d3.select( '#dimensions' );
+    dimension = dimensions.append( 'div' )
+	.classed( 'dimension', true )
+	.attr( 'id', this.label);
+    title = dimension.append( 'h3' )
+	.html( this.label );
+    table = dimension.append( 'table' );
+    thead = table
+	.append( 'thead' )
+	.append( 'tr' )
+	.classed( label, true )
+	.selectAll( 'th' )
+	.data( columns )
+	.enter()
+	.append( 'th' )
+	.attr( 'class', function( d ) { return d; } )
+	.html( function( d ) { return d; } );
+    tbody = table.append( 'tbody' );
+    rows = tbody
+	.selectAll( 'tr' )
+	.data( this.data )
+	.enter()
+	.append( 'tr' )
+	.classed( 'facet', true )
+	.on('click', function() {
+	    population.components[ POETA ].model.filterable.filter( 'Terentius' );
+	    population.components[ FABULAE ].model.filterable.filter( 'Adelphoe' );
+	    population.components[ GENERA ].model.filterable.filter( 'adulama' );
+	    population.components[ NOMEN ].model.filterable.filter( 'Aeschinus' );
+	    population.components[ METER ].model.filterable.filter( 'wil' );
+	    population.components[ METER_TYPE ].model.filterable.filter( 'aeolic' );
+	    population.update();
+	} );
+    cells = rows
+	.selectAll( 'td' )
+	.data( function( row ) {
+	    return columns.map( function( column ) {
+		return { name: column, value: row[ column ] };
+	    } );
+	} )
+	.enter()
+	.append( 'td' )
+	.attr( 'class', function( d ) { return d.name; } )
+	.html( function( d ) { return d.value; } );
 }
 
 var ViewB = function( label ) {
@@ -514,7 +570,15 @@ ViewB.prototype.setup = function() {
     meter_a            .append( 'div' ).classed( 'col-2-1 label', true )
 	.html( 'Example' );
 }
-ViewB.prototype.draw = function() {}
+ViewB.prototype.draw = function() {
+    var example, variables;
+
+    verses = d3.select( '#verses' );
+    verse = verses.append( 'div' )
+	.classed( 'verse', true )
+	.html( 'testing' );
+    
+}
 
 var ViewC = function( label ) {
     View.call( this, label );
@@ -542,6 +606,10 @@ var ControllerA = function( label ) {
 ControllerA.prototype = Object.create( Controller.prototype );
 ControllerA.prototype.constructor = ControllerA;
 ControllerA.prototype.setup = function() {
+    this.data = population.components[ this.label ].model.data;
+    this.filters_all = [];
+    this.filters_active = [];
+/*
     var l, data, i;
 
     this.data = population.components[ this.label ].model.data;
@@ -551,6 +619,7 @@ ControllerA.prototype.setup = function() {
     for( l = this.data.length, i = 0; i < l; ++i ) {
 	this.filters_all.push( this.data[ i ].Name );
     }
+*/
 }
 ControllerA.prototype.toggle = function( facet ) {
     if( this.filters_active.includes( facet ) ) {
@@ -571,9 +640,12 @@ ControllerA.prototype.remove = function( facet ) {
 ControllerA.prototype.filter = function() {
     var filters_active = this.filters_active;
 
-    population.components[ this.label ].model.operable.filter(
+    console.log( this.filters_active );
+    /*
+    population.components[ this.label ].model.filterable.filter(
 	function( d ) { return filters_active.indexOf( d ) > -1; }
     );
+    */
 }
 
 var ControllerB = function( label ) {
