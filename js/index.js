@@ -19,7 +19,7 @@ var METER_TYPE = 'meter_type';
 var METER_BEFORE = 'meter_before';
 var METER_AFTER = 'meter_after';
 var COMPONENT_LABELS = [
-    POETA, FABULAE, GENERA, NOMEN, METER, METER_TYPE, METER_BEFORE, METER_AFTER,
+    POETA, FABULAE,// GENERA, NOMEN, METER, METER_TYPE, METER_BEFORE, METER_AFTER,
     'verse', 'detail'
 ];
 
@@ -82,7 +82,13 @@ Population.prototype.update = function() {
     var property;
 
     for( property in this.components ) {
-	this.components[ property ].update();
+	this.components[ property ].model.update();
+    }
+    for( property in this.components ) {
+	this.components[ property ].controller.update();
+    }
+    for( property in this.components ) {
+	this.components[ property ].view.update();
     }
 }
 
@@ -104,13 +110,12 @@ Component.prototype.setup = function() {
     }
 }
 Component.prototype.update = function() {
-    this.view.erase();
-
     if( this.controller instanceof ControllerA ) {
 	this.model.filter( this.controller.filters_active );
     }
 
     this.model.transmute();
+    this.view.erase();
 
     if( !( this instanceof ComponentD ) ) {
 	this.view.draw( this.controller, this.model.data );
@@ -164,6 +169,13 @@ var Model = function( label ) {
     this.group;
     this.schema;
     this.data;
+}
+Model.prototype.setup = function() {}
+Model.prototype.update = function() {
+    if( this instanceof ModelA ||
+	this instanceof ModelB ) {
+	this.filter( /* STUFF */ );
+    }
 }
 Model.prototype.filter = function( filters ) {
     this.filterable.filter(
@@ -360,6 +372,8 @@ ModelC2.prototype.init = function( p, v ) {
 var View = function( label ) {
     this.label = label;
 }
+View.prototype.setup = function() {}
+View.prototype.update = function() {}
 View.prototype.erase = function() {
     d3.select( '#' + this.label ).remove();
 }
@@ -540,8 +554,8 @@ ControllerA.prototype.setup = function( data ) {
 	filters.push( data[ i ].Name );
     }
 
-    this.filters_all = filters;
-    this.filters_active = filters;
+    this.filters_all = filters.slice( 0 );
+    this.filters_active = filters.slice( 0 );
 }
 ControllerA.prototype.toggle = function( facet ) {
     if( this.filters_active.includes( facet ) ) {
