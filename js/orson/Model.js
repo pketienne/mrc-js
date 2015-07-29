@@ -8,7 +8,6 @@ var Model = function( label ) {
 }
 Model.prototype.update = function() {
     this.transmute();
-    console.log( this.data );
 }
 
 var ModelA = function( label ) {
@@ -147,8 +146,15 @@ var ModelB = function( label ) {
 ModelB.prototype = Object.create( Model.prototype );
 ModelB.prototype.constructor = ModelB;
 ModelB.prototype.setup = function() {
-    this.reference = population.controllers[ POETA ].model.filterable;
-    this.group = this.reference.top( Infinity );
+    this.reference = population.controllers[ POETA ].model.reference;
+    this.group = this.reference.group(
+	function( d ) {
+	    return {
+		poeta: d[ POETA ],
+		fabulae: d[ FABULAE ]
+	    };
+	}
+    ).top( 100 );
 }
 
 var ModelB1 = function( label ) {
@@ -177,6 +183,8 @@ ModelB1.prototype.transmute = function() {
 	sup[ FABULAE ] = sample1[ FABULAE ];
 	sup[ STARTING_LINE_NUMBER_LABEL ] = sample1[ STARTING_LINE_NUMBER_LABEL ];
 	sup[ ENDING_LINE_NUMBER_LABEL ] = sample1[ ENDING_LINE_NUMBER_LABEL ];
+	sup[ STARTING_LINE_NUMBER_ORDINATE ] = sample1[ STARTING_LINE_NUMBER_ORDINATE ];
+	sup[ ENDING_LINE_NUMBER_ORDINATE ] = sample1[ ENDING_LINE_NUMBER_ORDINATE ];
 	sup[ LINE_COUNT ] = sample1[ LINE_COUNT ];
 	sup[ POETA ] = sample1[ POETA ];
 	sup[ STARTING_LINE ] = sample1[ STARTING_LINE ];
@@ -198,6 +206,16 @@ ModelB1.prototype.transmute = function() {
 	
 	this.data.push( sup );
     }
+    console.log( this.group );
+    console.log( this.data );
+}
+ModelB1.prototype.sort_by_key = function( array, key ) {
+    return array.sort(
+	function(a, b) {
+	    var x = a[key]; var y = b[key];
+	    return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+	}
+    );
 }
 
 var ModelB2 = function( label ) {
