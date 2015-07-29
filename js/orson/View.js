@@ -73,12 +73,8 @@ var ViewA2 = function( label ) {
 }
 ViewA2.prototype = Object.create( ViewA.prototype );
 ViewA2.prototype.constructor = ViewA2;
-ViewA2.prototype.erase = function() {
-    d3.select( '.' + this.label ).remove();
-}
-
 ViewA2.prototype.draw = function( model ) {
-    var columns, fragments, fragment,
+    var data, columns, fragments, fragment,
 	section1,
 	fabulae, fabulae_label, fabulae_value,
 	starting_line_number_label, starting_line_number_label_label, starting_line_number_label_value,
