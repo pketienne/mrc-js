@@ -1,48 +1,48 @@
-var Controller = function( label ) {
+var Presenter = function( label ) {
     this.label = label;
     this.model;
     this.view;
 }
-Controller.prototype.setup = function() {
+Presenter.prototype.setup = function() {
     this.model.setup();
 }
-Controller.prototype.update = function() {
+Presenter.prototype.update = function() {
     this.model.update();
     this.view.update( this.model );
 }
 
-var ControllerA = function( label ) {
-    Controller.call( this, label );
+var PresenterA = function( label ) {
+    Presenter.call( this, label );
 
     this.model = new ModelA1( this.label );
     this.view = new ViewA1( this.label );
 }
-ControllerA.prototype = Object.create( Controller.prototype );
-ControllerA.prototype.constructor = ControllerA;
+PresenterA.prototype = Object.create( Presenter.prototype );
+PresenterA.prototype.constructor = PresenterA;
 
-var ControllerB = function( label ) {
-    Controller.call( this, label );
+var PresenterB = function( label ) {
+    Presenter.call( this, label );
 
     this.model = new ModelA2( this.label );
     this.view = new ViewA1( this.label );
 }
-ControllerB.prototype = Object.create( Controller.prototype );
-ControllerB.prototype.constructor = ControllerB;
+PresenterB.prototype = Object.create( Presenter.prototype );
+PresenterB.prototype.constructor = PresenterB;
 
-var ControllerC = function( label ) {
-    Controller.call( this, label );
+var PresenterC = function( label ) {
+    Presenter.call( this, label );
 
     this.model = new ModelB1( this.label );
     this.view = new ViewA2( this.label );
 }
-ControllerC.prototype = Object.create( Controller.prototype );
-ControllerC.prototype.constructor = ControllerC;
+PresenterC.prototype = Object.create( Presenter.prototype );
+PresenterC.prototype.constructor = PresenterC;
 
-var ControllerD = function( label ) {
-    Controller.call( this, label );
+var PresenterD = function( label ) {
+    Presenter.call( this, label );
 
     this.model = new ModelB2( this.label );
     this.view = new ViewB( this.label );
 }
-ControllerD.prototype = Object.create( Controller.prototype );
-ControllerD.prototype.constructor = ControllerD;
+PresenterD.prototype = Object.create( Presenter.prototype );
+PresenterD.prototype.constructor = PresenterD;

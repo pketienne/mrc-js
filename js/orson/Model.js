@@ -1,9 +1,7 @@
 var Model = function( label ) {
     this.label = label;
-    this.filterable;
     this.reference;
     this.group;
-    this.schema;
     this.data;
 }
 Model.prototype.update = function() {
@@ -13,8 +11,10 @@ Model.prototype.update = function() {
 var ModelA = function( label ) {
     Model.call( this, label );
 
+    this.filterable;
     this.filters_all;
     this.filters_active;
+    this.schema;
     
     var label = this.label;
 
@@ -146,114 +146,143 @@ var ModelB = function( label ) {
 ModelB.prototype = Object.create( Model.prototype );
 ModelB.prototype.constructor = ModelB;
 ModelB.prototype.setup = function() {
-    this.reference = population.controllers[ POETA ].model.reference;
-    this.group = this.reference.top( Infinity );
-    /*
+    this.reference = population.presenters[ POETA ].model.reference;
+    this.group = this.reference
 	.groupAll()
 	.reduce( this.reduce_add, this.reduce_remove, this.reduce_init )
 	.value();
-    */
-}
-ModelB.prototype.transmute = function() {
-    this.data = this.group;
 }
 
 var ModelB1 = function( label ) {
     ModelB.call( this, label );
-
-    this.schema = {
-	'Poeta': POETA, 'Fabulae': FABULAE, 'Genera': GENERA,
-	'Nomen': NOMEN, 'Meter': METER, 'Meter Type': METER_TYPE,
-	'Meter Before': METER_BEFORE, 'Meter After': METER_AFTER,
-	'Start': STARTING_LINE_NUMBER_LABEL, 'End': ENDING_LINE_NUMBER_LABEL,
-	'Lines': LINE_COUNT, 'Character Lines': NOMEN_LINE_COUNT
-    }
 }
 ModelB1.prototype = Object.create( ModelB.prototype );
 ModelB1.prototype.constructor = ModelB1;
 ModelB1.prototype.reduce_add = function( p, v ) {
-    /*
-    var sup, sub, found;
+    var unique_id;
 
-    sup = {};
-    sup[ FABULAE ] = v[ FABULAE ];
-    sup[ STARTING_LINE_NUMBER_LABEL ] = v[ STARTING_LINE_NUMBER_LABEL ];
-    sup[ ENDING_LINE_NUMBER_LABEL ] = v[ ENDING_LINE_NUMBER_LABEL ];
-    sup[ LINE_COUNT ] = v[ LINE_COUNT ];
-    sup[ STARTING_LINE ] = v[ STARTING_LINE ];
-    sup[ ENDING_LINE ] = v[ ENDING_LINE ];
-    sup[ POETA ] = v[ POETA ];
-    sup[ FPID ] = v[ FPID ];
+    unique_id
+	= v[ FPID ]
+	+ v[ NOMEN ]
+	+ v[ GENERA ]
+	+ v[ METER ]
+	+ v[ METER_TYPE ]
+	+ v[ METER_BEFORE ]
+	+ v[ METER_AFTER ];
 
-    sub = {};
-    sub[ NOMEN ] = v[ NOMEN ];
-    sub[ GENERA ] = v[ GENERA ];
-    sub[ NOMEN_LINE_COUNT ] = v[ NOMEN_LINE_COUNT ];
-    sub[ METER ] = v[ METER ];
-    sub[ METER_TYPE ] = v[ METER_TYPE ];
-    sub[ METER_BEFORE ] = v[ METER_AFTER ];
-    sub[ METER_AFTER ] = v[ METER_AFTER ];
+    p[ unique_id ] = {};
+    p[ unique_id ][ FPID ] = v[ FPID ];
+    p[ unique_id ][ POETA ] = v[ POETA ];
+    p[ unique_id ][ FABULAE ] = v[ FABULAE ];
+    p[ unique_id ][ LINE_COUNT ] = v[ LINE_COUNT ];
+    p[ unique_id ][ STARTING_LINE_NUMBER_LABEL ]
+	= v[ STARTING_LINE_NUMBER_LABEL ];
+    p[ unique_id ][ STARTING_LINE_NUMBER_ORDINATE ]
+	= v[ STARTING_LINE_NUMBER_ORDINATE ];
+    p[ unique_id ][ STARTING_LINE ] = v[ STARTING_LINE ];
+    p[ unique_id ][ ENDING_LINE_NUMBER_LABEL ]
+	= v[ ENDING_LINE_NUMBER_LABEL ];
+    p[ unique_id ][ ENDING_LINE_NUMBER_ORDINATE ]
+	= v[ ENDING_LINE_NUMBER_ORDINATE ];
+    p[ unique_id ][ ENDING_LINE ] = v[ ENDING_LINE ];
+    p[ unique_id ][ NOMEN ] = v[ NOMEN ];
+    p[ unique_id ][ NOMEN_LINE_COUNT ] = v[ NOMEN_LINE_COUNT ];
+    p[ unique_id ][ GENERA ] = v[ GENERA ];
+    p[ unique_id ][ METER ] = v[ METER ];
+    p[ unique_id ][ METER_TYPE ] = v[ METER_TYPE ];
+    p[ unique_id ][ METER_AFTER ] = v[ METER_AFTER ];
+    p[ unique_id ][ METER_BEFORE ] = v[ METER_BEFORE ];
 
-    found = CROSSFILTER.index_search_add( p, v );
-
-    if( found ) {
-	p[ found ].sub.push( sub );
-    } else {
-	sup.sub = [ sub ];
-	p.push( sup );
-    }
-    */
     return p;
 }
 ModelB1.prototype.reduce_remove = function( p, v ) {
-    /*
-    var sup, sub, found;
+    var unique_id;
 
-    sup = {};
-    sup[ FABULAE ] = v[ FABULAE ];
-    sup[ STARTING_LINE_NUMBER_LABEL ] = v[ STARTING_LINE_NUMBER_LABEL ];
-    sup[ ENDING_LINE_NUMBER_LABEL ] = v[ ENDING_LINE_NUMBER_LABEL ];
-    sup[ LINE_COUNT ] = v[ LINE_COUNT ];
-    sup[ STARTING_LINE ] = v[ STARTING_LINE ];
-    sup[ ENDING_LINE ] = v[ ENDING_LINE ];
-    sup[ POETA ] = v[ POETA ];
-    sup[ FPID ] = v[ FPID ];
+    unique_id
+	= v[ FPID ]
+	+ v[ NOMEN ]
+	+ v[ GENERA ]
+	+ v[ METER ]
+	+ v[ METER_TYPE ]
+	+ v[ METER_BEFORE ]
+	+ v[ METER_AFTER ];
 
-    sub = {};
-    sub[ NOMEN ] = v[ NOMEN ];
-    sub[ GENERA ] = v[ GENERA ];
-    sub[ NOMEN_LINE_COUNT ] = v[ NOMEN_LINE_COUNT ];
-    sub[ METER ] = v[ METER ];
-    sub[ METER_TYPE ] = v[ METER_TYPE ];
-    sub[ METER_BEFORE ] = v[ METER_AFTER ];
-    sub[ METER_AFTER ] = v[ METER_AFTER ];
+    delete p[ unique_id ];
 
-    blah = CROSSFILTER.index_search_remove_sup( p, sup );
-    foo = CROSSFILTER.index_search_remove_sub( blah, sub );
-
-    console.log( blah );
-    console.log( foo );
-    */
     return p;
 }
-ModelB1.prototype.reduce_init = function( p, v ) {
-    //return [];
+ModelB1.prototype.reduce_init = function() {
     return {};
+}
+ModelB1.prototype.sort_array_by_object_key = function( array, key ) {
+    return array.sort( function( a, b ) {
+	var x, y;
+	x = a[ key ];
+	y = b[ key ];
+	return ( ( x < y ) ? -1 : ( ( x > y ) ? 1 : 0 ) );
+    } );
+}
+
+ModelB1.prototype.transmute = function() {
+    var data, fpids, property, value, fpid, l, i, record;
+
+    data = [];
+    fpids = {};
+
+    for( property in this.group ) {
+	value = this.group[ property ];
+	fpid = value[ FPID ];
+
+	if( !fpids[ fpid ] ) {
+	    fpids[ fpid ] = []
+	}
+
+	fpids[ fpid ].push( value );
+    }
+
+    for( property in fpids ) {
+	value = fpids[ property ];
+	sup = {};
+
+	sup[ FABULAE ] = value[ 0 ][ FABULAE ];
+	sup[ STARTING_LINE_NUMBER_LABEL ]
+	    = value[ 0 ][ STARTING_LINE_NUMBER_LABEL ];
+	sup[ STARTING_LINE_NUMBER_ORDINATE ]
+	    = value[ 0 ][ STARTING_LINE_NUMBER_ORDINATE ];
+	sup[ ENDING_LINE_NUMBER_LABEL ]
+	    = value[ 0 ][ ENDING_LINE_NUMBER_LABEL ];
+	sup[ LINE_COUNT ] = value[ 0 ][ LINE_COUNT ];
+	sup[ POETA ] = value[ 0 ][ POETA ];
+	sup[ STARTING_LINE ] = value[ 0 ][ STARTING_LINE ];
+	sup[ ENDING_LINE ] = value[ 0 ][ ENDING_LINE ];
+	sup[ 'sub' ] = [];
+	
+	for( l = value.length, i = 0; i < l; ++i ) {
+	    record = value[ i ];
+	    sub = {};
+
+	    sub[ NOMEN ] = record[ NOMEN ];
+	    sub[ NOMEN_LINE_COUNT ] = record[ NOMEN_LINE_COUNT ];
+	    sub[ GENERA ] = record[ GENERA ];
+	    sub[ METER ] = record[ METER ];
+	    sub[ METER_TYPE ] = record[ METER_TYPE ];
+	    sub[ METER_BEFORE ] = record[ METER_BEFORE ];
+	    sub[ METER_AFTER ] = record[ METER_AFTER ];
+	    sub[ POETA ] = record[ POETA ];
+	    
+	    sup[ 'sub' ].push( sub );
+	}
+
+	data.push( sup );
+    }
+
+    this.data = this.sort_array_by_object_key(
+	data, STARTING_LINE_NUMBER_ORDINATE
+    );
 }
 
 var ModelB2 = function( label ) {
     ModelB.call( this, label );
-
-    this.schema = {
-	'FPID': FPID, 'Poeta': POETA, 'Fabulae': FABULAE, 'Nomen': NOMEN,
-	'Genera': GENERA, 'Meter': METER, 'Meter Type': METER_TYPE,
-	'Meter Before': METER_BEFORE, 'Meter After': METER_AFTER,
-	'Start': STARTING_LINE_NUMBER_LABEL, 'End': ENDING_LINE_NUMBER_LABEL,
-	'Line Count': LINE_COUNT, 'Line Count per Character': NOMEN_LINE_COUNT,
-	'First Line': STARTING_LINE, 'Last Line': ENDING_LINE,
-	'Closure': CLOSURE, 'Comments on Length': COMMENTS_ON_LENGTH,
-	'Other Comments': COMMENTS_ON_OTHER
-    }
 }
 ModelB2.prototype = Object.create( ModelB.prototype );
 ModelB2.prototype.constructor = ModelB2;
@@ -264,5 +293,8 @@ ModelB2.prototype.reduce_remove = function( p, v ) {
     return p;
 }
 ModelB2.prototype.reduce_init = function( p, v ) {
-    return [];
+    return p;
+}
+ModelB2.prototype.transmute = function() {
+    this.data = this.group;
 }

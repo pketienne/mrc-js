@@ -1,9 +1,13 @@
 var Population = function() {
-    this.controllers = {};
+    this.controls;
+    this.presenters;
     var l, i, label;
 
-    for( l = CONTROLLER_LABELS.length, i = 0; i < l; ++i ) {
-	label = CONTROLLER_LABELS[ i ];
+    this.controls = new ViewC( DIMENSIONS );
+    this.presenters = {};
+    
+    for( l = PRESENTER_LABELS.length, i = 0; i < l; ++i ) {
+	label = PRESENTER_LABELS[ i ];
 
 	switch( label ) {
 	case POETA:
@@ -13,16 +17,16 @@ var Population = function() {
 	case METER_TYPE:
 	case METER_BEFORE:
 	case METER_AFTER:
-	    this.controllers[ label ] = new ControllerA( label );
+	    this.presenters[ label ] = new PresenterA( label );
 	    break;
 	case NOMEN:
-	    this.controllers[ label ] = new ControllerB( label );
+	    this.presenters[ label ] = new PresenterB( label );
 	    break;
 	case FRAGMENT:
-	    this.controllers[ label ] = new ControllerC( label );
+	    this.presenters[ label ] = new PresenterC( label );
 	    break;
 	case DETAIL:
-	    this.controllers[ label ] = new ControllerD( label );
+	    this.presenters[ label ] = new PresenterD( label );
 	    break;
 	}
     }
@@ -30,14 +34,14 @@ var Population = function() {
 Population.prototype.setup = function() {
     var property;
 
-    for( property in this.controllers ) {
-	this.controllers[ property ].setup();
+    for( property in this.presenters ) {
+	this.presenters[ property ].setup();
     }
 }
 Population.prototype.update = function() {
     var property;
 
-    for( property in this.controllers ) {
-	this.controllers[ property ].update();
+    for( property in this.presenters ) {
+	this.presenters[ property ].update();
     }
 }

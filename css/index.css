@@ -1,6 +1,90 @@
 * {
     box-sizing: border-box;
 }
-body {
-    min-width: 1350px;
+body {}
+body div#header div#wustl {
+    height: 42px;
+    border-bottom: 11px solid #c61329;
+}
+body div#header div#wustl div#logo {
+    margin: 7px 0px 0px 80px;
+    width: 228px;
+    height: 27px;
+    background: url(http://artsci.wustl.edu/sites/all/themes/awesomesauce/images/artsci-sprites.png) -265px -8px no-repeat;
+}
+body div#header div#title {
+    height: 56px;
+    background-color: #333;
+    border-top: 1px solid #fff;
+}
+body div#header div#title h1 {
+    margin: 10px 0px 0px 80px;
+    font-family: 'Goudy Old Style Regular', 'Goudy Old Style', 'OFL Sorts Mill Goudy TT', Georgia, serif;
+    font-size: 30px;
+    letter-spacing: 2px;
+    line-height: 30px;
+    color: #fff;
+}
+body div#header div#artsci {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 61px;
+    height: 106px;
+    background: url(http://artsci.wustl.edu/sites/all/themes/awesomesauce/images/artsci-sprites.png) 0 0 no-repeat;
+}
+body div#header div#controls {
+    margin: 3px 0px 0px 0px;
+    background-color: #ddd;
+    border-top: 1px solid #bbb;
+    border-bottom: 1px solid #bbb;
+    font-size: 12px;
+}
+body div#header div#controls div.control {
+    float: left;
+    margin: 3px 10px;
+}
+body div#header div#controls div.control div.label {
+    float: left;
+    margin-right: 10px;
+}
+body div#header div#controls div.control div.switches {
+    float: left;
+}
+body div#header div#controls div.control div.switches span.enable {
+    color: green;
+}
+body div#header div#controls div.control div.switches span.disable {
+    color: red;
+}
+body div#main {
+    margin: 15px 0px;
+}
+body div#main div#dimensions div.dimension {
+    margin: 0px 10px 15px 10px;
+}
+body div#main div#dimensions div.dimension h3 {
+    background-color: #c61329;
+    padding: 4px 10px;
+    color: #fff;
+    border-bottom: 3px solid #bbb;
+    font-weight: bold;
+}
+body div#main div#dimensions div.dimension h3::first-letter {
+    text-transform: capitalize;
+}
+body div#main div#dimensions div.dimension table {
+    width: 100%;
+}
+body div#main div#dimensions div.dimension table tr.facet {
+    background-color: #fafafa;
+    border-bottom: 1px solid #ccc;
+}
+body div#main div#dimensions div.dimension table tr.facet td.Name {
+    padding: 1px 10px;
+}
+body div#main div#dimensions div.dimension table tr.facet td.Lines {
+    padding: 1px 10px;
+    width: 1%;
+    text-align: right;
 }

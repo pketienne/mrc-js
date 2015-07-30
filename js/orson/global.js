@@ -18,58 +18,20 @@ var METER = 'meter';
 var METER_TYPE = 'meter_type';
 var METER_BEFORE = 'meter_before';
 var METER_AFTER = 'meter_after';
+var DIMENSIONS = 'dimensions';
 var FRAGMENT = 'fragment';
 var DETAIL = 'detail';
-var CONTROLLER_LABELS = [
+var CONTROLS = [
+    DIMENSIONS, POETA, FABULAE, GENERA, NOMEN, METER, METER_TYPE, METER_BEFORE,
+    METER_AFTER
+]
+var PRESENTER_LABELS = [
     POETA, FABULAE, GENERA, NOMEN, METER, METER_TYPE, METER_BEFORE, METER_AFTER,
-    FRAGMENT, DETAIL
+    FRAGMENT//, DETAIL
 ];
 
 var crossfilter;
 var population;
-
-var CROSSFILTER = {
-    index_search_add: function( p, v ) {
-	var lost = p.length;
-
-	if( lost == false ) { return false; }
-	
-	do {
-	    if( p[ lost - 1 ][ FPID ] == v[ FPID ] ) {
-		return ( lost - 1 );
-	    } else {
-		--lost;
-	    }
-	} while ( lost )
-    },
-    index_search_remove_sup: function( p, sup ) {
-	var lost, copy;
-
-	lost = p.length;
-
-	do {
-	    copy = JSON.parse( JSON.stringify( p[ lost - 1 ] ) );
-	    delete copy.sub;
-
-	    if( JSON.stringify( copy ) === JSON.stringify( sup ) ) {
-		return lost;
-	    } else {
-		--lost;
-	    }
-	} while ( lost )
-    },
-    index_search_remove_sub: function( sup, sub ) {
-	var lost = sup.length;
-
-	do {
-	    if( JSON.stringify( sup[ lost - 1 ] ) === JSON.stringify( sub ) ) {
-		return lost;
-	    } else {
-		--lost;
-	    }
-	} while ( lost )
-    }
-}
 
 d3.tsv( 'tsv/index.tsv', function( data ) {
     crossfilter = crossfilter( data );
