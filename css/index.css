@@ -1,7 +1,10 @@
 * {
     box-sizing: border-box;
 }
-body {}
+body {
+    width: 100%;
+    min-width: 800px;
+}
 body div#header div#wustl {
     height: 42px;
     border-bottom: 11px solid #c61329;
@@ -35,6 +38,7 @@ body div#header div#artsci {
 }
 body div#header div#controls {
     margin: 3px 0px 0px 0px;
+    padding: 3px 20px;
     background-color: #ddd;
     border-top: 1px solid #bbb;
     border-bottom: 1px solid #bbb;
@@ -42,14 +46,14 @@ body div#header div#controls {
 }
 body div#header div#controls div.control {
     float: left;
-    margin: 3px 10px;
 }
 body div#header div#controls div.control div.label {
     float: left;
-    margin-right: 10px;
+    margin-right: 5px;
 }
 body div#header div#controls div.control div.switches {
     float: left;
+    margin-right: 15px;
 }
 body div#header div#controls div.control div.switches span.enable {
     color: green;
@@ -60,31 +64,67 @@ body div#header div#controls div.control div.switches span.disable {
 body div#main {
     margin: 15px 0px;
 }
+/*
+body div#main div#dimensions {
+    width: 220px;
+    float: left;
+}
 body div#main div#dimensions div.dimension {
-    margin: 0px 10px 15px 10px;
+    margin: 0px 5px 15px 10px;
 }
 body div#main div#dimensions div.dimension h3 {
     background-color: #c61329;
     padding: 4px 10px;
     color: #fff;
-    border-bottom: 3px solid #bbb;
+    border-top: 1px solid #ccc;
+    border-right: 2px solid #bbb;
+    border-bottom: 2px solid #bbb;
+    border-left: 1px solid #ccc;
     font-weight: bold;
 }
 body div#main div#dimensions div.dimension h3::first-letter {
     text-transform: capitalize;
-}
-body div#main div#dimensions div.dimension table {
-    width: 100%;
 }
 body div#main div#dimensions div.dimension table tr.facet {
     background-color: #fafafa;
     border-bottom: 1px solid #ccc;
 }
 body div#main div#dimensions div.dimension table tr.facet td.Name {
-    padding: 1px 10px;
+    padding: 2px 0px 2px 10px;
 }
 body div#main div#dimensions div.dimension table tr.facet td.Lines {
-    padding: 1px 10px;
+    padding: 2px 10px 2px 0px;
     width: 1%;
     text-align: right;
 }
+*/
+/*
+body div#main div#fragments {
+    margin: 0px 10px 15px 225px;
+}
+*/
+body div#main div#fragments h3 {
+    background-color: #c61329;
+    padding: 4px 10px;
+    color: #fff;
+    border-top: 1px solid #ccc;
+    border-right: 2px solid #bbb;
+    border-bottom: 2px solid #bbb;
+    border-left: 1px solid #ccc;
+    font-weight: bold;
+}
+body div#main div#fragments h3::first-letter {
+    text-transform: capitalize;
+}
+body div#main div#fragments div.fragment {
+    
+}
+div.table { display: table; }
+div.tr { display: table-row; }
+div.thead { display: table-header-group; }
+div.tbody { display: table-body-group; }
+div.tfoot { display: table-footer-group; }
+div.col { display: table-column; }
+div.col-group { display: table-column-group; }
+div.th, div.td { display: table-cell; }
+div.caption { display: table-caption; }

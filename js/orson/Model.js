@@ -247,22 +247,23 @@ ModelB1.prototype.transmute = function() {
 	sup[ FABULAE ] = value[ 0 ][ FABULAE ];
 	sup[ STARTING_LINE_NUMBER_LABEL ]
 	    = value[ 0 ][ STARTING_LINE_NUMBER_LABEL ];
-	sup[ STARTING_LINE_NUMBER_ORDINATE ]
-	    = value[ 0 ][ STARTING_LINE_NUMBER_ORDINATE ];
 	sup[ ENDING_LINE_NUMBER_LABEL ]
 	    = value[ 0 ][ ENDING_LINE_NUMBER_LABEL ];
-	sup[ LINE_COUNT ] = value[ 0 ][ LINE_COUNT ];
+	sup[ LINE_COUNT ] = +value[ 0 ][ LINE_COUNT ];
 	sup[ POETA ] = value[ 0 ][ POETA ];
 	sup[ STARTING_LINE ] = value[ 0 ][ STARTING_LINE ];
 	sup[ ENDING_LINE ] = value[ 0 ][ ENDING_LINE ];
 	sup[ 'sub' ] = [];
+	sup[ FPID ] = value[ 0 ][ FPID ];
+	sup[ STARTING_LINE_NUMBER_ORDINATE ]
+	    = +value[ 0 ][ STARTING_LINE_NUMBER_ORDINATE ];
 	
 	for( l = value.length, i = 0; i < l; ++i ) {
 	    record = value[ i ];
 	    sub = {};
 
 	    sub[ NOMEN ] = record[ NOMEN ];
-	    sub[ NOMEN_LINE_COUNT ] = record[ NOMEN_LINE_COUNT ];
+	    sub[ NOMEN_LINE_COUNT ] = +record[ NOMEN_LINE_COUNT ];
 	    sub[ GENERA ] = record[ GENERA ];
 	    sub[ METER ] = record[ METER ];
 	    sub[ METER_TYPE ] = record[ METER_TYPE ];
