@@ -269,7 +269,6 @@ ModelB1.prototype.transmute = function() {
 	    sub[ METER_TYPE ] = record[ METER_TYPE ];
 	    sub[ METER_BEFORE ] = record[ METER_BEFORE ];
 	    sub[ METER_AFTER ] = record[ METER_AFTER ];
-	    sub[ POETA ] = record[ POETA ];
 	    
 	    sup[ 'sub' ].push( sub );
 	}

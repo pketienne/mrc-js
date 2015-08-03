@@ -1,3 +1,13 @@
+div.table { display: table; }
+div.tr { display: table-row; }
+div.thead { display: table-header-group; }
+div.tbody { display: table-body-group; }
+div.tfoot { display: table-footer-group; }
+div.col { display: table-column; }
+div.col-group { display: table-column-group; }
+div.th, div.td { display: table-cell; }
+div.caption { display: table-caption; }
+
 * {
     box-sizing: border-box;
 }
@@ -64,7 +74,6 @@ body div#header div#controls div.control div.switches span.disable {
 body div#main {
     margin: 15px 0px;
 }
-/*
 body div#main div#dimensions {
     width: 220px;
     float: left;
@@ -73,7 +82,7 @@ body div#main div#dimensions div.dimension {
     margin: 0px 5px 15px 10px;
 }
 body div#main div#dimensions div.dimension h3 {
-    background-color: #c61329;
+    background-color: #9C1E2D;
     padding: 4px 10px;
     color: #fff;
     border-top: 1px solid #ccc;
@@ -97,14 +106,11 @@ body div#main div#dimensions div.dimension table tr.facet td.Lines {
     width: 1%;
     text-align: right;
 }
-*/
-/*
 body div#main div#fragments {
     margin: 0px 10px 15px 225px;
 }
-*/
 body div#main div#fragments h3 {
-    background-color: #c61329;
+    background-color: #9C1E2D;
     padding: 4px 10px;
     color: #fff;
     border-top: 1px solid #ccc;
@@ -116,15 +122,31 @@ body div#main div#fragments h3 {
 body div#main div#fragments h3::first-letter {
     text-transform: capitalize;
 }
-body div#main div#fragments div.fragment {
-    
+body div#main div#fragments div.table {
+    margin: 0px 15px;
 }
-div.table { display: table; }
-div.tr { display: table-row; }
-div.thead { display: table-header-group; }
-div.tbody { display: table-body-group; }
-div.tfoot { display: table-footer-group; }
-div.col { display: table-column; }
-div.col-group { display: table-column-group; }
-div.th, div.td { display: table-cell; }
-div.caption { display: table-caption; }
+body div#main div#fragments div.table div.tr.sup.legend {
+
+}
+body div#main div#fragments div.table div.td.sup.legend {
+    border-top: 5px solid #fff;
+    background-color: #ddd;
+}
+body div#main div#fragments div.table div.tr.sub.legend {
+
+}
+body div#main div#fragments div.table div.td.sub.legend {
+    background-color: #eee;
+}
+body div#main div#fragments div.table div.tr.sup {
+
+}
+body div#main div#fragments div.table div.td.sup {
+    padding: 3px 0px 3px 10px;
+}
+body div#main div#fragments div.table div.tr.sub {
+
+}
+body div#main div#fragments div.table div.td.sub {
+    padding: 3px 0px 3px 10px;
+}

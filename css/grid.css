@@ -47,11 +47,11 @@
 .col-8-6 { width: 75%; }
 .col-8-7 { width: 87.5%; }
 .col-8-8 { width: 100%; }
-.col-custom-8-1 { width: 115px; }
-.col-custom-8-2 { width: 50px; }
-.col-custom-8-3 { width: 50px; }
-.col-custom-8-4 { width: 30px; }
-.col-custom-8-5 { width: 80px; }
-.col-custom-8-6 { max-width: 3000px; }
-.col-custom-8-7 { max-width: 3000px; }
-.col-custom-8-8 { max-width: 3000px; }
+.custom-8-1 { width: 115px; }
+.custom-8-2 { width: 50px; }
+.custom-8-3 { width: 50px; }
+.custom-8-4 { width: 30px; }
+.custom-8-5 { width: 80px; }
+.custom-8-6 { }
+.custom-8-7 { }
+.custom-8-8 { }
