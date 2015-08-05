@@ -5,6 +5,7 @@ var Presenter = function( label ) {
 }
 Presenter.prototype.setup = function() {
     this.model.setup();
+    this.view.setup( this.model );
 }
 Presenter.prototype.update = function() {
     this.model.update();

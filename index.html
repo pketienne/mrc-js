@@ -31,95 +31,73 @@
       <div id="controls" class="row">
 	<div class="control">
 	  <div class="label">Dimensions:</div>
-	  <div class="switches">
-	    <span class="enable">Enable</span>
-	    <br />
-	    <span class="disable">Disable</span>
-	  </div>
+	  <a class="enable" onclick="enable( 'all' )">Enable</a><br />
+	  <a class="disable" onclick="disable( 'all' )">Disable</a>
 	</div>
 	<div class="control">
 	  <div class="label">Poeta:</div>
-	  <div class="switches">
-	    <span class="enable">Enable</span>
-	    <br />
-	    <span class="disable">Disable</span>
-	  </div>
+	  <a class="enable" onclick="enable( 'poeta' )">Enable</a><br />
+	  <a class="disable" onclick="disable( 'poeta' )">Disable</a>
 	</div>
 	<div class="control">
 	  <div class="label">Fabulae:</div>
-	  <div class="switches">
-	    <span class="enable">Enable</span>
-	    <br />
-	    <span class="disable">Disable</span>
-	  </div>
+	  <a class="enable" onclick="enable( 'fabulae' )">Enable</a><br />
+	  <a class="disable" onclick="disable( 'fabulae' )">Disable</a>
 	</div>
 	<div class="control">
 	  <div class="label">Genera:</div>
-	  <div class="switches">
-	    <span class="enable">Enable</span>
-	    <br />
-	    <span class="disable">Disable</span>
-	  </div>
+	  <a class="enable" onclick="enable( 'genera' )">Enable</a><br />
+	  <a class="disable" onclick="disable( 'genera' )">Disable</a>
 	</div>
 	<div class="control">
 	  <div class="label">Nomen:</div>
-	  <div class="switches">
-	    <span class="enable">Enable</span>
-	    <br />
-	    <span class="disable">Disable</span>
-	  </div>
+	  <a class="enable" onclick="enable( 'nomen' )">Enable</a><br />
+	  <a class="disable" onclick="disable( 'nomen' )">Disable</a>
 	</div>
 	<div class="control">
 	  <div class="label">Meter:</div>
-	  <div class="switches">
-	    <span class="enable">Enable</span>
-	    <br />
-	    <span class="disable">Disable</span>
-	  </div>
+	  <a class="enable" onclick="enable( 'meter' )">Enable</a><br />
+	  <a class="disable" onclick="disable( 'meter' )">Disable</a>
 	</div>
 	<div class="control">
 	  <div class="label">Meter Type:</div>
-	  <div class="switches">
-	    <span class="enable">Enable</span>
-	    <br />
-	    <span class="disable">Disable</span>
-	  </div>
+	  <a class="enable" onclick="enable( 'meter_type' )">Enable</a><br />
+	  <a class="disable" onclick="disable( 'meter_type' )">Disable</a>
 	</div>
 	<div class="control">
 	  <div class="label">Meter Before:</div>
-	  <div class="switches">
-	    <span class="enable">Enable</span>
-	    <br />
-	    <span class="disable">Disable</span>
-	  </div>
+	  <a class="enable" onclick="enable( 'meter_before' )">Enable</a><br />
+	  <a class="disable" onclick="disable( 'meter_before' )">Disable</a>
 	</div>
 	<div class="control">
 	  <div class="label">Meter After:</div>
-	  <div class="switches">
-	    <span class="enable">Enable</span>
-	    <br />
-	    <span class="disable">Disable</span>
-	  </div>
+	  <a class="enable" onclick="enable( 'meter_after' )">Enable</a><br />
+	  <a class="disable" onclick="disable( 'meter_after' )">Disable</a>
 	</div>
       </div>
     </div>
-    <div id="main">
+    <div id="main" class="row">
+      <div id="verse_details"></div>
       <div id="dimensions"></div>
-      <div id="fragments"></div>
+      <div id="verse_groups"></div>
     </div>
-    <div id="footer">
-      <h1>Department of Classics</h1>
-      <h2>Washington University</h2>
+    <div id="footer" class="row">
+      <img class="library" src="http://digital.wustl.edu/square_logo.gif" alt="Washington University Libraries" border="0" />
+      <div class="text">
+	<img src="http://digital.wustl.edu/index_images/1linepos(CMYK)SM.jpg" alt="Washington University in St. Louis" />
+	<p class="highlight">University Libraries</p>
+	<p>Campus Box 1061, One Brookings Drive</p>
+	<p>St. Louis, MO 63130</p>
+	<div class="links">
+	  <a href="http://digital.wustl.edu">Digital Gateway</a>
+	  |
+	  <a href="http://openscholarship.wustl.edu/">Open Scholarship</a>
+	  |
+	  <a href="http://wustl.edu/">WUSTL</a>
+	  |
+	  <a href="sitemap.html">Sitemap</a>
+	</div>
+      </div>
     </div>
   </body>
 </html>
-
-
-
-
-
-
-
-
-<!--
--->

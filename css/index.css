@@ -1,12 +1,12 @@
-div.table { display: table; }
-div.tr { display: table-row; }
-div.thead { display: table-header-group; }
-div.tbody { display: table-body-group; }
-div.tfoot { display: table-footer-group; }
-div.col { display: table-column; }
-div.col-group { display: table-column-group; }
-div.th, div.td { display: table-cell; }
-div.caption { display: table-caption; }
+div.table    { display: table }
+div.tr       { display: table-row }
+div.thead    { display: table-header-group }
+div.tbody    { display: table-row-group }
+div.tfoot    { display: table-footer-group }
+div.col      { display: table-column }
+div.colgroup { display: table-column-group }
+div.td, div.th   { display: table-cell }
+div.caption  { display: table-caption }
 
 * {
     box-sizing: border-box;
@@ -56,20 +56,18 @@ body div#header div#controls {
 }
 body div#header div#controls div.control {
     float: left;
-}
+1}
 body div#header div#controls div.control div.label {
-    float: left;
-    margin-right: 5px;
+
 }
-body div#header div#controls div.control div.switches {
-    float: left;
-    margin-right: 15px;
-}
-body div#header div#controls div.control div.switches span.enable {
+body div#header div#controls div.control a.enable {
     color: green;
+    text-decoration: none;
 }
-body div#header div#controls div.control div.switches span.disable {
+body div#header div#controls div.control a.disable {
+    margin-right: 40px;
     color: red;
+    text-decoration: none;
 }
 body div#main {
     margin: 15px 0px;
@@ -82,9 +80,8 @@ body div#main div#dimensions div.dimension {
     margin: 0px 5px 15px 10px;
 }
 body div#main div#dimensions div.dimension h3 {
-    background-color: #9C1E2D;
+    background-color: #ddd;
     padding: 4px 10px;
-    color: #fff;
     border-top: 1px solid #ccc;
     border-right: 2px solid #bbb;
     border-bottom: 2px solid #bbb;
@@ -95,6 +92,7 @@ body div#main div#dimensions div.dimension h3::first-letter {
     text-transform: capitalize;
 }
 body div#main div#dimensions div.dimension table tr.facet {
+    font-size: 0.8em;
     background-color: #fafafa;
     border-bottom: 1px solid #ccc;
 }
@@ -106,47 +104,94 @@ body div#main div#dimensions div.dimension table tr.facet td.Lines {
     width: 1%;
     text-align: right;
 }
-body div#main div#fragments {
-    margin: 0px 10px 15px 225px;
+
+body div#main div#verse_groups div.verse-menu span.text { font-weight: bold; }
+body div#main div#verse_groups div.verse-menu span#menu { float: right; }
+body div#main div#verse_groups div.verse-menu span#menu span { padding: 0px 5px; }
+body div#main div#verse_groups div.verse-menu span#menu a { padding: 0px 5px; text-decoration: none; color: blue; }
+
+body div#main div#verse_groups                                                             { position: relative; margin-left: 220px; }
+body div#main div#verse_groups div.verse-menu                                              { background-color: #ddd; padding: 4px 10px; border-top: 1px solid #ccc; border-right: 2px solid #bbb; border-bottom: 2px solid #bbb; border-left: 1px solid #ccc; margin-bottom: 10px; }
+body div#main div#verse_groups div.verse-group                                             { margin: 0px 10px 25px 10px; }
+body div#main div#verse_groups div.verse-group div.table                                   { width: 100%; }
+body div#main div#verse_groups div.verse-group div.table     div                           {}
+body div#main div#verse_groups div.verse-group div.table     div       div.tr              {}
+body div#main div#verse_groups div.verse-group div.table     div       div.tr div.th,
+body div#main div#verse_groups div.verse-group div.table     div       div.tr div.td       { padding: 1px 5px 4px 5px; }
+body div#main div#verse_groups div.verse-group div.table     div.thead                     { font-size: smaller; color: #ddd; }
+body div#main div#verse_groups div.verse-group div.table     div.thead div.tr              {}
+body div#main div#verse_groups div.verse-group div.table     div.thead div.tr div.th       {}
+body div#main div#verse_groups div.verse-group div.table.sup                               {}
+body div#main div#verse_groups div.verse-group div.table.sup div.thead                     { background-color: #126621; }
+body div#main div#verse_groups div.verse-group div.table.sup div.thead div.tr              {}
+body div#main div#verse_groups div.verse-group div.table.sup div.thead div.tr div.th       { border-top: 1px solid #000; }
+body div#main div#verse_groups div.verse-group div.table.sup div.thead div.tr div.th.col0  { min-width: 120px; }
+body div#main div#verse_groups div.verse-group div.table.sup div.thead div.tr div.th.col1  { min-width: 88px; }
+body div#main div#verse_groups div.verse-group div.table.sup div.thead div.tr div.th.col2  { min-width: 85px; }
+body div#main div#verse_groups div.verse-group div.table.sup div.thead div.tr div.th.col3  { min-width: 84px; }
+body div#main div#verse_groups div.verse-group div.table.sup div.thead div.tr div.th.col4  { min-width: 70px; }
+body div#main div#verse_groups div.verse-group div.table.sup div.thead div.tr div.th.col5  { min-width: 190px; }
+body div#main div#verse_groups div.verse-group div.table.sup div.thead div.tr div.th.col6  {}
+body div#main div#verse_groups div.verse-group div.table.sup div.tbody                     { background-color: #eee; }
+body div#main div#verse_groups div.verse-group div.table.sup div.tbody div.tr              {}
+body div#main div#verse_groups div.verse-group div.table.sup div.tbody div.tr div.th       {}
+body div#main div#verse_groups div.verse-group div.table.sub                               { padding-left: 120px; }
+body div#main div#verse_groups div.verse-group div.table.sub div.thead                     { background-color: #53A561; }
+body div#main div#verse_groups div.verse-group div.table.sub div.thead div.tr              {}
+body div#main div#verse_groups div.verse-group div.table.sub div.thead div.tr div.th       { border-top: 1px solid #666;}
+body div#main div#verse_groups div.verse-group div.table.sub div.thead div.tr div.th.col0  { width: 20% }
+body div#main div#verse_groups div.verse-group div.table.sub div.thead div.tr div.th.col1  { width: 10%; }
+body div#main div#verse_groups div.verse-group div.table.sub div.thead div.tr div.th.col2  { width: 19%; }
+body div#main div#verse_groups div.verse-group div.table.sub div.thead div.tr div.th.col3  { width: 10%; }
+body div#main div#verse_groups div.verse-group div.table.sub div.thead div.tr div.th.col4  { width: 15%; }
+body div#main div#verse_groups div.verse-group div.table.sub div.thead div.tr div.th.col5  { width: 15%; }
+body div#main div#verse_groups div.verse-group div.table.sub div.thead div.tr div.th.col6  { width: 21%; }
+body div#main div#verse_groups div.verse-group div.table.sub div.tbody                     { background-color: #eee; }
+body div#main div#verse_groups div.verse-group div.table.sub div.tbody div.tr              {}
+body div#main div#verse_groups div.verse-group div.table.sub div.tbody div.tr div.th       {}
+
+body div#footer {
+    border-top: 10px solid #333;
+    border-bottom: 10px solid #c61329;
 }
-body div#main div#fragments h3 {
-    background-color: #9C1E2D;
-    padding: 4px 10px;
-    color: #fff;
-    border-top: 1px solid #ccc;
-    border-right: 2px solid #bbb;
-    border-bottom: 2px solid #bbb;
-    border-left: 1px solid #ccc;
+body div#footer img.library {
+    margin: 10px 30px;
+    float: left;
+}
+body div#footer div.text {
+    margin: 10px 0px;
+    font-size: 0.8em;
+}
+body div#footer div.text img {
+    margin-bottom: 5px;
+}
+body div#footer div.text p.highlight {
+    color: #c61329;
+}
+body div#footer div.text div.links {
+    margin-top: 10px;
+}
+body div#footer div.text div.links a {
     font-weight: bold;
+    color: #666;
+    text-decoration: none;
 }
-body div#main div#fragments h3::first-letter {
-    text-transform: capitalize;
+.none {
+    display: none;
+    position: fixed;
+    top: 250px;
+    left: 250px;
+    z-index: 9999;
 }
-body div#main div#fragments div.table {
-    margin: 0px 15px;
+body div#main div#verse_details table {
+    padding: 10px;
+    background-color: #eec;
+    border: 1px dashed #aaa;
+    max-width: 500px;
 }
-body div#main div#fragments div.table div.tr.sup.legend {
+body div#main div#verse_details table tr {
 
 }
-body div#main div#fragments div.table div.td.sup.legend {
-    border-top: 5px solid #fff;
-    background-color: #ddd;
-}
-body div#main div#fragments div.table div.tr.sub.legend {
-
-}
-body div#main div#fragments div.table div.td.sub.legend {
-    background-color: #eee;
-}
-body div#main div#fragments div.table div.tr.sup {
-
-}
-body div#main div#fragments div.table div.td.sup {
-    padding: 3px 0px 3px 10px;
-}
-body div#main div#fragments div.table div.tr.sub {
-
-}
-body div#main div#fragments div.table div.td.sub {
-    padding: 3px 0px 3px 10px;
+body div#main div#verse_details table tr td {
+    padding: 2px 0px;
 }

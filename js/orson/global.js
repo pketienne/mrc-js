@@ -70,22 +70,14 @@ var control = function( dimension, state ) {
     population.update();
 }
 var next = function() {
-    var view;
-
-    view = population.presenters[ VERSE_GROUPS ].view;
-
-    if( view.page < view.pages ) {
-	++view.page;
+    if( population.page < population.pages ) {
+	++population.page;
 	population.update();
     }
 }
 var previous = function() {
-    var view;
-
-    view = population.presenters[ VERSE_GROUPS ].view;
-
-    if( view.page > 1 ) {
-	--view.page;
+    if( population.page > 1 ) {
+	--population.page;
 	population.update();
     }
 }
@@ -97,4 +89,19 @@ var dimension_toggle = function( dimension ) {
     }
 
     d3.select( '.' + dimension ).toggle();
+}
+var popup = function( id ) {
+    var selection1, selection2;
+ 
+    selection1 = d3.selectAll( '.none' );
+    selection1.hide();
+    
+    selection2 = d3.select( '#' + id );
+    selection2.toggle();
+}
+var toggle = function( id ) {
+    var selection;
+
+    selection = d3.select( '#' + id );
+    selection.toggle();
 }

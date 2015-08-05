@@ -3,8 +3,10 @@ var Population = function() {
     this.presenters;
     var l, i, label;
 
-    this.controls = new ViewC( DIMENSIONS );
     this.presenters = {};
+    this.instances;
+    this.pages;
+    this.page = 1;
     this.display_status = {
 	poeta: 0,
 	fabulae: 0,

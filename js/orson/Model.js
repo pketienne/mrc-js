@@ -152,23 +152,16 @@ ModelB.prototype.setup = function() {
 	.reduce( this.reduce_add, this.reduce_remove, this.reduce_init )
 	.value();
 }
-
-var ModelB1 = function( label ) {
-    ModelB.call( this, label );
-}
-ModelB1.prototype = Object.create( ModelB.prototype );
-ModelB1.prototype.constructor = ModelB1;
-ModelB1.prototype.reduce_add = function( p, v ) {
+ModelB.prototype.reduce_add = function( p, v ) {
     var unique_id;
 
     unique_id
-	= v[ FPID ]
-	+ v[ NOMEN ]
+	= v[ NOMEN ]
+	+ v[ NOMEN_LINE_COUNT ]
 	+ v[ GENERA ]
 	+ v[ METER ]
 	+ v[ METER_TYPE ]
-	+ v[ METER_BEFORE ]
-	+ v[ METER_AFTER ];
+	+ v[ FPID ];
 
     p[ unique_id ] = {};
     p[ unique_id ][ FPID ] = v[ FPID ];
@@ -190,30 +183,38 @@ ModelB1.prototype.reduce_add = function( p, v ) {
     p[ unique_id ][ GENERA ] = v[ GENERA ];
     p[ unique_id ][ METER ] = v[ METER ];
     p[ unique_id ][ METER_TYPE ] = v[ METER_TYPE ];
-    p[ unique_id ][ METER_AFTER ] = v[ METER_AFTER ];
     p[ unique_id ][ METER_BEFORE ] = v[ METER_BEFORE ];
+    p[ unique_id ][ METER_AFTER ] = v[ METER_AFTER ];
+    p[ unique_id ][ CLOSURE ] = v[ CLOSURE ];
+    p[ unique_id ][ COMMENTS_ON_LENGTH ] = v[ COMMENTS_ON_LENGTH ];
+    p[ unique_id ][ COMMENTS_ON_OTHER ] = v[ COMMENTS_ON_OTHER ];
 
     return p;
 }
-ModelB1.prototype.reduce_remove = function( p, v ) {
+ModelB.prototype.reduce_remove = function( p, v ) {
     var unique_id;
 
     unique_id
-	= v[ FPID ]
-	+ v[ NOMEN ]
+	= v[ NOMEN ]
+	+ v[ NOMEN_LINE_COUNT ]
 	+ v[ GENERA ]
 	+ v[ METER ]
 	+ v[ METER_TYPE ]
-	+ v[ METER_BEFORE ]
-	+ v[ METER_AFTER ];
+	+ v[ FPID ];
 
     delete p[ unique_id ];
 
     return p;
 }
-ModelB1.prototype.reduce_init = function() {
+ModelB.prototype.reduce_init = function() {
     return {};
 }
+
+var ModelB1 = function( label ) {
+    ModelB.call( this, label );
+}
+ModelB1.prototype = Object.create( ModelB.prototype );
+ModelB1.prototype.constructor = ModelB1;
 ModelB1.prototype.sort_array_by_object_key = function( array ) {
     return array.sort( function( a, b ) {
 	var x, y;
@@ -283,6 +284,13 @@ ModelB1.prototype.transmute = function() {
 	    sub[ METER_TYPE ] = record[ METER_TYPE ];
 	    sub[ METER_BEFORE ] = record[ METER_BEFORE ];
 	    sub[ METER_AFTER ] = record[ METER_AFTER ];
+	    sub[ 'id' ]
+		= record[ NOMEN ]
+		+ record[ NOMEN_LINE_COUNT ]
+		+ record[ GENERA ]
+		+ record[ METER ]
+		+ record[ METER_TYPE ]
+		+ record[ FPID ];
 	    
 	    sup[ 'sub' ].push( sub );
 	}
@@ -298,15 +306,6 @@ var ModelB2 = function( label ) {
 }
 ModelB2.prototype = Object.create( ModelB.prototype );
 ModelB2.prototype.constructor = ModelB2;
-ModelB2.prototype.reduce_add = function( p, v ) {
-    return p;
-}
-ModelB2.prototype.reduce_remove = function( p, v ) {
-    return p;
-}
-ModelB2.prototype.reduce_init = function( p, v ) {
-    return p;
-}
 ModelB2.prototype.transmute = function() {
     this.data = this.group;
 }
