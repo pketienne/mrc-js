@@ -5,6 +5,16 @@ var Population = function() {
 
     this.controls = new ViewC( DIMENSIONS );
     this.presenters = {};
+    this.display_status = {
+	poeta: 0,
+	fabulae: 0,
+	genera: 0,
+	nomen: 0,
+	meter: 0,
+	meter_type: 0,
+	meter_before: 0,
+	meter_after: 0
+    }
     
     for( l = PRESENTER_LABELS.length, i = 0; i < l; ++i ) {
 	label = PRESENTER_LABELS[ i ];
@@ -22,10 +32,10 @@ var Population = function() {
 	case NOMEN:
 	    this.presenters[ label ] = new PresenterB( label );
 	    break;
-	case FRAGMENT:
+	case VERSE_GROUPS:
 	    this.presenters[ label ] = new PresenterC( label );
 	    break;
-	case DETAIL:
+	case VERSE_DETAIL:
 	    this.presenters[ label ] = new PresenterD( label );
 	    break;
 	}
@@ -43,5 +53,21 @@ Population.prototype.update = function() {
 
     for( property in this.presenters ) {
 	this.presenters[ property ].update();
+    }
+
+    this.activate_status();
+}
+Population.prototype.activate_status = function() {
+    var property, value;
+    
+    for( property in this.display_status ) {
+	value = this.display_status[ property ];
+	selection = d3.select( '.' + property );
+
+	if( value == 0 ) {
+	    selection.style( 'display', 'none' );
+	} else {
+	    selection.style( 'display', 'block' );
+	}
     }
 }

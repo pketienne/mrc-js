@@ -19,15 +19,15 @@ var METER_TYPE = 'meter_type';
 var METER_BEFORE = 'meter_before';
 var METER_AFTER = 'meter_after';
 var DIMENSIONS = 'dimensions';
-var FRAGMENT = 'fragment';
-var DETAIL = 'detail';
+var VERSE_GROUPS = 'verse_groups';
+var VERSE_DETAIL = 'verse_detail';
 var CONTROLS = [
     DIMENSIONS, POETA, FABULAE, GENERA, NOMEN, METER, METER_TYPE, METER_BEFORE,
     METER_AFTER
 ]
 var PRESENTER_LABELS = [
     POETA, FABULAE, GENERA, NOMEN, METER, METER_TYPE, METER_BEFORE, METER_AFTER,
-    FRAGMENT//, DETAIL
+    VERSE_GROUPS, VERSE_DETAIL
 ];
 
 var crossfilter;
@@ -40,3 +40,61 @@ d3.tsv( 'tsv/index.tsv', function( data ) {
     population.setup();
     population.update();
 } );
+
+var enable = function( dimension ) {
+    var l, i;
+    
+    if( dimension == 'all' ) {
+	for( l = CONTROLS.length, i = 1; i < l; ++i ) {
+	    control( CONTROLS[ i ], true );
+	}
+    } else {
+	control( dimension, true );
+    }
+}
+var disable = function( dimension ) {
+    if( dimension == 'all' ) {
+	for( l = CONTROLS.length, i = 1; i < l; ++i ) {
+	    control( CONTROLS[ i ], false );
+	}
+    } else {
+	control( dimension, false );
+    }
+}
+var control = function( dimension, state ) {
+    var model;
+    
+    model = population.presenters[ dimension ].model;
+    state ? model.filters_active = model.filters_all : model.filters_active = [];
+    model.filter();
+    population.update();
+}
+var next = function() {
+    var view;
+
+    view = population.presenters[ VERSE_GROUPS ].view;
+
+    if( view.page < view.pages ) {
+	++view.page;
+	population.update();
+    }
+}
+var previous = function() {
+    var view;
+
+    view = population.presenters[ VERSE_GROUPS ].view;
+
+    if( view.page > 1 ) {
+	--view.page;
+	population.update();
+    }
+}
+var dimension_toggle = function( dimension ) {
+    if( population.display_status[ dimension ] == 0 ) {
+	population.display_status[ dimension ] = 1;
+    } else {
+	population.display_status[ dimension ] = 0;
+    }
+
+    d3.select( '.' + dimension ).toggle();
+}

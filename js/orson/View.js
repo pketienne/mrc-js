@@ -24,7 +24,7 @@ ViewA1.prototype.draw = function( model ) {
     var columns, dimensions, dimension, title, table, rows, cells;
 
     columns = Object.keys( model.data[ 0 ] );
-
+    
     dimensions = d3.select( '#dimensions' );
     dimension = dimensions
 	.append( 'div' )
@@ -32,16 +32,18 @@ ViewA1.prototype.draw = function( model ) {
 	.attr( 'id', this.label);
     title = dimension
 	.append( 'h3' )
+    	.attr( 'onclick', 'dimension_toggle( "' + this.label + '" )' )
 	.html( this.label );
     table = dimension
-	.append( 'table' );
+	.append( 'table' )
+	.classed( this.label, true );
     rows = table
 	.selectAll( 'tr' )
 	.data( model.data )
 	.enter()
 	.append( 'tr' )
 	.classed( 'facet', true )
-	.on('click', function( facet, index ) {
+	.on( 'click', function( facet, index ) {
 	    model.toggle( facet.Name );
 	    model.filter();
 	    population.update();
@@ -61,96 +63,153 @@ ViewA1.prototype.draw = function( model ) {
 
 var ViewA2 = function( label ) {
     ViewA.call( this, label );
+
+    this.instances;
+    this.pages;
+    this.page = 1;
 }
 ViewA2.prototype = Object.create( ViewA.prototype );
 ViewA2.prototype.constructor = ViewA2;
 ViewA2.prototype.erase = function() {
-    d3.selectAll( '.' + this.label ).remove();
+    d3.selectAll( '.verse-group' ).remove();
+    d3.selectAll( '.verse-menu' ).remove();
 }
 ViewA2.prototype.draw = function( model ) {
-    var sup_data, sup_columns, sub_data, sub_columns,
-	fragments, title, fragment, rows, cells, l, i;
-
-    sup_data = model.data;
-    sup_columns = Object.keys( sup_data[ 0 ] ).splice( 0, 7 );
-    sup_column_labels = [
+    var datum, verse_groups, verse_group,
+	sup, sup_table, sup_table_header, sup_table_header_row,
+	sup_table_header_row_columns, sup_table_header_row_cells,
+	sub, sub_table, sub_table_header, sub_table_header_row,
+	sub_table_header_row_columns, sub_table_header_row_cells,
+	max, start, l, i, view;
+	
+    sup_table_header_row_columns = [
 	'Fabulae', 'Starting Line', 'Ending Line', 'Line Count', 'Poeta',
 	'Starting Text', 'Ending Text'
     ];
-    sub_data = sup_data.map( function( d ) { return d.sub; } );
-    sub_columns = Object.keys( sup_data[ 0 ] );
-    sub_column_labels = [
+    sub_table_header_row_columns = [
 	'Nomen', 'Line Count', 'Genera', 'Meter', 'Meter Type',
 	'Meter Before', 'Meter After'
     ];
-    fragments = d3.select( '#' + this.label + 's' );
-    title = fragments
-	.append( 'h3' )
-	.classed( this.label, true )
-	.html( this.label + 's' );
-    fragment = fragments
+
+    this.instances = model.data.length;
+    this.pages = Math.ceil( this.instances / 100 );
+    page = this.page;
+      
+    verse_groups = d3.select( '#verse_groups' );
+    verse_title = verse_groups
 	.append( 'div' )
-	.classed( this.label + ' table', true );
-    rows = fragment
-	.selectAll( 'div' )
-	.data( model.data )
-	.enter()
-	.append( 'div' )
-	.classed( 'tr sup', true )
-	.attr( 'id', function( d ) { return 'FPID-' + d[ FPID ]; } );
-    cells = rows
-	.selectAll( 'div' )
-	.data( function( sup_row ) {
-	    return sup_columns.map( function( sup_column ) {
-		return { name: sup_column, value: sup_row[ sup_column ] };
-	    } );
-	} )
-	.enter()
-	.append( 'div' )
-	.attr( 'class', function( d ) { return 'td sup ' + d.name; } )
-	.html( function( d ) { return d.value; } );
-
-    for( a = sup_data.length, n = 0; n < a; ++n ) {
-	sup_datum = sup_data[ n ];
-	fpid = sup_datum[ FPID ];
-	css_id = '#FPID-' + fpid;
-	selection = d3.select( css_id );
-
-	for( d = sup_datum.sub.length, q = 0; q < d; ++q ) {
-	    sub_datum = sup_datum.sub[ q ];
-	    sub_rows = selection
-		.after( 'div' )
-		.classed( 'tr sub', true )
-	    for( property in sub_datum ) {
-		value = sub_datum[ property ];
-		sub_rows
-		    .append( 'div' )
-		    .classed( 'td sub ' + property, true )
-		    .html( value );
-	    }
-	}
-
-	sup_legend = selection
-	    .before( 'div' )
-	    .classed( 'tr sup legend', true )
-	sub_legend = selection
-	    .after( 'div' )
-	    .classed( 'tr sub legend', true )
-
-	
-	for( b = sup_column_labels.length, o = 0; o < b; ++o ) {
-	    sup_legend
-		.append( 'div' )
-		.classed( 'td sup legend', true )
-		.html( sup_column_labels[ o ] );
-	}
-	for( c = sub_column_labels.length, p = 0; p < o; ++p ) {
-	    sub_legend
-		.append( 'div' )
-		.classed( 'td sup legend', true )
-		.html( sub_column_labels[ p ] );
-	}
+	.classed( 'verse-menu', true )
+	.append( 'span' )
+	.classed( 'text', true )
+	.html( 'Verse Groups' )
+	.after( 'span' )
+	.attr( 'id', 'menu' )
+	.after( 'span' )
+	.html( ' - ' + model.data.length + ' Instances' );
+    menu = d3.select( '#menu' )
+	.append( 'a' )
+	.classed( 'previous', true )
+	.attr( 'onclick', 'previous()' )
+	.html( '< Previous' )
+	.after( 'span' )
+	.classed( 'page-counter', true )
+	.html( 'Page ' + this.page + ' of ' + this.pages )
+	.after( 'a' )
+	.classed( 'next', true )
+	.attr( 'onclick', 'next()' )
+	.html( 'Next >' );
+  
+    max = this.page * 100;
+    if( max > this.instances ) {
+	max = this.instances
     }
+    start = ( this.page - 1 ) * 100;
+    
+    for( l = max, i = start; i < l; ++i ) {
+	datum = model.data[ i ];
+	sub = datum.sub;
+	delete datum.sub;
+	delete datum[ FPID ];
+	delete datum[ STARTING_LINE_NUMBER_ORDINATE ];
+	sup = datum;
+
+	verse_group = verse_groups
+	    .append( 'div' )
+	    .classed( 'verse-group', true );
+
+	sup_table = verse_group
+	    .append( 'div' )
+	    .classed( 'table sup', true );
+	sup_table_header = sup_table
+	    .append( 'div' )
+	    .classed( 'thead', true );
+	sup_table_header_row = sup_table_header
+	    .append( 'div' )
+	    .classed( 'tr', true );
+	sup_table_header_row_cells
+	    = this.draw_header_cells( sup_table_header_row,
+				      sup_table_header_row_columns );
+	sup_table_body = sup_table
+	    .append( 'div' )
+	    .classed( 'tbody', true );
+	sup_table_body_row = sup_table_body
+	    .append( 'div' )
+	    .classed( 'tr', true );
+	sup_table_body_row_cells
+	    = this.draw_body_cells( sup_table_body_row, datum );
+	
+	sub_table = verse_group
+	    .append( 'div' )
+	    .classed( 'table sub', true );
+	sub_table_header = sub_table
+	    .append( 'div' )
+	    .classed( 'thead', true );
+	sub_table_header_row = sub_table_header
+	    .append( 'div' )
+	    .classed( 'tr', true );
+	sub_table_header_row_cells
+	    = this.draw_header_cells( sub_table_header_row,
+				      sub_table_header_row_columns );
+	sub_table_body = sub_table
+	    .append( 'div' )
+	    .classed( 'tbody', true );
+	sub_table_body_rows
+	    = this.draw_body_rows( sub_table_body, sub )
+    }
+}
+ViewA2.prototype.draw_header_cells = function( selection, array ) {
+    var l, i;
+    for( l = array.length, i = 0; i < l; ++i ) {
+	selection
+	    .append( 'div' )
+	    .classed( 'th col' + i, true )
+	    .html( array[ i ] );
+    }
+}
+ViewA2.prototype.draw_body_cells = function( selection, object ) {
+    var property;
+    for( property in object ) {
+	selection
+	    .append( 'div' )
+	    .classed( 'td ' + property, true )
+	    .html( object[ property ] );
+    }
+}
+ViewA2.prototype.draw_body_rows = function( selection, array ) {
+    var l, i;
+    for( l = array.length, i = 0; i < l; ++i ) {
+	sub_table_body_row
+	    = selection.append( 'div' ).classed( 'tr', true );
+	this.draw_body_cells( sub_table_body_row, array[ i ] );
+    }
+}
+ViewA2.prototype.next = function() {
+    this.page++;
+    population.update();
+}
+ViewA2.prototype.previous = function() {
+    this.page--;
+    population.update();
 }
 
 var ViewB = function( label ) {
@@ -173,4 +232,6 @@ var ViewC = function( label ) {
 }
 ViewC.prototype = Object.create( View.prototype );
 ViewC.prototype.constructor = ViewC;
-ViewC.prototype.draw = function() {}
+ViewC.prototype.draw = function() {
+    selection = d3.select( '#verse_groups' );
+}

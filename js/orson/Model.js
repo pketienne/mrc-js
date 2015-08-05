@@ -214,12 +214,26 @@ ModelB1.prototype.reduce_remove = function( p, v ) {
 ModelB1.prototype.reduce_init = function() {
     return {};
 }
-ModelB1.prototype.sort_array_by_object_key = function( array, key ) {
+ModelB1.prototype.sort_array_by_object_key = function( array ) {
     return array.sort( function( a, b ) {
 	var x, y;
-	x = a[ key ];
-	y = b[ key ];
-	return ( ( x < y ) ? -1 : ( ( x > y ) ? 1 : 0 ) );
+	x = a[ STARTING_LINE_NUMBER_ORDINATE ];
+	y = b[ STARTING_LINE_NUMBER_ORDINATE ];
+	if( x < y ) {
+	    return -1;
+	} else if( x > y ) {
+	    return 1;
+	} else {
+	    x = a[ FABULAE ];
+	    y = b[ FABULAE ];
+	    if( x < y ) {
+		return -1;
+	    } else if( x > y ) {
+		return 1;
+	    } else {
+		return 0;
+	    }
+	}
     } );
 }
 
@@ -276,9 +290,7 @@ ModelB1.prototype.transmute = function() {
 	data.push( sup );
     }
 
-    this.data = this.sort_array_by_object_key(
-	data, STARTING_LINE_NUMBER_ORDINATE
-    );
+    this.data = this.sort_array_by_object_key( data );
 }
 
 var ModelB2 = function( label ) {
