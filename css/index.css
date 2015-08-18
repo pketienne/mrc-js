@@ -56,16 +56,16 @@ body div#header div#controls {
 }
 body div#header div#controls div.control {
     float: left;
-1}
-body div#header div#controls div.control div.label {
-
+    text-align: center;
 }
-body div#header div#controls div.control a.enable {
+body div#header div#controls div.control div.label {
+    margin: 0px 20px;
+}
+body div#header div#controls div.control div.enable {
     color: green;
     text-decoration: none;
 }
-body div#header div#controls div.control a.disable {
-    margin-right: 40px;
+body div#header div#controls div.control div.disable {
     color: red;
     text-decoration: none;
 }
@@ -93,7 +93,6 @@ body div#main div#dimensions div.dimension h3::first-letter {
 }
 body div#main div#dimensions div.dimension table tr.facet {
     font-size: 0.8em;
-    background-color: #fafafa;
     border-bottom: 1px solid #ccc;
 }
 body div#main div#dimensions div.dimension table tr.facet td.Name {
@@ -177,9 +176,10 @@ body div#footer div.text div.links a {
     text-decoration: none;
 }
 .none {
+    font-size: smaller;
     display: none;
     position: fixed;
-    top: 250px;
+    top: 150px;
     left: 250px;
     z-index: 9999;
 }
@@ -194,4 +194,20 @@ body div#main div#verse_details table tr {
 }
 body div#main div#verse_details table tr td {
     padding: 2px 0px;
+}
+body div#main div#verse_groups div.verse-group div.table.sub div.tbody div.tr:hover,
+body div#main div#dimensions div.dimension h3:hover,
+body div#header div#controls div.control div.enable:hover,
+body div#header div#controls div.control div.disable:hover,
+body div#main div#verse_groups div.verse-menu span#menu a.previous:hover,
+body div#main div#verse_groups div.verse-menu span#menu a.next:hover,
+body div#main div#dimensions div.dimension table tr.facet:hover {
+    background-color: #FCFFA3;
+}
+
+tr.facet-on {
+    background-color: rgb(214, 252, 212);
+}
+tr.facet-off {
+    background-color: rgb(252, 221, 212);
 }

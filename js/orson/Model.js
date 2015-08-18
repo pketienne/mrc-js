@@ -14,6 +14,7 @@ var ModelA = function( label ) {
     this.filterable;
     this.filters_all;
     this.filters_active;
+    this.facets;
     this.schema;
     
     var label = this.label;
@@ -34,11 +35,13 @@ ModelA.prototype.setup = function() {
     var filters, l, i;
 
     filters = [];
+    this.facets = {};
 
     this.transmute();
 
     for( l = this.data.length, i = 0; i < l; ++i ) {
 	filters.push( this.data[ i ].Name );
+	this.facets[ this.data[ i ].Name ] = true;
     }
 
     this.filters_all = filters.slice( 0 );
@@ -49,7 +52,7 @@ ModelA.prototype.toggle = function( facet ) {
 	this.remove( facet );
     } else {
 	this.add( facet );
-    }
+     }
 }
 ModelA.prototype.add = function( facet ) {
     this.filters_active.push( facet );

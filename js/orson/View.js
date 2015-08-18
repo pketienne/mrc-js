@@ -28,6 +28,7 @@ ViewA1.prototype.draw = function( model ) {
     var columns, dimensions, dimension, title, table, rows, cells;
 
     columns = Object.keys( model.data[ 0 ] );
+    label = this.label;
     
     dimensions = d3.select( '#dimensions' );
     dimension = dimensions
@@ -46,12 +47,22 @@ ViewA1.prototype.draw = function( model ) {
 	.data( model.data )
 	.enter()
 	.append( 'tr' )
-	.classed( 'facet', true )
+	.attr( 'class', function( facet, index ) {
+	    if( model.facets[ facet.Name ] ) {
+		return 'facet facet-on'
+	    } else {
+		return 'facet facet-off'
+	    }
+	} )
+	.attr( 'id', function( facet, index ) {
+	    return model.label + '_' + index;
+	} )
 	.on( 'click', function( facet, index ) {
 	    model.toggle( facet.Name );
 	    model.filter();
 	    population.update();
-	} );
+	    toggle_facet_state( model, facet.Name, index );
+	} )
     cells = rows
 	.selectAll( 'td' )
 	.data( function( row ) {

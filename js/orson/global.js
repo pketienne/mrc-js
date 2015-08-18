@@ -65,8 +65,12 @@ var control = function( dimension, state ) {
     var model;
     
     model = population.presenters[ dimension ].model;
+    facets = model.facets;
     state ? model.filters_active = model.filters_all : model.filters_active = [];
     model.filter();
+    for( property in facets ) {
+	facets[ property ] = state;
+    }
     population.update();
 }
 var next = function() {
@@ -104,4 +108,22 @@ var toggle = function( id ) {
 
     selection = d3.select( '#' + id );
     selection.toggle();
+}
+var toggle_facet_state = function( model, facet, index ) {
+    var dimension, facet_status, selection, facet_name;
+
+    dimension = model.label;
+    facet_status = model.facets[ facet ];
+    selection_label = '#' + dimension + ' #' + dimension + '_' + index;
+    selection = d3.select( selection_label );
+
+    if( facet_status ) { 
+	selection.classed( 'facet-on', false );
+	selection.classed( 'facet-off', true );
+	model.facets[ facet ] = false;
+    } else {
+	selection.classed( 'facet-on', true );
+	selection.classed( 'facet-off', false );
+	model.facets[ facet ] = true;
+    }
 }
