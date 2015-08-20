@@ -33,7 +33,7 @@ PresenterB.prototype.constructor = PresenterB;
 var PresenterC = function( label ) {
     Presenter.call( this, label );
 
-    this.model = new ModelB1( this.label );
+    this.model = new ModelB( this.label );
     this.view = new ViewA2( this.label );
 }
 PresenterC.prototype = Object.create( Presenter.prototype );
@@ -42,7 +42,7 @@ PresenterC.prototype.constructor = PresenterC;
 var PresenterD = function( label ) {
     Presenter.call( this, label );
 
-    this.model = new ModelB2( this.label );
+    this.model = new ModelC( this.label );
     this.view = new ViewB( this.label );
 }
 PresenterD.prototype = Object.create( Presenter.prototype );

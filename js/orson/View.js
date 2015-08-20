@@ -139,6 +139,7 @@ ViewA2.prototype.draw = function( model ) {
     for( l = max, i = start; i < l; ++i ) {
 	datum = model.data[ i ];
 	sub = datum.sub;
+	fpid = datum[ FPID ];
 	delete datum.sub;
 	delete datum[ FPID ];
 	delete datum[ STARTING_LINE_NUMBER_ORDINATE ];
@@ -158,7 +159,7 @@ ViewA2.prototype.draw = function( model ) {
 	    .append( 'div' )
 	    .classed( 'tr', true );
 	sup_table_header_row_cells
-	    = this.draw_header_cells( sup_table_header_row,
+	    = this.draw_sup_header_cells( sup_table_header_row,
 				      sup_table_header_row_columns );
 	sup_table_body = sup_table
 	    .append( 'div' )
@@ -167,7 +168,7 @@ ViewA2.prototype.draw = function( model ) {
 	    .append( 'div' )
 	    .classed( 'tr', true );
 	sup_table_body_row_cells
-	    = this.draw_body_cells( sup_table_body_row, datum );
+	    = this.draw_sup_body_cells( sup_table_body_row, datum, fpid );
 	
 	sub_table = verse_group
 	    .append( 'div' )
@@ -179,7 +180,7 @@ ViewA2.prototype.draw = function( model ) {
 	    .append( 'div' )
 	    .classed( 'tr', true );
 	sub_table_header_row_cells
-	    = this.draw_header_cells( sub_table_header_row,
+	    = this.draw_sub_header_cells( sub_table_header_row,
 				      sub_table_header_row_columns );
 	sub_table_body = sub_table
 	    .append( 'div' )
@@ -188,7 +189,20 @@ ViewA2.prototype.draw = function( model ) {
 	    = this.draw_body_rows( sub_table_body, sub )
     }
 }
-ViewA2.prototype.draw_header_cells = function( selection, array ) {
+ViewA2.prototype.draw_sup_header_cells = function( selection, array ) {
+    var l, i;
+    for( l = array.length, i = 0; i < l; ++i ) {
+	selection
+	    .append( 'div' )
+	    .classed( 'th col' + i, true )
+	    .html( array[ i ] );
+    }
+    selection
+	.append( 'div' )
+	.classed( 'th', true )
+	.html( 'Extras' );
+}
+ViewA2.prototype.draw_sub_header_cells = function( selection, array ) {
     var l, i;
     for( l = array.length, i = 0; i < l; ++i ) {
 	selection
@@ -197,7 +211,26 @@ ViewA2.prototype.draw_header_cells = function( selection, array ) {
 	    .html( array[ i ] );
     }
 }
-ViewA2.prototype.draw_body_cells = function( selection, object ) {
+ViewA2.prototype.draw_sup_body_cells = function( selection, object, fpid ) {
+    var property;
+    for( property in object ) {
+	if( property != 'id' ) {
+	    selection
+		.append( 'div' )
+		.classed( 'td ' + property, true )
+		.html( object[ property ] );
+	}
+    }
+    selection
+	.append( 'div' )
+	.classed( 'td ' + property, true )
+	.append( 'a' )
+	.classed( 'notes', true )
+	.attr( 'id', 'o' + fpid )
+	.attr( 'onclick', "popup( '" + fpid + "' );" )
+	.html( 'Notes' );
+}
+ViewA2.prototype.draw_sub_body_cells = function( selection, object ) {
     var property;
     for( property in object ) {
 	if( property != 'id' ) {
@@ -214,9 +247,8 @@ ViewA2.prototype.draw_body_rows = function( selection, array ) {
 	sub_table_body_row
 	    = selection
 	    .append( 'div' )
-	    .attr( 'onclick', "popup( '" + array[ i ][ 'id' ] + "' );" )
 	    .classed( 'tr', true );
-	this.draw_body_cells( sub_table_body_row, array[ i ] );
+	this.draw_sub_body_cells( sub_table_body_row, array[ i ] );
     }
 }
 ViewA2.prototype.next = function() {
@@ -248,20 +280,20 @@ ViewB.prototype.draw = function( model ) {
     model.transmute();
     data = model.data;
     selection = d3.select( '#' + this.label + 's' );
-    
+
+    console.log( data );
     for( property1 in data ) {
 	table = selection
-	    .append( 'table' )
+	.append( 'table' )
 	    .attr( 'id', property1 )
 	    .attr( 'onclick', "toggle( '" + property1 + "' )" )
 	    .classed( 'none', true );
 	for( property2 in data[ property1 ] ) {
 	    rows = table
 		.append( 'tr' )
-		.attr( 'id', property1 );
 	    cells = rows
 		.append( 'td' )
-		.html( property2 + ':' )
+	    .html( property2 + ':' )
 		.after( 'td' )
 		.html( data[ property1 ][ property2 ] );
 	}

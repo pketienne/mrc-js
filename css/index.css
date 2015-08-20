@@ -211,3 +211,7 @@ tr.facet-on {
 tr.facet-off {
     background-color: rgb(252, 221, 212);
 }
+
+body div#main div#verse_groups div.verse-group div.table.sup div.tbody div.tr div.td a.notes {
+    color: blue;
+}

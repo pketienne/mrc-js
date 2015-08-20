@@ -126,14 +126,14 @@ ModelA2.prototype.reduce_add = function( p, v ) {
 	return p;
     } else {
 	p.fpids.push( v[ FPID ] );
-	p.line_count += +v[ LINE_COUNT ];
+	p.line_count += +v[ NOMEN_LINE_COUNT ];
 	return p;
     }
 }
 ModelA2.prototype.reduce_remove = function( p, v ) {
     if( p.fpids.includes( v[ FPID ] ) ) {
 	p.fpids.splice( p.fpids.indexOf( v[ FPID ] ), 1 );
-	p.line_count -= +v[ LINE_COUNT ];
+	p.line_count -= +v[ NOMEN_LINE_COUNT ];
 	return p;
     } else {
 	return p;
@@ -212,17 +212,11 @@ ModelB.prototype.reduce_remove = function( p, v ) {
 ModelB.prototype.reduce_init = function() {
     return {};
 }
-
-var ModelB1 = function( label ) {
-    ModelB.call( this, label );
-}
-ModelB1.prototype = Object.create( ModelB.prototype );
-ModelB1.prototype.constructor = ModelB1;
-ModelB1.prototype.sort_array_by_object_key = function( array ) {
+ModelB.prototype.sort_array_by_object_key = function( array ) {
     return array.sort( function( a, b ) {
 	var x, y;
-	x = a[ STARTING_LINE_NUMBER_ORDINATE ];
-	y = b[ STARTING_LINE_NUMBER_ORDINATE ];
+	x = a[ POETA ];
+	y = b[ POETA ];
 	if( x < y ) {
 	    return -1;
 	} else if( x > y ) {
@@ -235,14 +229,22 @@ ModelB1.prototype.sort_array_by_object_key = function( array ) {
 	    } else if( x > y ) {
 		return 1;
 	    } else {
-		return 0;
+		x = a[ STARTING_LINE_NUMBER_ORDINATE ];
+		y = b[ STARTING_LINE_NUMBER_ORDINATE ];
+		if( x < y ) {
+		    return -1;
+		} else if( x > y ) {
+		    return 1;
+		} else {
+		    return 0;
+		}
 	    }
 	}
     } );
 }
 
-ModelB1.prototype.transmute = function() {
-    var data, fpids, property, value, fpid, l, i, record;
+ModelB.prototype.transmute = function() {
+    var data, fpids, property, value, fpid, sup, sub, record;
 
     data = [];
     fpids = {};
@@ -304,11 +306,42 @@ ModelB1.prototype.transmute = function() {
     this.data = this.sort_array_by_object_key( data );
 }
 
-var ModelB2 = function( label ) {
-    ModelB.call( this, label );
+var ModelC = function( label ) {
+    Model.call( this, label );
 }
-ModelB2.prototype = Object.create( ModelB.prototype );
-ModelB2.prototype.constructor = ModelB2;
-ModelB2.prototype.transmute = function() {
+ModelC.prototype = Object.create( Model.prototype );
+ModelC.prototype.constructor = ModelC;
+ModelC.prototype.setup = function() {
+    this.reference = population.presenters[ POETA ].model.reference;
+    this.group = this.reference
+	.groupAll()
+	.reduce( this.reduce_add, this.reduce_remove, this.reduce_init )
+	.value();
+}
+ModelC.prototype.transmute = function() {
     this.data = this.group;
+}
+ModelC.prototype.reduce_add = function( p, v ) {
+    var unique_id;
+
+    unique_id = v[ FPID ];
+
+    p[ unique_id ] = {};
+    p[ unique_id ][ CLOSURE ] = v[ CLOSURE ];
+    p[ unique_id ][ COMMENTS_ON_LENGTH ] = v[ COMMENTS_ON_LENGTH ];
+    p[ unique_id ][ COMMENTS_ON_OTHER ] = v[ COMMENTS_ON_OTHER ];
+
+    return p;
+}
+ModelC.prototype.reduce_remove = function( p, v ) {
+    var unique_id;
+
+    unique_id = v[ FPID ];
+
+    delete p[ unique_id ];
+
+    return p;
+}
+ModelC.prototype.reduce_init = function() {
+    return {};
 }
