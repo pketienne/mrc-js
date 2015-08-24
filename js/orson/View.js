@@ -15,6 +15,36 @@ var ViewA = function( label ) {
 }
 ViewA.prototype = Object.create( View.prototype );
 ViewA.prototype.constructor = ViewA;
+ViewA.prototype.get_label = function() {
+    console.log( this.label );
+    
+    switch( this.label ) {
+    case POETA:
+	return 'Playwright'
+	break;
+    case 'fabulae':
+	return 'play'
+	break;
+    case 'genera':
+	return 'Character Type'
+	break;
+    case 'nomen':
+	return 'Character'
+	break;
+    case 'meter':
+	return 'Meter'
+	break;
+    case 'meter_type':
+	return 'Meter Type'
+	break;
+    case 'meter_before':
+	return 'Meter Before'
+	break;
+    case 'meter_after':
+	return 'Meter After'
+	break;
+    }
+}
 
 var ViewA1 = function( label ) {
     ViewA.call( this, label );
@@ -28,7 +58,7 @@ ViewA1.prototype.draw = function( model ) {
     var columns, dimensions, dimension, title, table, rows, cells;
 
     columns = Object.keys( model.data[ 0 ] );
-    label = this.label;
+    label = this.get_label();
     
     dimensions = d3.select( '#dimensions' );
     dimension = dimensions
@@ -38,7 +68,7 @@ ViewA1.prototype.draw = function( model ) {
     title = dimension
 	.append( 'h3' )
     	.attr( 'onclick', 'dimension_toggle( "' + this.label + '" )' )
-	.html( this.label );
+	.html( label );
     table = dimension
 	.append( 'table' )
 	.classed( this.label, true );
@@ -94,11 +124,11 @@ ViewA2.prototype.draw = function( model ) {
 	max, start, l, i, view;
 	
     sup_table_header_row_columns = [
-	'Fabulae', 'Starting Line', 'Ending Line', 'Line Count', 'Poeta',
+	'Play', 'Starting Line', 'Ending Line', 'Line Count', 'Playwright',
 	'Starting Text', 'Ending Text'
     ];
     sub_table_header_row_columns = [
-	'Nomen', 'Line Count', 'Genera', 'Meter', 'Meter Type',
+	'Character', 'Line Count', 'Character Type', 'Meter', 'Meter Type',
 	'Meter Before', 'Meter After'
     ];
 

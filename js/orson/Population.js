@@ -25,13 +25,13 @@ var Population = function() {
 	case POETA:
 	case FABULAE:
 	case METER:
-	case METER_TYPE:
 	case METER_BEFORE:
 	case METER_AFTER:
 	    this.presenters[ label ] = new PresenterA( label );
 	    break;
 	case GENERA:
 	case NOMEN:
+	case METER_TYPE:
 	    this.presenters[ label ] = new PresenterB( label );
 	    break;
 	case VERSE_GROUPS:
