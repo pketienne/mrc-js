@@ -254,8 +254,18 @@ dt {
 }
 dt:after {
     content: ":";
+    margin-right: 5px;
 }
 dd {
     margin: 0 0 0 110px;
     padding: 0 0 0.5em 0;
+}
+
+body div#main div.content h2 {
+    font-size: large;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+body div#main div.content h3 {
+    font-weight: bold;
 }
