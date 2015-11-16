@@ -9,7 +9,7 @@ def execute
   tsv = TSV.new("../tsv/dknox.tsv")
   legend = Legend.new(tsv)
   tsv.populate_ordinates!(legend)
-  File.open("../tsv/index.tsv", "w") do |f|
+  File.open("../tsv/rendered.tsv", "w") do |f|
     file = ""
     tsv.column_labels.each do |l|
       file += "#{l}\t"

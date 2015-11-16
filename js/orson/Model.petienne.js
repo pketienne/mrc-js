@@ -122,37 +122,25 @@ var ModelA2 = function( label ) {
 ModelA2.prototype = Object.create( ModelA.prototype );
 ModelA2.prototype.constructor = ModelA2;
 ModelA2.prototype.reduce_add = function( p, v ) {
-    var unique_id;
-    unique_id
-	= v[ NOMEN ]
-	+ v[ GENERA ]
-	+ v[ FPID ];
-
-    if( p.unique_ids.includes( unique_id ) ) {
-	    return p;
+    if( p.fpids.includes( v[ FPID ] ) ) {
+	return p;
     } else {
-	    p.unique_ids.push( unique_id );
-	    p.line_count += +v[ NOMEN_LINE_COUNT ];
-	    return p;
+	p.fpids.push( v[ FPID ] );
+	p.line_count += +v[ NOMEN_LINE_COUNT ];
+	return p;
     }
 }
 ModelA2.prototype.reduce_remove = function( p, v ) {
-    var unique_id;
-    unique_id
-	= v[ NOMEN ]
-	+ v[ GENERA ]
-	+ v[ FPID ];
-
-    if( p.unique_ids.includes( unique_id ) ) {
-	p.unique_ids.splice( p.unique_ids.indexOf( unique_id ), 1 );
+    if( p.fpids.includes( v[ FPID ] ) ) {
+	p.fpids.splice( p.fpids.indexOf( v[ FPID ] ), 1 );
 	p.line_count -= +v[ NOMEN_LINE_COUNT ];
 	return p;
     } else {
 	return p;
     }
 }
-ModelA2.prototype.reduce_init = function() {
-    return { unique_ids: [], line_count: 0 };
+ModelA2.prototype.reduce_init = function( p, v ) {
+    return { fpids: [], line_count: 0 }
 }
 
 var ModelB = function( label ) {
@@ -285,36 +273,31 @@ ModelB.prototype.transmute = function() {
 	sup[ POETA ] = value[ 0 ][ POETA ];
 	sup[ STARTING_LINE ] = value[ 0 ][ STARTING_LINE ];
 	sup[ ENDING_LINE ] = value[ 0 ][ ENDING_LINE ];
-	sup[ METER ] = value[ 0 ][ METER ];
-	sup[ METER_BEFORE ] = value[ 0 ][ METER_BEFORE ];
-	sup[ METER_AFTER ] = value[ 0 ][ METER_AFTER ];
-	sup[ 'sub1' ] = [];
-	sup[ 'sub2' ] = [];
+	sup[ 'sub' ] = [];
 	sup[ FPID ] = value[ 0 ][ FPID ];
 	sup[ STARTING_LINE_NUMBER_ORDINATE ]
 	    = +value[ 0 ][ STARTING_LINE_NUMBER_ORDINATE ];
 	
 	for( l = value.length, i = 0; i < l; ++i ) {
 	    record = value[ i ];
-	    sub1 = {};
+	    sub = {};
 
-	    sub1[ NOMEN ] = record[ NOMEN ];
-	    sub1[ NOMEN_LINE_COUNT ] = +record[ NOMEN_LINE_COUNT ];
-	    sub1[ GENERA ] = record[ GENERA ];
-	    sub1[ 'id' ]
+	    sub[ NOMEN ] = record[ NOMEN ];
+	    sub[ NOMEN_LINE_COUNT ] = +record[ NOMEN_LINE_COUNT ];
+	    sub[ GENERA ] = record[ GENERA ];
+	    sub[ METER ] = record[ METER ];
+	    sub[ METER_TYPE ] = record[ METER_TYPE ];
+	    sub[ METER_BEFORE ] = record[ METER_BEFORE ];
+	    sub[ METER_AFTER ] = record[ METER_AFTER ];
+	    sub[ 'id' ]
 		= record[ NOMEN ]
 		+ record[ NOMEN_LINE_COUNT ]
 		+ record[ GENERA ]
+		+ record[ METER ]
+		+ record[ METER_TYPE ]
 		+ record[ FPID ];
 	    
-	    sup[ 'sub1' ].push( sub1 );
-	}
-
-	for ( l = value.length, i = 0; i < l; ++i ) {
-	    record = value[ i ];
-	    sub2 = sup[ 'sub2' ];
-
-	    sup[ 'sub2' ].push( record[ METER_TYPE ] );
+	    sup[ 'sub' ].push( sub );
 	}
 
 	data.push( sup );

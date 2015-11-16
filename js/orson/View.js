@@ -16,7 +16,6 @@ var ViewA = function( label ) {
 ViewA.prototype = Object.create( View.prototype );
 ViewA.prototype.constructor = ViewA;
 ViewA.prototype.get_label = function() {
-    console.log( this.label );
     
     switch( this.label ) {
     case POETA:
@@ -119,17 +118,21 @@ ViewA2.prototype.draw = function( model ) {
     var datum, verse_groups, verse_group,
 	sup, sup_table, sup_table_header, sup_table_header_row,
 	sup_table_header_row_columns, sup_table_header_row_cells,
-	sub, sub_table, sub_table_header, sub_table_header_row,
-	sub_table_header_row_columns, sub_table_header_row_cells,
+	sub1, sub1_table, sub1_table_header, sub1_table_header_row,
+	sub1_table_header_row_columns, sub1_table_header_row_cells,
+	sub2, sub2_table, sub2_table_header, sub2_table_header_row,
+	sub2_table_header_row_columns, sub2_table_header_row_cells,
 	max, start, l, i, view;
 	
     sup_table_header_row_columns = [
 	'Play', 'Starting Line', 'Ending Line', 'Line Count', 'Playwright',
-	'Starting Text', 'Ending Text'
+	'Starting Text', 'Ending Text', 'Meter', 'Meter Before', 'Meter After'
     ];
-    sub_table_header_row_columns = [
-	'Character', 'Line Count', 'Character Type', 'Meter', 'Meter Type',
-	'Meter Before', 'Meter After'
+    sub1_table_header_row_columns = [
+	'Character', 'Line Count', 'Character Type'
+    ];
+    sub2_table_header_row_columns = [
+	'Meter Type'
     ];
 
     population.instances = model.data.length;
@@ -168,9 +171,11 @@ ViewA2.prototype.draw = function( model ) {
     
     for( l = max, i = start; i < l; ++i ) {
 	datum = model.data[ i ];
-	sub = datum.sub;
+	sub1 = datum.sub1;
+	sub2 = datum.sub2;
 	fpid = datum[ FPID ];
-	delete datum.sub;
+	delete datum.sub1;
+	delete datum.sub2;
 	delete datum[ FPID ];
 	delete datum[ STARTING_LINE_NUMBER_ORDINATE ];
 	sup = datum;
@@ -200,23 +205,42 @@ ViewA2.prototype.draw = function( model ) {
 	sup_table_body_row_cells
 	    = this.draw_sup_body_cells( sup_table_body_row, datum, fpid );
 	
-	sub_table = verse_group
+	sub1_table = verse_group
 	    .append( 'div' )
-	    .classed( 'table sub', true );
-	sub_table_header = sub_table
+	    .classed( 'table sub1', true );
+	sub1_table_header = sub1_table
 	    .append( 'div' )
 	    .classed( 'thead', true );
-	sub_table_header_row = sub_table_header
+	sub1_table_header_row = sub1_table_header
 	    .append( 'div' )
 	    .classed( 'tr', true );
-	sub_table_header_row_cells
-	    = this.draw_sub_header_cells( sub_table_header_row,
-				      sub_table_header_row_columns );
-	sub_table_body = sub_table
+	sub1_table_header_row_cells
+	    = this.draw_sub_header_cells( sub1_table_header_row,
+				      sub1_table_header_row_columns );
+	sub1_table_body = sub1_table
 	    .append( 'div' )
 	    .classed( 'tbody', true );
-	sub_table_body_rows
-	    = this.draw_body_rows( sub_table_body, sub )
+	sub1_table_body_rows
+	    = this.draw_body_rows( sub1_table_body, sub1 )
+
+	sub2_table = verse_group
+	    .append( 'div' )
+	    .classed( 'table sub2', true );
+	sub2_table_header = sub2_table
+	    .append( 'div' )
+	    .classed( 'thead', true );
+	sub2_table_header_row = sub2_table_header
+	    .append( 'div' )
+	    .classed( 'tr', true );
+	sub2_table_header_row_cell = sub2_table_header_row
+	    .append( 'div' )
+	    .classed( 'th col0', true)
+	    .html( 'Meter' );
+	sub2_table_body = sub2_table
+	    .append( 'div' )
+	    .classed( 'tbody', true );
+	sub2_table_body_rows
+	    = this.draw_sub2_body_rows( sub2_table_body, sub2 )
     }
 }
 ViewA2.prototype.draw_sup_header_cells = function( selection, array ) {
@@ -281,6 +305,18 @@ ViewA2.prototype.draw_body_rows = function( selection, array ) {
 	this.draw_sub_body_cells( sub_table_body_row, array[ i ] );
     }
 }
+ViewA2.prototype.draw_sub2_body_rows = function( selection, array ) {
+    var l, i;
+    for( l = array.length, i = 0; i < l; ++i ) {
+	selection
+	    .append( 'div' )
+	    .classed( 'tr', true )
+	    .append( 'div' )
+	    .classed( 'td meter', true )
+	    .html( array[ i ] );
+    }
+    console.log( array );
+}
 ViewA2.prototype.next = function() {
     population.page++;
     population.update();
@@ -311,7 +347,6 @@ ViewB.prototype.draw = function( model ) {
     data = model.data;
     selection = d3.select( '#' + this.label + 's' );
 
-    console.log( data );
     for( property1 in data ) {
 	table = selection
 	.append( 'table' )
