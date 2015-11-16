@@ -315,7 +315,6 @@ ViewA2.prototype.draw_sub2_body_rows = function( selection, array ) {
 	    .classed( 'td meter', true )
 	    .html( array[ i ] );
     }
-    console.log( array );
 }
 ViewA2.prototype.next = function() {
     population.page++;

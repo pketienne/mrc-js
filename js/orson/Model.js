@@ -294,6 +294,7 @@ ModelB.prototype.transmute = function() {
 	sup[ STARTING_LINE_NUMBER_ORDINATE ]
 	    = +value[ 0 ][ STARTING_LINE_NUMBER_ORDINATE ];
 	
+	var sub1hash = {};   // temporary object to keep unique by ID
 	for( l = value.length, i = 0; i < l; ++i ) {
 	    record = value[ i ];
 	    sub1 = {};
@@ -306,22 +307,39 @@ ModelB.prototype.transmute = function() {
 		+ record[ NOMEN_LINE_COUNT ]
 		+ record[ GENERA ]
 		+ record[ FPID ];
-	    
-	    sup[ 'sub1' ].push( sub1 );
+	    sub1hash[sub1['id']] = sub1;
 	}
 
+	// sub1hash kept IDs unique; now make array
+	for (k in sub1hash){
+	    sup['sub1'].push(sub1hash[k]);
+	}
+	
 	for ( l = value.length, i = 0; i < l; ++i ) {
 	    record = value[ i ];
 	    sub2 = sup[ 'sub2' ];
-
+	    
 	    sup[ 'sub2' ].push( record[ METER_TYPE ] );
 	}
-
+	
+	// filter sup[ 'sub1' ] for unique value combinations
+	// ??
+	// filter sub[ 'sub2' ] for unique values
+	sup[ 'sub2' ] = this.uniq( sup[ 'sub2' ] );
+	
 	data.push( sup );
     }
 
     this.data = this.sort_array_by_object_key( data );
 }
+
+ModelB.prototype.uniq = function( a ) {
+    return a.reduce(function(p, c) {
+	    if (p.indexOf(c) < 0) p.push(c);
+	    return p;
+	}, []);
+}
+
 
 var ModelC = function( label ) {
     Model.call( this, label );
