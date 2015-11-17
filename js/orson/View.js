@@ -235,7 +235,7 @@ ViewA2.prototype.draw = function( model ) {
 	sub2_table_header_row_cell = sub2_table_header_row
 	    .append( 'div' )
 	    .classed( 'th col0', true)
-	    .html( 'Meter' );
+	    .html( 'Meter Type' );
 	sub2_table_body = sub2_table
 	    .append( 'div' )
 	    .classed( 'tbody', true );
