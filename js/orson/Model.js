@@ -122,25 +122,37 @@ var ModelA2 = function( label ) {
 ModelA2.prototype = Object.create( ModelA.prototype );
 ModelA2.prototype.constructor = ModelA2;
 ModelA2.prototype.reduce_add = function( p, v ) {
-    if( p.fpids.includes( v[ FPID ] ) ) {
-	return p;
+    var unique_id;
+    unique_id
+	= v[ NOMEN ]
+	+ v[ GENERA ]
+	+ v[ FPID ];
+
+    if( p.unique_ids.includes( unique_id ) ) {
+	    return p;
     } else {
-	p.fpids.push( v[ FPID ] );
-	p.line_count += +v[ NOMEN_LINE_COUNT ];
-	return p;
+	    p.unique_ids.push( unique_id );
+	    p.line_count += +v[ NOMEN_LINE_COUNT ];
+	    return p;
     }
 }
 ModelA2.prototype.reduce_remove = function( p, v ) {
-    if( p.fpids.includes( v[ FPID ] ) ) {
-	p.fpids.splice( p.fpids.indexOf( v[ FPID ] ), 1 );
+    var unique_id;
+    unique_id
+	= v[ NOMEN ]
+	+ v[ GENERA ]
+	+ v[ FPID ];
+
+    if( p.unique_ids.includes( unique_id ) ) {
+	p.unique_ids.splice( p.unique_ids.indexOf( unique_id ), 1 );
 	p.line_count -= +v[ NOMEN_LINE_COUNT ];
 	return p;
     } else {
 	return p;
     }
 }
-ModelA2.prototype.reduce_init = function( p, v ) {
-    return { fpids: [], line_count: 0 }
+ModelA2.prototype.reduce_init = function() {
+    return { unique_ids: [], line_count: 0 };
 }
 
 var ModelB = function( label ) {
@@ -273,38 +285,61 @@ ModelB.prototype.transmute = function() {
 	sup[ POETA ] = value[ 0 ][ POETA ];
 	sup[ STARTING_LINE ] = value[ 0 ][ STARTING_LINE ];
 	sup[ ENDING_LINE ] = value[ 0 ][ ENDING_LINE ];
-	sup[ 'sub' ] = [];
+	sup[ METER ] = value[ 0 ][ METER ];
+	sup[ METER_BEFORE ] = value[ 0 ][ METER_BEFORE ];
+	sup[ METER_AFTER ] = value[ 0 ][ METER_AFTER ];
+	sup[ 'sub1' ] = [];
+	sup[ 'sub2' ] = [];
 	sup[ FPID ] = value[ 0 ][ FPID ];
 	sup[ STARTING_LINE_NUMBER_ORDINATE ]
 	    = +value[ 0 ][ STARTING_LINE_NUMBER_ORDINATE ];
 	
+	var sub1hash = {};   // temporary object to keep unique by ID
 	for( l = value.length, i = 0; i < l; ++i ) {
 	    record = value[ i ];
-	    sub = {};
+	    sub1 = {};
 
-	    sub[ NOMEN ] = record[ NOMEN ];
-	    sub[ NOMEN_LINE_COUNT ] = +record[ NOMEN_LINE_COUNT ];
-	    sub[ GENERA ] = record[ GENERA ];
-	    sub[ METER ] = record[ METER ];
-	    sub[ METER_TYPE ] = record[ METER_TYPE ];
-	    sub[ METER_BEFORE ] = record[ METER_BEFORE ];
-	    sub[ METER_AFTER ] = record[ METER_AFTER ];
-	    sub[ 'id' ]
+	    sub1[ NOMEN ] = record[ NOMEN ];
+	    sub1[ NOMEN_LINE_COUNT ] = +record[ NOMEN_LINE_COUNT ];
+	    sub1[ GENERA ] = record[ GENERA ];
+	    sub1[ 'id' ]
 		= record[ NOMEN ]
 		+ record[ NOMEN_LINE_COUNT ]
 		+ record[ GENERA ]
-		+ record[ METER ]
-		+ record[ METER_TYPE ]
 		+ record[ FPID ];
-	    
-	    sup[ 'sub' ].push( sub );
+	    sub1hash[sub1['id']] = sub1;
 	}
 
+	// sub1hash kept IDs unique; now make array
+	for (k in sub1hash){
+	    sup['sub1'].push(sub1hash[k]);
+	}
+	
+	for ( l = value.length, i = 0; i < l; ++i ) {
+	    record = value[ i ];
+	    sub2 = sup[ 'sub2' ];
+	    
+	    sup[ 'sub2' ].push( record[ METER_TYPE ] );
+	}
+	
+	// filter sup[ 'sub1' ] for unique value combinations
+	// ??
+	// filter sub[ 'sub2' ] for unique values
+	sup[ 'sub2' ] = this.uniq( sup[ 'sub2' ] );
+	
 	data.push( sup );
     }
 
     this.data = this.sort_array_by_object_key( data );
 }
+
+ModelB.prototype.uniq = function( a ) {
+    return a.reduce(function(p, c) {
+	    if (p.indexOf(c) < 0) p.push(c);
+	    return p;
+	}, []);
+}
+
 
 var ModelC = function( label ) {
     Model.call( this, label );

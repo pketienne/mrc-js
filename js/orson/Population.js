@@ -27,11 +27,11 @@ var Population = function() {
 	case METER:
 	case METER_BEFORE:
 	case METER_AFTER:
+	case METER_TYPE:
 	    this.presenters[ label ] = new PresenterA( label );
 	    break;
 	case GENERA:
 	case NOMEN:
-	case METER_TYPE:
 	    this.presenters[ label ] = new PresenterB( label );
 	    break;
 	case VERSE_GROUPS:
@@ -45,7 +45,6 @@ var Population = function() {
 }
 Population.prototype.setup = function() {
     var property;
-
     for( property in this.presenters ) {
 	this.presenters[ property ].setup();
     }
@@ -56,9 +55,9 @@ Population.prototype.update = function() {
     for( property in this.presenters ) {
 	this.presenters[ property ].update();
     }
-
     this.activate_status();
 }
+
 Population.prototype.activate_status = function() {
     var property, value;
     

@@ -1,5 +1,5 @@
 var FPID = 'fpid';
-var POETA = 'poeta'
+var POETA = 'poeta';
 var FABULAE = 'fabulae';
 var LINE_COUNT = 'numlines';
 var STARTING_LINE_NUMBER_LABEL = 'line_number_first_label';
@@ -33,7 +33,7 @@ var PRESENTER_LABELS = [
 var crossfilter;
 var population;
 
-d3.tsv( 'tsv/index.tsv', function( data ) {
+d3.tsv( 'tsv/current.tsv', function( data ) {
     crossfilter = crossfilter( data );
 
     population = new Population();
@@ -126,4 +126,7 @@ var toggle_facet_state = function( model, facet, index ) {
 	selection.classed( 'facet-off', false );
 	model.facets[ facet ] = true;
     }
+    population.page = 1;
+    population.update();
+
 }

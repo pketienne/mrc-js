@@ -13,7 +13,7 @@ div.caption  { display: table-caption }
 }
 body {
     width: 100%;
-    min-width: 800px;
+    min-width: 1200px;
 }
 body div#header div#wustl {
     height: 42px;
@@ -104,6 +104,9 @@ body div#main div#dimensions div.dimension table tr.facet td.Lines {
     width: 1%;
     text-align: right;
 }
+body div#main div#dimensions div.dimension table.fabulae td.Name {
+    font-style: italic;
+}
 
 body div#main div#verse_groups div.verse-menu span.text { font-weight: bold; }
 body div#main div#verse_groups div.verse-menu span#menu { float: right; }
@@ -135,20 +138,36 @@ body div#main div#verse_groups div.verse-group div.table.sup div.thead div.tr di
 body div#main div#verse_groups div.verse-group div.table.sup div.tbody                     { background-color: #eee; }
 body div#main div#verse_groups div.verse-group div.table.sup div.tbody div.tr              {}
 body div#main div#verse_groups div.verse-group div.table.sup div.tbody div.tr div.th       {}
-body div#main div#verse_groups div.verse-group div.table.sub                               { padding-left: 120px; }
-body div#main div#verse_groups div.verse-group div.table.sub div.thead                     { background-color: #53A561; }
-body div#main div#verse_groups div.verse-group div.table.sub div.thead div.tr              {}
-body div#main div#verse_groups div.verse-group div.table.sub div.thead div.tr div.th       { border-top: 1px solid #666;}
-body div#main div#verse_groups div.verse-group div.table.sub div.thead div.tr div.th.col0  { width: 20% }
-body div#main div#verse_groups div.verse-group div.table.sub div.thead div.tr div.th.col1  { width: 10%; }
-body div#main div#verse_groups div.verse-group div.table.sub div.thead div.tr div.th.col2  { width: 19%; }
-body div#main div#verse_groups div.verse-group div.table.sub div.thead div.tr div.th.col3  { width: 10%; }
-body div#main div#verse_groups div.verse-group div.table.sub div.thead div.tr div.th.col4  { width: 15%; }
-body div#main div#verse_groups div.verse-group div.table.sub div.thead div.tr div.th.col5  { width: 15%; }
-body div#main div#verse_groups div.verse-group div.table.sub div.thead div.tr div.th.col6  { width: 21%; }
-body div#main div#verse_groups div.verse-group div.table.sub div.tbody                     { background-color: #eee; }
-body div#main div#verse_groups div.verse-group div.table.sub div.tbody div.tr              {}
-body div#main div#verse_groups div.verse-group div.table.sub div.tbody div.tr div.th       {}
+
+body div#main div#verse_groups div.verse-group div.table.sub1                               { padding-left: 400px; }
+body div#main div#verse_groups div.verse-group div.table.sub1 div.thead                     { background-color: #53A561; }
+body div#main div#verse_groups div.verse-group div.table.sub1 div.thead div.tr              {}
+body div#main div#verse_groups div.verse-group div.table.sub1 div.thead div.tr div.th       { border-top: 1px solid #666;}
+body div#main div#verse_groups div.verse-group div.table.sub1 div.thead div.tr div.th.col0  { width: 20%; }
+body div#main div#verse_groups div.verse-group div.table.sub1 div.thead div.tr div.th.col1  { width: 10%; }
+body div#main div#verse_groups div.verse-group div.table.sub1 div.thead div.tr div.th.col2  { width: 19%; }
+body div#main div#verse_groups div.verse-group div.table.sub1 div.thead div.tr div.th.col3  { width: 10%; }
+body div#main div#verse_groups div.verse-group div.table.sub1 div.thead div.tr div.th.col4  { width: 15%; }
+body div#main div#verse_groups div.verse-group div.table.sub1 div.thead div.tr div.th.col5  { width: 15%; }
+body div#main div#verse_groups div.verse-group div.table.sub1 div.thead div.tr div.th.col6  { width: 21%; }
+body div#main div#verse_groups div.verse-group div.table.sub1 div.tbody                     { background-color: #eee; }
+body div#main div#verse_groups div.verse-group div.table.sub1 div.tbody div.tr              {}
+body div#main div#verse_groups div.verse-group div.table.sub1 div.tbody div.tr div.th       {}
+
+body div#main div#verse_groups div.verse-group div.table.sub2                               { padding-left: 800px; }
+body div#main div#verse_groups div.verse-group div.table.sub2 div.thead                     { background-color: #53A561; }
+body div#main div#verse_groups div.verse-group div.table.sub2 div.thead div.tr              {}
+body div#main div#verse_groups div.verse-group div.table.sub2 div.thead div.tr div.th       { border-top: 1px solid #666;}
+body div#main div#verse_groups div.verse-group div.table.sub2 div.thead div.tr div.th.col0  { width: 100%; }
+body div#main div#verse_groups div.verse-group div.table.sub2 div.thead div.tr div.th.col1  { width: 10%; }
+body div#main div#verse_groups div.verse-group div.table.sub2 div.thead div.tr div.th.col2  { width: 19%; }
+body div#main div#verse_groups div.verse-group div.table.sub2 div.thead div.tr div.th.col3  { width: 10%; }
+body div#main div#verse_groups div.verse-group div.table.sub2 div.thead div.tr div.th.col4  { width: 15%; }
+body div#main div#verse_groups div.verse-group div.table.sub2 div.thead div.tr div.th.col5  { width: 15%; }
+body div#main div#verse_groups div.verse-group div.table.sub2 div.thead div.tr div.th.col6  { width: 21%; }
+body div#main div#verse_groups div.verse-group div.table.sub2 div.tbody                     { background-color: #eee; }
+body div#main div#verse_groups div.verse-group div.table.sub2 div.tbody div.tr              {}
+body div#main div#verse_groups div.verse-group div.table.sub2 div.tbody div.tr div.th       {}
 
 body div#footer {
     border-top: 10px solid #333;
@@ -194,9 +213,9 @@ body div#main div#verse_details table tr {
 
 }
 body div#main div#verse_details table tr td {
-    padding: 2px 0px;
+    padding: 2px 10px 0 0;
 }
-body div#main div#verse_groups div.verse-group div.table.sub div.tbody div.tr:hover,
+/* body div#main div#verse_groups div.verse-group div.table.sub div.tbody div.tr:hover, */
 body div#main div#dimensions div.dimension h3:hover,
 body div#header div#controls div.control div.enable:hover,
 body div#header div#controls div.control div.disable:hover,
@@ -257,6 +276,7 @@ dt:after {
     margin-right: 5px;
 }
 dd {
+    display: block; 
     margin: 0 0 0 110px;
     padding: 0 0 0.5em 0;
 }
@@ -269,3 +289,13 @@ body div#main div.content h2 {
 body div#main div.content h3 {
     font-weight: bold;
 }
+
+body div#main div.content i {
+    font-style: italic;
+}
+
+
+li { 
+     margin-left: 30px;
+     text-indent: -30px;
+ }
