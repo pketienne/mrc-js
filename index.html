@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <title>The Meters of Roman Comedy</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,55 +29,96 @@
 	   alt="The Music of Roman Comedy" />
       <div class="content">
 
-	<h2>Timothy J. Moore, <i>The Meters of Roman Comedy</i></h2>
-       <p>This database is dedicated to the memory of Cesare Questa (1934-2016), the incomparable master of Roman Comedy’s <i>numeri innumeri,</i> without whom it would not have been possible.</p>
+        <h2>Timothy J. Moore, <i>The Meters of Roman Comedy</i></h2>
+        <p>This database is dedicated to the memory of Cesare Questa (1934-2016), the incomparable master of Roman Comedy’s <i>numeri innumeri,</i> without whom it would not have been possible.</p>
         
-	<h3>Introduction</h3>
-	<p>This is a database of all metrical units (passages in an individual meter) in the extant plays of Plautus and Terence except for the fragmentary <i>Vidularia</i>.</p>
-	<p>Each record represents a metrical unit, or a passage in a single meter (these range from one verse to over 200 verses) and includes the following fields:</p>
-	<ul>
-	  <li>Playwright</li>
-	  <li>Play</li>
-	  <li>Line # first: the number of the first verse of this metrical unit</li>
-	  <li>Line # last: number of the last verse of this metrical unit</li>
-	  <li>Number of lines: total number of verses in this metrical unit</li>
-	  <li>Line first: a quotation of the first verse in the passage</li>
-	  <li>Line last: a quotation of the last verse in the passage</li>
-	  <li>Meter: the meter of the passage (in the case of verses that include more than one meter, all are recorded as one: e.g.: ba2bacol counts as one meter, as does a versus reizianus and cr2tr4cat)</li>
-	  <li>Type: the type of meter to which the meter of the passage belongs (if two or more meter types occur in the same verse, both are counted: e.g.: cr2tr4cat counts as both cretic and trochaic)</li>
-	  <li>Line Before: the meter of the passage immediately preceding this one</li>
-	  <li>Line After: the meter of the passage immediately following this one</li>
-	  <li>Closure: Notes on how the passage ends (e.g., whether the end of the metrical unit corresponds with the end of a sentence or a scene)</li>
-	  <li>Comments on Length: remarks on such matters as numbers of long and short syllables, resolutions, and variations on standard metrical forms</li>
-	  <li>Character, Type, Num of Lines: The name of each character who speaks or sings in the passage, the character’s type, and the number of verses in which that character speaks or sings in the passage.  In verses where one or more characters speak, one verse is attributed to each character, regardless of how much or how little of the verse that character delivers.</li>
-	  <li>Comments (Other): notes on textual questions, content, choice of meter, and other matters.</li>
-	</ul>
-	<h3>How to Use the Database</h3>
-	<p>The interface for the database is comprised of three main sections: the dimension controls, the facet controls, and the results list. There are eight individual dimensions: &quot;Playwright&quot;, &quot;Play&quot;, &quot;Character Type&quot;, &quot;Character&quot;, &quot;Meter&quot;, &quot;Meter Type&quot;, &quot;Meter Before&quot;, and &quot;Meter After&quot;. Each of these eight dimenmsions contain two or more facets (these can also be thought of inversely as filters). Each facet can either be selected or deselected. While selected, the results list will include records where the dimension contains the selected facet. While deselected, those records will be filtered out of the results list.</p>
-	<p>To select or deselect a particular facet, click the title of desired dimension, then click the desired facet. When the facet is selected its background will show a green color. When deselected the facet's background will be a red color. You can click the title of the dimension again to collapse the list.</p>
-	<p>To select or deselect many facets at once, a list of dimension controls is available near the top of the page. Each dimension has an associated &quot;Select All&quot; and &quot;Deselect All&quot; option. These can be used to select or deselect all facets for that dimension at once. There is also an control for selecting or deselecting all facets of all dimensions at once. This is listed as its own control labeled &quot;Dimensions&quot;.</p>
-	<p>Additional information about a particular record's notes is also available through clicking the &quot;Notes&quot; link within the &quot;Extras&quot; column of the results list.</p>
-	<h3>Sources</h3>
+        <h3>Introduction</h3>
+        <p>This is a database of all metrical units (passages in an individual meter) in the extant plays of Plautus and Terence except for the fragmentary <i>Vidularia</i>.</p>
+        <p>Each record represents a metrical unit, or a passage in a single meter (these range from one verse to over 200 verses) and includes the following fields:</p>
+        
+        <h4><strong>Fields immediately visible in each record:</strong></h4>
+        <ul class="bulleted">
+          <li>Playwright</li>
+          <li>Play</li>
+          <li>Starting Line: the number of the first verse of this metrical unit</li>
+          <li>Ending Line: number of the last verse of this metrical unit</li>
+          <li>Line Count: total number of verses in this metrical unit</li>
+          <li>Starting Text: a quotation of the first verse in the passage</li>
+          <li>Ending Text: a quotation of the last verse in the passage</li>
+          <li>Meter: the meter of the passage (in the case of verses that include more than one meter, all are recorded as one: e.g.: ba2bacol counts as one meter, as does a versus reizianus and cr2tr4cat)</li>
+          <li>Meter Before: the meter of the passage immediately preceding this one</li>
+          <li>Meter After: the meter of the passage immediately following this one</li>
+          <li>Character, Character Verses, Character Type: The name of each character who speaks or sings in the passage, the number of verses in which that character speaks or sings in the passage (in verses where one or more characters speak, one verse is attributed to each character, regardless of how much or how little of the verse that character delivers); and the character's type.</li>
+          <li>Meter Type: the type of meter to which the meter of the passage belongs (if two or more meter types occur in the same verse, both are counted: e.g.: cr2tr4cat counts as both cretic and trochaic)</li>
+        </ul>
+        <h4><strong>Fields accessed by clicking "Notes" at the right of each record:</strong> (to hide the notes again, click on the box where they appear)</h4>
+        <ul class="bulleted">
+          <li>Closure: notes on how the passage ends (e.g., whether the end of the metrical unit corresponds with the end of a sentence or a scene)</li>
+          <li>Comments on Length: remarks on such matters as numbers of long and short syllables, resolutions, and variations on standard metrical forms</li>
+          <li>Comments, Other: notes on textual questions, content, choice of meter, and other matters.</li>
+        </ul>
+        <h3>How to Use the Database</h3>
+        <ul class="bulleted">
+          <li>Each of the following fields—"Playwright", "Play", "Character Type", "Character", "Meter", "Meter Type", "Meter Before", and "Meter After"—comprises a dimension. Dimensions are listed on the left side of the database.  Each dimension includes two or more facets (e.g., the dimension “Playwright” includes the facets “ Plautus” and “Terence”).</li>
+          <li>All the facets within a dimension can be viewed by clicking on the box with the dimension name.  To hide the facets, click on the box again.</li>
+          <li>Using the upper row of the database, with its “select all” and “deselect all” options, in combination with the list of dimensions on the left column, one can view and calculate various aspects of Plautus and Terence’s metrical practice together or separately.</li>
+        </ul>
+        
+        
+        <p><strong>Always begin by clicking “Select All” under “Dimensions” in the upper left corner of the page.</strong></p>
+        
+        <h4>To view Plautus and Terence’s metrical practice in its entirety:</h4>
+        <p>Begin by clicking “Select All” under “Dimensions” in the upper left corner of the page.</p>
+        <p>Clicking on each of the dimensions in the left column will reveal the number of verses associated with each facet of each dimension.</p>
+        <p>You can also, if you wish, scroll through the metrical changes in all of Plautus and Terence. Note the page-changing controls at the upper right of the page, and click “Notes” to learn more details about each passage.</p>
+        
+        <h4>To examine the metrical features of an individual passage:</h4>
+        <p>Begin by clicking “Select All” under “Dimensions” in the upper left corner of the page.</p>
+        <p>Click “Deselect All” under “Play” at the top of the page, then click on the play in which your passage occurs under “Play” in the left column.  All the metrical units of the play you have chosen will appear, and you can scroll down to find the passage you are interested in. Click “Notes” to learn more details about the passage.</p>
+        
+        <h4>To study individual aspects of Plautus and Terence’s metrical practice:</h4>
+        <p>Begin by clicking “Select All” under “Dimensions” in the upper left corner of the page.</p>
+        <p>Click “Deselect All” under the relevant dimension at the top of the page, then click the facet in which you are interested under that dimension on the left of the page.</p>
+        <h5>Examples:</h5>
+        <p>To view just the bacchiac meters in Roman Comedy, click “Deselect All” under “Meter Type” at the top of the page, then click “ba” under “Meter Type” on the left of the page.  You will now see, for each facet of each dimension, the number of bacchiacs associated with that facet (e.g., you will see how many bacchiacs are delivered by each character and character type, and which meters come before and after bacchiacs); and each metrical unit including bacchiacs will appear.</p>
+
+<p>To view the metrical practices of <i>servi callidi,</i> click “Deselect All” under “Character Type” at the top of the page, then click “servcal” under “Character Type” on the left of the page.  You will now see, for each facet of each dimension, the number of verses delivered by <i>servi callidi</i> (e.g., you can see how many verses <i>servi callidi</i> deliver in each play, and how many verses of each meter and meter type they deliver); and each metrical unit in which <i>servi callidi</i> speak or sing will appear.</p>
+
+<h4>To study aspects of Plautus and Terence’s metrical practice in combination.</h4>
+<p>Begin by clicking “Select All” under “Dimensions” in the upper left corner of the page.</p>
+<p>Click “Deselect All” under a dimension at the top of the page, then click the facet in which you are interested under that dimension on the left of the page; then repeat the process for each facet relevant to your search. </p>
+<h5>Examples:</h5>
+<p>To study the use of anapests by <i>meretrices</i>, click “Delect All” under “Character type” at the top of the page, then click “mer” under “Character Type” on the left of the page.  Repeat the same process for “Meter Type” and “an.” </p>
+<p>To study trochaic septenarii followed by trochaic octonarii in Terence, click “Deselect All” under “Playwright” at the top of the page, then click “Terence” under “Playwright” on the left of the page.  Repeat this same process for “Meter” and “tr7” and then for “Meter After” and “tr8.”</p>
+
+<p>For questions on the use of this database, contact <a href="mailto:tmoore26@wustl.edu">tmoore26@wustl.edu</a>.</p>
+
+<h3>Sources</h3>
 	<p>Except where otherwise noted, the text and scansion of the verses described in this database derive from the following sources:</p>
 	<h4>Plautus:</h4>
 	<p>Text and scansion of all verses included in Caesar Questa (ed.), <i>T. Macci Plauti Cantica</i> (Urbino: QuattroVenti, 1995) derive from that work.</p>
 	<p>For passages of Plautus not included in Questa’s text:</p>
 	<p>Text: Friedrich Leo (ed.), <i>Plauti Comoediae</i> (Berlin: Weidmann, 1895-1896). Metrical identification: Wallace M. Lindsay (ed.), <i>T. Macci Plauti Comoediae</i> (Oxford: Clarendon Press, 1904-1905)</p>
 	<h4>Terence:</h4>
-	<p>Text and metrical identification: Robert Kauer and Wallace M. Lindsay (eds.), <i>P. Terenti Afri Comoediae</i> (Oxford: Clarendon Press, 1926, reprinted with additions by Otto Skutsch, 1958).</p>
-	<p>Decisions I made regarding the authenticity of questioned verses are noted throughout the database in the “Comments (other)” field of the “Versus browse form” layout. Note in particular that I count both alternate endings of <i>Poenulus</i> as interpolations, and I did not count <i>Stichus</i> 48-57. I did not count the <i>Vidularia</i> or the fragments not attributed to extant plays, but I did count the fragments of <i>Amphitruo</i>, <i>Aulularia</i>, <i>Bacchides</i>, and <i>Cistellaria</i>.</p>
-	<p>This Database was created by Timothy J. Moore with technical assistance from William Porter of Polytrope LLC.  Porter’s work was supported with funding from the Department of Classics and the College of Liberal Arts of the University of Texas at Austin. The database has been modified for web publication by the Humanities Digital Workshop and Olin Library of Washington University in St. Louis. All material in this database is copyright Timothy J. Moore. It can be used for non-commercial purposes provided appropriate acknowledgment is included.</p>
+           <p>Text and metrical identification: Robert Kauer and Wallace M. Lindsay (eds.), <i>P. Terenti Afri Comoediae</i> (Oxford: Clarendon Press, 1926, reprinted with additions by Otto Skutsch, 1958).</p>
+<br/>
+
+
+<p>Decisions I made regarding the authenticity of questioned verses are noted throughout the database in the “comments, other” field, accessed by clicking “Notes” in each record. Note in particular that I did not include <i>Stichus</i> 48-57 or anything after verse 1331 of <i>Poenulus</i> (I believe both alternate endings are interpolations). I did not include the <i>Vidularia</i> or the fragments not attributed to extant plays, but I did include the fragments of <i>Amphitruo,</i> <i>Aulularia,</i> <i>Bacchides,</i> and <i>Cistellaria.</i></p>
+
+<p>This Database was created by Timothy J. Moore with technical assistance from William Porter of Polytrope LLC. Porter’s work was supported with funding from the Department of Classics and the College of Liberal Arts of the University of Texas at Austin. The database has been modified for web publication by the Humanities Digital Workshop and Olin Library of Washington University in St. Louis (my deepest gratitude to (Kieran Etienne of Olin Library and Douglas W. Knox of the Humanities Digital Workshop). All material in this database is copyright Timothy J. Moore. It can be used for non-commercial purposes provided appropriate acknowledgment is included.</p>
+
 	<h3>Abbreviations</h3>
 	<h4>Character Types</h4>
 	<dl>
-	  <dt>adul</dt><dd><i>adulescens</i> (i.e., an <i>adulescens</i> who is not a lover: for total numbers of verses delivered by <i>adulescentes</i>, add “adul” and “adulama”).</dd>
-	  <dt>adulama</dt><dd><i>adulescens amans</i></dd>
-	  <dt>anc</dt><dd><i>ancilla</i></dd>
+      <dt>adul</dt><dd><i>adulescens</i> (i.e., an <i>adulescens</i> who is not a lover: for total numbers of verses delivered by <i>adulescentes</i>, add “adul” and “adulama”).</dd>
+      <dt>adulama</dt><dd><i>adulescens amans</i></dd>
+      <dt>anc</dt><dd><i>ancilla</i></dd>
 	  <dt>arg</dt><dd><i>argentarius</i></dd>
 	  <dt>mat</dt><dd><i>matrona</i></dd>
 	  <dt>mer</dt><dd><i>mercator</i></dd>
 
-      <dt>mulier</dt><dd>women who do not belong to a more specific character type such as <i>matrona</i> or <i>meretrix</i>; for total numbers of verses delivered by mortal women, add <i>ancilla</i>, <i>anus</i>, <i>fidicina</i>, <i>lena</i>, <i>matrona</i>, <i>meretrix</i>, <i>nutrix</i>, <i>obstetrix</i>, <i>priestess</i>, <i>pseudo-meretrix</i>, and <i>virgo</i>.</dd>
+      <dt>mulier</dt><dd>a woman who does not belong to a more specific character type such as <i>matrona</i> or <i>meretrix</i>; for total numbers of verses delivered by mortal women, add <i>ancilla</i>, <i>anus</i>, <i>fidicina</i>, <i>lena</i>, <i>matrona</i>, <i>meretrix</i>, <i>mulier</i>, <i>nutrix</i>, <i>obstetrix</i>, <i>priestess</i>, <i>pseudo-meretrix</i>, and <i>virgo</i>.</dd>
 	  <dt>paed</dt><dd><i>paedagogus</i></dd>
 	  <dt>par</dt><dd>parasite</dd>
 	  <dt>pseudomer</dt><dd><i>pseudo-meretrix</i></dd>
@@ -88,63 +129,63 @@
 	</dl>
 	<h4>Meter Types</h4>
 	<dl>
-	  <dt>adon</dt><dd><i>adonic</i></dd>
-	  <dt>an</dt><dd><i>anapestic</i>, <i>anapest</i></dd>
-	  <dt>as h</dt><dd><i>hemiasclepiad</i></dd>
-	  <dt>ba</dt><dd><i>bacchiac</i></dd>
-	  <dt>cat</dt><dd><i>catalectic</i></dd>
-	  <dt>cho or chor</dt><dd><i>choriambic</i>, <i>choriamb</i></dd>
-	  <dt>col</dt><dd><i>colon</i></dd>
-	  <dt>colreiz</dt><dd><i>colon reizianum</i></dd>
-	  <dt>cont</dt><dd><i>continuati</i></dd>
-	  <dt>cr</dt><dd><i>cretic</i></dd>
-	  <dt>da or dac</dt><dd><i>dactylic</i>, <i>dactyl</i></dd>
-	  <dt>diph</dt><dd><i>diphilean</i></dd>
-	  <dt>gl</dt><dd><i>glyconic</i></dd>
-	  <dt>ia</dt><dd><i>iambic</i>, <i>iamb</i></dd>
-	  <dt>ion</dt><dd><i>ionic</i></dd>
-	  <dt>ith</dt><dd><i>ithyphallic</i></dd>
-	  <dt>mol</dt><dd><i>molossus</i></dd>
-	  <dt>proc</dt><dd><i>proceleusmatic</i></dd>
-	  <dt>pros</dt><dd><i>prosodiac</i></dd>
-	  <dt>reiz</dt><dd><i>reizianum</i> or <i>reizianus</i></dd>
-	  <dt>sp</dt><dd><i>spondaic</i>, <i>spondee</i></dd>
-	  <dt>sys</dt><dd><i>system</i></dd>
-	  <dt>thy</dt><dd><i>thymelicus</i></dd>
-	  <dt>tr</dt><dd><i>trochaic</i>, <i>trochee</i></dd>
-	  <dt>tri</dt><dd><i>tribrach</i></dd>
-	  <dt>versreiz</dt><dd><i>versus reizianus</i></dd>
-	  <dt>wil</dt><dd><i>wilamowitzianus</i></dd>
+	  <dt>adon</dt><dd>adonic</dd>
+	  <dt>an</dt><dd>anapestic, anapest</dd>
+	  <dt>as h</dt><dd>hemiasclepiad</dd>
+	  <dt>ba</dt><dd>bacchiac</dd>
+	  <dt>cat</dt><dd>catalectic</dd>
+	  <dt>cho or chor</dt><dd>choriambic, choriamb</dd>
+	  <dt>col</dt><dd>colon</dd>
+	  <dt>colreiz</dt><dd>colon reizianum</dd>
+	  <dt>cont</dt><dd>continuati</dd>
+	  <dt>cr</dt><dd>cretic</dd>
+	  <dt>da or dac</dt><dd>dactylic, dactyl</dd>
+	  <dt>diph</dt><dd>diphilean</dd>
+	  <dt>gl</dt><dd>glyconic</dd>
+	  <dt>ia</dt><dd>iambic, iamb</dd>
+	  <dt>ion</dt><dd>ionic</dd>
+	  <dt>ith</dt><dd>ithyphallic</dd>
+	  <dt>mol</dt><dd>molossus</dd>
+	  <dt>proc</dt><dd>proceleusmatic</dd>
+	  <dt>pros</dt><dd>prosodiac</dd>
+	  <dt>reiz</dt><dd>reizianum or reizianus</dd>
+	  <dt>sp</dt><dd>spondaic, spondee</dd>
+	  <dt>sys</dt><dd>system</dd>
+	  <dt>thy</dt><dd>thymelicus</dd>
+	  <dt>tr</dt><dd>trochaic, trochee</dd>
+	  <dt>tri</dt><dd>tribrach</dd>
+	  <dt>versreiz</dt><dd>versus reizianus</dd>
+	  <dt>wil</dt><dd>wilamowitzianus</dd>
 	</dl>
 	<h3>Scholarly Works</h3>
-	<ul>
-	  <li>Barsby: Barsby, J. (ed.) (1999) <i>Terence: Eunuchus</i>. Cambridge.</li>
-	  <li>Beare: Beare, W. (1964) <i>The Roman Stage.</i> 3rd edn. London.</li>
-	  <li>Boldrini: Boldrini, S. (1984) <i>Gli anapesti di Plauto: metro e ritmo.</i> Urbino.</li>
-	  <li>Bruder: Bruder, H. W. (1970) <i>Bedeutung und Funktion des Verswechsels bei Terenz.</i> Zurich.</li>
-	  <li>Dupont: Dupont, F. (1987) “Cantica et diverbia dans l’Amphitryon de Plaute,” in <i>Filologia e forme letterarie: Studi offerti a Francesco Della Corte,</i> vol. II. Urbino: 45-56.</li>
-	  <li>Enk M: Enk, P. J. (ed.) (1932) <i>Plauti Mercator.</i> Leiden.</li>
-	  <li>Enk T: Enk, P. J. (ed.) (1953) <i>Plauti Truculentus.</i> Leiden.</li>
-	  <li>Gratwick CHLL: Gratwick, A. S. (1982) “Drama,” in <i>The Cambridge History of Classical Literature,</i> vol. II: Latin Literature, eds. E. J. Kenney and W. V. Clausen. Cambridge: 77-137.</li>
-	  <li>Gratwick M: Gratwick, A. S. (ed.) (1993) <i>Plautus: Menaechmi.</i> Cambridge.</li>
-	  <li>Law: Law, H. H. (1922) <i>Studies in the Songs of Plautine Comedy.</i> Menasha, Wis.</li>
-	  <li>Leo: Leo F. (ed.). (1895-6) <i>Plauti Comoediae.</i> Berlin.</li>
-	  <li>Leo Cant. Leo, F. (1897) <i>Die plautinischen Cantica und die hellenistische Lyrik.</i> Abh. der könig. Ges. Göttingen, Phil.-Hist. Klasse 1.7. Berlin.</li>
-	  <li>Lindsay: Lindsay, W. M. (ed.)  (1904-1905) <i>T. Macci Plauti Comoediae.</i> Oxford.</li>
-	  <li>Lindsay ELV: Lindsay, W. M. (ed.) (1922) <i>Early Latin Verse.</i> Oxford.</li>
-	  <li>L-K or Lindsay-Kauer: Kauer R. and W. M. Lindsay (eds.), <i>P. Terenti Afri Comoediae.</i> Oxford (reprinted with additions by Otto Skutsch, 1958).</li>
-	  <li>Martin: Martin, R. H. (ed.) (1976) <i>Terence: Adelphoe.</i> Cambridge.</li>
-	  <li>Maurach: Maurach, G. (1961) “Kurzvers und System bei Terenz,” <i>Hermes</i> 89: 373-8.</li>
-	  <li>Maurach P: Maurach, G. (ed.) (1988) <i>Der Poenulus des Plautus.</i> Heidelberg.</li>
-	  <li>McCary and Willcock: McCary, W. T. and M. M. Willcock (eds.) (1976) <i>Plautus: Casina.</i> Cambridge.</li>
-	  <li>Petersmann: Petersmann, H. (1973) <i>T. Maccius Plautus: Stichus.</i> Heidelberg.</li>
-	  <li>Questa or Questa 1995: Questa, C. (ed.) (1995) <i>Titi Macci Plauti Cantica.</i> Urbino.</li>
-	  <li>Questa Num.: Questa, C. (1984) <i>Numeri innumeri: Ricerche sui cantica e la tradizione manoscritta di Plauto.</i> Rome.</li>
-	  <li>Questa 2001: Questa C. (ed.) (2001) <i>Titus Maccius Plautus: Casina.</i> Urbino.</li>
-	  <li>Questa 2007: Questa C. (2007) <i>La metrica di Plauto e di Terenzio. Ludus philologiae 16.</i> Urbino.</li>
-	  <li>Willcock: Willcock, M. M. (ed.) (1987) <i>Plautus: Pseudolus.</i> Oak Park, IL.</li>
-	  <li>Woytek: Woytek, E. (1982) <i>T. Maccius Plautus: Persa.</i> Vienna.</li>
-	</ul>
+	<dl>
+	  <dt>Barsby</dt><dd>Barsby, J. (ed.) (1999) <i>Terence: Eunuchus</i>. Cambridge.</dd>
+	  <dt>Beare</dt><dd>Beare, W. (1964) <i>The Roman Stage.</i> 3rd edn. London.</dd>
+	  <dt>Boldrini</dt><dd>Boldrini, S. (1984) <i>Gli anapesti di Plauto: metro e ritmo.</i> Urbino.</dd>
+	  <dt>Bruder</dt><dd>Bruder, H. W. (1970) <i>Bedeutung und Funktion des Verswechsels bei Terenz.</i> Zurich.</dd>
+	  <dt>Dupont</dt><dd>Dupont, F. (1987) “<i>Cantica</i> et <i>diverbia</i> dans l’<i>Amphitryon</i> de Plaute,” in <i>Filologia e forme letterarie: Studi offerti a Francesco Della Corte,</i> vol. II. Urbino: 45-56.</dd>
+	  <dt>Enk M</dt><dd>Enk, P. J. (ed.) (1932) <i>Plauti Mercator.</i> Leiden.</dd>
+	  <dt>Enk T</dt><dd>Enk, P. J. (ed.) (1953) <i>Plauti Truculentus.</i> Leiden.</dd>
+	  <dt>Gratwick CHLL</dt><dd>Gratwick, A. S. (1982) “Drama,” in <i>The Cambridge History of Classical Literature,</i> vol. II: Latin Literature, eds. E. J. Kenney and W. V. Clausen. Cambridge: 77-137.</dd>
+	  <dt>Gratwick M</dt><dd>Gratwick, A. S. (ed.) (1993) <i>Plautus: Menaechmi.</i> Cambridge.</dd>
+	  <dt>Law</dt><dd>Law, H. H. (1922) <i>Studies in the Songs of Plautine Comedy.</i> Menasha, Wis.</dd>
+	  <dt>Leo</dt><dd>Leo F. (ed.). (1895-6) <i>Plauti Comoediae.</i> Berlin.</dd>
+	  <dt>Leo Cant.</dt><dd>Leo, F. (1897) <i>Die plautinischen Cantica und die hellenistische Lyrik.</i> Abh. der könig. Ges. Göttingen, Phil.-Hist. Klasse 1.7. Berlin.</dd>
+	  <dt>Lindsay</dt><dd>Lindsay, W. M. (ed.)  (1904-1905) <i>T. Macci Plauti Comoediae.</i> Oxford.</dd>
+	  <dt>Lindsay ELV</dt><dd>Lindsay, W. M. (ed.) (1922) <i>Early Latin Verse.</i> Oxford.</dd>
+	  <dt>L-K or Lindsay-Kauer</dt><dd>Kauer R. and W. M. Lindsay (eds.), <i>P. Terenti Afri Comoediae.</i> Oxford (reprinted with additions by Otto Skutsch, 1958).</dd>
+	  <dt>Martin</dt><dd>Martin, R. H. (ed.) (1976) <i>Terence: Adelphoe.</i> Cambridge.</dd>
+	  <dt>Maurach</dt><dd>Maurach, G. (1961) “Kurzvers und System bei Terenz,” <i>Hermes</i> 89: 373-8.</dd>
+	  <dt>Maurach P</dt><dd>Maurach, G. (ed.) (1988) <i>Der Poenulus des Plautus.</i> Heidelberg.</dd>
+	  <dt>McCary and Willcock</dt><dd>McCary, W. T. and M. M. Willcock (eds.) (1976) <i>Plautus: Casina.</i> Cambridge.</dd>
+	  <dt>Petersmann</dt><dd>Petersmann, H. (1973) <i>T. Maccius Plautus: Stichus.</i> Heidelberg.</dd>
+	  <dt>Questa or Questa 1995</dt><dd>Questa, C. (ed.) (1995) <i>Titi Macci Plauti Cantica.</i> Urbino.</dd>
+	  <dt>Questa Num.</dt><dd>Questa, C. (1984) <i>Numeri innumeri: Ricerche sui cantica e la tradizione manoscritta di Plauto.</i> Rome.</dd>
+	  <dt>Questa 2001</dt><dd>Questa C. (ed.) (2001) <i>Titus Maccius Plautus: Casina.</i> Urbino.</dd>
+	  <dt>Questa 2007</dt><dd>Questa C. (2007) <i>La metrica di Plauto e di Terenzio. Ludus philologiae 16.</i> Urbino.</dd>
+	  <dt>Willcock</dt><dd>Willcock, M. M. (ed.) (1987) <i>Plautus: Pseudolus.</i> Oak Park, IL.</dd>
+	  <dt>Woytek</dt><dd>Woytek, E. (1982) <i>T. Maccius Plautus: Persa.</i> Vienna.</dd>
+	</dl>
 	<h3>Other</h3>
 	<dl>
 	  <dt>acc</dt><dd>accompanied, accompaniment</dd>
@@ -152,7 +193,7 @@
 	  <dt>beg</dt><dd>beginning</dd>
 	  <dt>clo</dt><dd>closure</dd>
 	  <dt>dec</dt><dd>deception</dd>
-	  <dt>dia</dt><dd><i>diaeresis</i></dd>
+	  <dt>dia</dt><dd>diaeresis</dd>
 	  <dt>dub</dt><dd><i>dubitanter</i></dd>
 	  <dt>eli</dt><dd>elision</dd>
 	  <dt>enj</dt><dd>enjambment</dd>
@@ -161,30 +202,30 @@
 	  <dt>mon</dt><dd>monologue or monody</dd>
 	  <dt>per</dt><dd>period</dd>
 	  <dt>quest</dt><dd>question mark</dd>
-	  <dt>reg.</dt><dd>regular</dd>
+	  <dt>reg</dt><dd>regular</dd>
 	  <dt>res</dt><dd>resolution</dd>
 	  <dt>s</dt><dd>short syllable</dd>
 	</dl>
-	<p>Abbreviations of characters' names should be self-explanatory.</p>
+
 	<h3>Other Resources</h3>
 	<p>Users of this database are encouraged to consult the following publications by its author for further information on Plautus and Terence’s metrical choices:</p>
 	<ul>
 	  <li>&quot;Music and Structure in Roman Comedy,&quot; <i>American Journal of Philology</i> 119 (1998) 245-273.</li>
 	  <li>&quot;Facing the Music: Character and Musical Accompaniment in Roman Comedy,&quot; <i>Syllecta Classica</i> 19 (1999) 130-153.</li>
-	  <li>&quot;Music in Persa,&quot; in <i>Studien zu Plautus' Persa,</i> ed. Stefan Faller (Tübingen, Gunter Narr, 2001) 255-272.</li>
-	  <li>&quot;Music in Epidicus,&quot; in <i>Studien zu Plautus' Epidicus,</i> ed. Ulrike Auhagen (Tübingen, Gunter Narr, 2001) 313-334.</li>
+	  <li>&quot;Music in <i>Persa,</i>&quot; in <i>Studien zu Plautus' Persa,</i> ed. Stefan Faller (Tübingen, Gunter Narr, 2001) 255-272.</li>
+	  <li>&quot;Music in <i>Epidicus,</i>&quot; in <i>Studien zu Plautus' Epidicus,</i> ed. Ulrike Auhagen (Tübingen, Gunter Narr, 2001) 313-334.</li>
 	  <li>&quot;Music in a Quiet Play,&quot; in <i>Studien zu Plautus' Poenulus,</i> ed. Thomas Baier (Tübingen, Gunter Narr, 2004) 139-161.</li>
-	  <li>&quot;Meter and Meaning in Cistellaria I 1,&quot; in <i>Studien zu Plautus' Cistellaria,</i> edd. Rolf Hartkamp  and Florian Hurka (Tübingen, Gunter Narr, 2004) 319-333.</li>
+	  <li>&quot;Meter and Meaning in <i>Cistellaria</i> I 1,&quot; in <i>Studien zu Plautus' Cistellaria,</i> edd. Rolf Hartkamp  and Florian Hurka (Tübingen, Gunter Narr, 2004) 319-333.</li>
 	  <li>&quot;Terence as Musical Innovator,&quot; in <i>Terentius Poeta,</i> ed. P. Kruschwitz, W.W. Ehlers, and F. Felgentreu (Zetemata 127. Munich: Beck, 2007) 93-109.</li>
 	  <li>&quot;When Did the Tibicen Play? Meter and Musical Accompaniment in Roman Comedy,&quot; <i>Transactions of the American Philological Association</i> 138 (2008) 3-46.</li>
-	  <li>&quot;A Musical Merchant: The Cantica of Mercator,&quot; <i>New England Classical Journal</i> 37 (2010) 15-26.</li>
+	  <li>&quot;A Musical Merchant: The <i>Cantica</i> of <i>Mercator,</i>&quot; <i>New England Classical Journal</i> 37 (2010) 15-26.</li>
 	  <li><i>Music in Roman Comedy.</i> Cambridge University Press, 2012 (the database differs from the database used to create the appendices of this work in the following ways: I now identify Plautus, <i>Amph.</i> 161-162 as incertum rather than wil?, and Terence, <i>Hecyra</i> 313 I now identify as an iambic septenarius).</li>
 	  <li>&quot;Don’t Skip the Meter! Introducing Students to the Music of Roman Comedy,&quot; <i>Classical Journal</i> 108 (2012/13) 218-234.</li>
 	  <li>&quot;Meter and Music,&quot; in <i>The Blackwell Companion to Terence,</i> edd. Antonios Augoustakis and Adriana Traill (Malden, MA: Wiley-Blackwell, 2013) 89-110.</li>
-	  <li>&quot;Andria: Terence’s Musical Experiment,&quot; in <i>Form und Bedeutung im lateinischen Drama / Form and Meaning in Latin Drama,</i> edd. Timothy J. Moore and Wolfgang Polleichtner (Bochumer Altertumswissenschaftliches Colloquium 95. Trier: Wissenschaftlicher Verlag, 2013) 87-114.</li>
+	  <li>&quot;<i>Andria:</i> Terence’s Musical Experiment,&quot; in <i>Form und Bedeutung im lateinischen Drama / Form and Meaning in Latin Drama,</i> edd. Timothy J. Moore and Wolfgang Polleichtner (Bochumer Altertumswissenschaftliches Colloquium 95. Trier: Wissenschaftlicher Verlag, 2013) 87-114.</li>
+	  <li>&quot;Music and Gender in Terence’s <i>Hecyra,</i>&quot; in <i>Women in the Drama of the Roman Republic,</i> edd. by Dorota Dutsch, Sharon James, and David Konstan (University of Wisconsin Press, 2015) 68-87.</li>
 	  <li>&quot;Music and Metre,&quot; forthcoming in <i>The Cambridge Companion to Roman Comedy,</i> ed. Martin Dinter (Cambridge University Press).</li>
-	  <li>&quot;Music and Gender in Terence’s Hecyra,&quot; in <i>Women in the Drama of the Roman Republic,</i> edited by Dorota Dutsch, Sharon James, and David Konstan (University of Wisconsin Press, 2015) 68-87.</li>
-	</ul>
+    </ul>
       </div>
     </div>
     <div id="footer" class="row">

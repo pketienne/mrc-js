@@ -71,6 +71,7 @@ var control = function( dimension, state ) {
     for( property in facets ) {
 	facets[ property ] = state;
     }
+    population.page = 1;
     population.update();
 }
 var next = function() {
@@ -128,5 +129,4 @@ var toggle_facet_state = function( model, facet, index ) {
     }
     population.page = 1;
     population.update();
-
 }
