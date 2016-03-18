@@ -261,19 +261,39 @@ ModelB.prototype.transmute = function() {
     data = [];
     fpids = {};
 
+    var allverse = d3.values(
+        // allverse lets us expand beyond current filter to 
+        // bring back all records matching current filtered FPIDs;
+        // that way when one filters on character Sycophanta,
+        // one can see that the verse group is shared with Charmides
+        
+        cf(origdata).dimension( 
+            function( d ) { return d; } )
+	        .groupAll()
+	        .reduce( this.reduce_add, 
+                     function(p, v){return p}, 
+                     this.reduce_init )
+	        .value());
+
     for( property in this.group ) {
-	value = this.group[ property ];
-	fpid = value[ FPID ];
-
-	if( !fpids[ fpid ] ) {
-	    fpids[ fpid ] = []
-	}
-
-	fpids[ fpid ].push( value );
+	    value = this.group[ property ];
+	    fpid = value[ FPID ];
+	    if( !fpids[ fpid ] ) {
+	        fpids[ fpid ] = []
+	    }
+//	    fpids[ fpid ].push( value );   // what we did before allverse
     }
-
+    // now fpids is a list of keys with empty values; 
+    // populate values from allverse
+    for (fpid in fpids) {
+        fpids[fpid] = allverse.filter(
+                function(d){
+                    return d['fpid'] === fpid;
+                });
+    }
+    
     for( property in fpids ) {
-	value = fpids[ property ];
+	    value = fpids[ property ];
 	sup = {};
 
 	sup[ FABULAE ] = value[ 0 ][ FABULAE ];
