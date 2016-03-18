@@ -30,12 +30,14 @@ var PRESENTER_LABELS = [
     VERSE_GROUPS, VERSE_DETAIL
 ];
 
+var cf = crossfilter;
 var crossfilter;
 var population;
+var origdata;
 
 d3.tsv( 'tsv/current.tsv', function( data ) {
     crossfilter = crossfilter( data );
-
+    origdata = data;
     population = new Population();
     population.setup();
     population.update();
