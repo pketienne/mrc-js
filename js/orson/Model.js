@@ -8,6 +8,10 @@ Model.prototype.update = function() {
     this.transmute();
 }
 
+
+
+/* ModelA is a generic Facet model */
+
 var ModelA = function( label ) {
     Model.call( this, label );
 
@@ -89,6 +93,8 @@ ModelA.prototype.transmute = function() {
     }
 }
 
+/* ModelA1 is a "count-by-line" model */
+
 var ModelA1 = function( label ) {
     ModelA.call( this, label );
 }
@@ -115,6 +121,8 @@ ModelA1.prototype.reduce_remove = function( p, v ) {
 ModelA1.prototype.reduce_init = function( p, v ) {
     return { fpids: [], line_count: 0 }
 }
+
+/* ModelA2 is a "count-by-character-verse" model */
 
 var ModelA2 = function( label ) {
     ModelA.call( this, label );
@@ -154,6 +162,47 @@ ModelA2.prototype.reduce_remove = function( p, v ) {
 ModelA2.prototype.reduce_init = function() {
     return { unique_ids: [], line_count: 0 };
 }
+
+
+
+
+/* ModelA3 is a "count-by-unit (verse-group)" model */
+
+var ModelA3 = function( label ) {
+    ModelA.call( this, label );
+}
+ModelA3.prototype = Object.create( ModelA.prototype );
+ModelA3.prototype.constructor = ModelA3;
+ModelA3.prototype.reduce_add = function( p, v ) {
+    var unique_id;
+    unique_id = v[ FPID ];
+
+    if( p.unique_ids.includes( unique_id ) ) {
+	    return p;
+    } else {
+	    p.unique_ids.push( unique_id );
+	    p.line_count += 1;
+	    return p;
+    }
+}
+ModelA3.prototype.reduce_remove = function( p, v ) {
+    var unique_id;
+    unique_id = v[ FPID ];
+    if( p.unique_ids.includes( unique_id ) ) {
+	p.unique_ids.splice( p.unique_ids.indexOf( unique_id ), 1 );
+	p.line_count -= 1;
+	return p;
+    } else {
+	return p;
+    }
+}
+ModelA3.prototype.reduce_init = function() {
+    return { unique_ids: [], line_count: 0 };
+}
+
+
+
+/* ModelB carries verse group data for each verse group */
 
 var ModelB = function( label ) {
     Model.call( this, label );
@@ -359,6 +408,8 @@ ModelB.prototype.uniq = function( a ) {
 	    return p;
 	}, []);
 }
+
+/* ModelC carries character data for each verse group */
 
 
 var ModelC = function( label ) {

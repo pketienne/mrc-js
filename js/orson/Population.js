@@ -26,12 +26,15 @@ var Population = function() {
 	case FABULAE:
 	case METER_BEFORE:
 	case METER_AFTER:
-	    this.presenters[ label ] = new PresenterA( label );
-	    break;
+//	    this.presenters[ label ] = new PresenterA( label );
+//	    break;
 	case METER:
 	case METER_TYPE:
             if (COUNTMODE == 'charverse') {
 	        this.presenters[ label ] = new PresenterB( label );
+	        break;
+            }  else if (COUNTMODE == 'unit') {
+	        this.presenters[ label ] = new PresenterB1( label );
 	        break;
             } else {
 	        this.presenters[ label ] = new PresenterA( label );

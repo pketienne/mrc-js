@@ -30,6 +30,17 @@ var PresenterB = function( label ) {
 PresenterB.prototype = Object.create( Presenter.prototype );
 PresenterB.prototype.constructor = PresenterB;
 
+
+// PresenterB1 added for verse-group/unit faceting
+var PresenterB1 = function( label ) {
+    Presenter.call( this, label );
+
+    this.model = new ModelA3( this.label );
+    this.view = new ViewA1( this.label );
+}
+PresenterB1.prototype = Object.create( Presenter.prototype );
+PresenterB1.prototype.constructor = PresenterB1;
+
 var PresenterC = function( label ) {
     Presenter.call( this, label );
 
