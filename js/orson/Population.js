@@ -24,12 +24,19 @@ var Population = function() {
 	switch( label ) {
 	case POETA:
 	case FABULAE:
-	case METER:
 	case METER_BEFORE:
 	case METER_AFTER:
-	case METER_TYPE:
 	    this.presenters[ label ] = new PresenterA( label );
 	    break;
+	case METER:
+	case METER_TYPE:
+            if (COUNTMODE == 'charverse') {
+	        this.presenters[ label ] = new PresenterB( label );
+	        break;
+            } else {
+	        this.presenters[ label ] = new PresenterA( label );
+	        break;
+            }
 	case GENERA:
 	case NOMEN:
 	    this.presenters[ label ] = new PresenterB( label );

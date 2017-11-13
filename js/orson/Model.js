@@ -88,12 +88,46 @@ ModelA.prototype.transmute = function() {
 	this.data.push( packet );
     }
 }
-ModelA.prototype.reduce_add = function(p, v) {
-   var unique_id;
+
+var ModelA1 = function( label ) {
+    ModelA.call( this, label );
+}
+ModelA1.prototype = Object.create( ModelA.prototype );
+ModelA1.prototype.constructor = ModelA1;
+ModelA1.prototype.reduce_add = function( p, v ) {
+    if( p.fpids.includes( v[ FPID ] ) ) {
+	return p;
+    } else {
+	p.fpids.push( v[ FPID ] );
+	p.line_count += +v[ LINE_COUNT ];
+	return p;
+    }
+}
+ModelA1.prototype.reduce_remove = function( p, v ) {
+    if( p.fpids.includes( v[ FPID ] ) ) {
+	p.fpids.splice( p.fpids.indexOf( v[ FPID ] ), 1 );
+	p.line_count -= +v[ LINE_COUNT ];
+	return p;
+    } else {
+	return p;
+    }
+}
+ModelA1.prototype.reduce_init = function( p, v ) {
+    return { fpids: [], line_count: 0 }
+}
+
+var ModelA2 = function( label ) {
+    ModelA.call( this, label );
+}
+ModelA2.prototype = Object.create( ModelA.prototype );
+ModelA2.prototype.constructor = ModelA2;
+ModelA2.prototype.reduce_add = function( p, v ) {
+    var unique_id;
     unique_id
 	= v[ NOMEN ]
 	+ v[ GENERA ]
 	+ v[ FPID ];
+
     if( p.unique_ids.includes( unique_id ) ) {
 	    return p;
     } else {
@@ -102,9 +136,7 @@ ModelA.prototype.reduce_add = function(p, v) {
 	    return p;
     }
 }
-
-
-ModelA.prototype.reduce_remove = function(p, v) {
+ModelA2.prototype.reduce_remove = function( p, v ) {
     var unique_id;
     unique_id
 	= v[ NOMEN ]
@@ -119,22 +151,9 @@ ModelA.prototype.reduce_remove = function(p, v) {
 	return p;
     }
 }
-ModelA.prototype.reduce_init = function() {
+ModelA2.prototype.reduce_init = function() {
     return { unique_ids: [], line_count: 0 };
 }
-
-
-var ModelA1 = function( label ) {
-    ModelA.call( this, label );
-}
-ModelA1.prototype = Object.create( ModelA.prototype );
-ModelA1.prototype.constructor = ModelA1;
-
-var ModelA2 = function( label ) {
-    ModelA.call( this, label );
-}
-ModelA2.prototype = Object.create( ModelA.prototype );
-ModelA2.prototype.constructor = ModelA2;
 
 var ModelB = function( label ) {
     Model.call( this, label );

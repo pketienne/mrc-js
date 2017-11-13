@@ -1,0 +1,35 @@
+Note
+
+This data is organized by verse groups characterized by a common meter, and a verse group may have multiple characters and character types, each with a count of character verses. 
+
+The first note in Appendix II (p. 385) of _Music in Roman Comedy_ states:
+"A character verse is a verse in which a given character speaks or sings a part. When a verse is shared by more than one character, a character verse is attributed to each character. There are thus considerably more character verses in Romany comedy than there are actual verses."
+
+The application through late fall 2017 presented a single database, and we continued to have a fuzzy understanding of the choices we were making between counting lines and counting character verses, and of the interaction of filters based on both. 
+
+After consultation in November 2017 Tim Moore realized it would be
+better to have two views of the data; in a "Character" view,
+character, character type, meter, and meter type should all count
+"character verses" as defined above. In the alternate view of other
+features, character and character type should not be available as
+facets, and all features should count verses simply.
+
+In the code, this change was accommodated by replacing database.html
+with two replacement files, character.html and other.html, and
+adjusting navigation accordingly. The global.js driver file then also
+split into global_character.js and global_other.js. These each have a
+new global variable, COUNTMODE, which is either "verse" or
+"charverse". The Population.js file was modified to check this when
+creating a Presenter for meter and meter_type. When
+COUNTMODE='charverse' these switch to PresenterB rather than
+PresenterA, which effectively counts charverses rather than verses.
+
+I have not attempted any more ambitious refactoring at this point. This application of MVP feels brittle, with abstractions that obscure the domain rather than help clarify it. Some work on meaningful labels might help clarify possible directions for refactoring. 
+
+PresenterB is relevant because it's really ModelA2, which functionally
+is really "any facet that counts up by character verses rather than
+verses."
+
+PresenterC (ModelB) and PresenterD (ModelC) are not really facets at all.
+
+2017-11-10 dwk

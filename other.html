@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>The Meters of Roman Comedy</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/reset.css" rel="stylesheet" charset="utf-8">
+    <link href="css/grid.css" rel="stylesheet" charset="utf-8">
+    <link href="css/index.css" rel="stylesheet" charset="utf-8">
+    <script src="js/d3.v3.min.js" charset="utf-8"></script> 
+    <script src="js/crossfilter.js"
+       charset="utf-8"></script>
+    <script src="js/polyfill.mdn.js" charset="utf-8"></script>
+    <script src="js/polyfill.d3.js" charset="utf-8"></script>
+    <script src="js/orson/Population.js" charset="utf-8"></script>
+    <script src="js/orson/Presenter.js" charset="utf-8"></script>
+    <script src="js/orson/Model.js" charset="utf-8"></script>
+    <script src="js/orson/View.js" charset="utf-8"></script>
+    <script src="js/orson/global_other.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <div id="header">
+      <div id="artsci">&nbsp;</div>
+      <div id="wustl">
+	<div id="logo">&nbsp;</div>
+      </div>
+      <div id="title">
+	<h1>The Meters of Roman Comedy</h1>
+      </div>
+      <div id="navigation" class="row">
+	<a href="index.html">Home</a>
+	<a href="character.html">Character database</a>
+	<a href="other.html" class="current">Other features</a>
+      </div>
+      <div id="controls" class="row">
+	<div class="control">
+	  <div class="label">Dimensions:</div>
+	  <div class="enable" onclick="enable( 'all' )">Select All</div>
+	  <div class="disable" onclick="disable( 'all' )">Deselect All</div>
+	</div>
+	<div class="control">
+	  <div class="label">Playwright:</div>
+	  <div class="enable" onclick="enable( 'poeta' )">Select All</div>
+	  <div class="disable" onclick="disable( 'poeta' )">Deselect All</div>
+	</div>
+	<div class="control">
+	  <div class="label">Play:</div>
+	  <div class="enable" onclick="enable( 'fabulae' )">Select All</div>
+	  <div class="disable" onclick="disable( 'fabulae' )">Deselect All</div>
+	</div>
+	<div class="control">
+	  <div class="label">Meter Type:</div>
+	  <div class="enable" onclick="enable( 'meter_type' )">Select All</div>
+	  <div class="disable" onclick="disable( 'meter_type' )">Deselect All</div>
+	</div>
+	<div class="control">
+	  <div class="label">Meter:</div>
+	  <div class="enable" onclick="enable( 'meter' )">Select All</div>
+	  <div class="disable" onclick="disable( 'meter' )">Deselect All</div>
+	</div>
+	<div class="control">
+	  <div class="label">Meter Before:</div>
+	  <div class="enable" onclick="enable( 'meter_before' )">Select All</div>
+	  <div class="disable" onclick="disable( 'meter_before' )">Deselect All</div>
+	</div>
+	<div class="control">
+	  <div class="label">Meter After:</div>
+	  <div class="enable" onclick="enable( 'meter_after' )">Select All</div>
+	  <div class="disable" onclick="disable( 'meter_after' )">Deselect All</div>
+	</div>
+      </div>
+    </div>
+    <div id="main" class="row">
+      <div id="verse_details"></div>
+      <div id="dimensions"></div>
+      <div id="verse_groups"></div>
+    </div>
+    <div id="footer" class="row">
+      <img class="library" src="img/square_logo.gif" alt="Washington University Libraries" border="0" />
+      <div class="text">
+	<img src="img/1linepos(CMYK)SM.jpg" alt="Washington University in St. Louis" />
+	<p class="highlight">University Libraries</p>
+	<p>Campus Box 1061, One Brookings Drive</p>
+	<p>St. Louis, MO 63130</p>
+	<div class="links">
+	  <a href="http://digital.wustl.edu">Digital Gateway</a>
+	  |
+	  <a href="http://openscholarship.wustl.edu/">Open Scholarship</a>
+	  |
+	  <a href="http://wustl.edu/">WUSTL</a>
+	  |
+	  <a href="sitemap.html">Sitemap</a>
+	</div>
+      </div>
+    </div>
+  </body>
+</html>

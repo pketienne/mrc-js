@@ -307,3 +307,8 @@ li {
      margin-left: 30px;
      text-indent: -30px;
  }
+
+body div#navigation a.current {
+    font-size: 150%;
+}
+    
