@@ -176,8 +176,7 @@ ModelA3.prototype.constructor = ModelA3;
 ModelA3.prototype.reduce_add = function( p, v ) {
     var unique_id;
     unique_id = v[ FPID ];
-
-    if( p.unique_ids.includes( unique_id ) ) {
+    if( p.unique_ids.includes( unique_id ) || +v[NOMEN_LINE_COUNT] == 0 ) {
 	    return p;
     } else {
 	    p.unique_ids.push( unique_id );
@@ -188,7 +187,7 @@ ModelA3.prototype.reduce_add = function( p, v ) {
 ModelA3.prototype.reduce_remove = function( p, v ) {
     var unique_id;
     unique_id = v[ FPID ];
-    if( p.unique_ids.includes( unique_id ) ) {
+    if( p.unique_ids.includes( unique_id ) || +v[NOMEN_LINE_COUNT] == 0) {
 	p.unique_ids.splice( p.unique_ids.indexOf( unique_id ), 1 );
 	p.line_count -= 1;
 	return p;

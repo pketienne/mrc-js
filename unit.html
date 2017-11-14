@@ -16,7 +16,7 @@
     <script src="js/orson/Presenter.js" charset="utf-8"></script>
     <script src="js/orson/Model.js" charset="utf-8"></script>
     <script src="js/orson/View.js" charset="utf-8"></script>
-    <script src="js/orson/global_other.js" charset="utf-8"></script>
+    <script src="js/orson/global_unit.js" charset="utf-8"></script>
   </head>
   <body>
     <div id="header">
@@ -28,12 +28,10 @@
 	<h1>The Meters of Roman Comedy</h1>
       </div>
       <div id="navigation" class="row">
-
 	<a href="index.html">Home</a>
 	<a href="character.html">By character verse</a>
-	<a href="other.html" class="current">By line</a>
-	<a href="unit.html">By unit</a>
-
+	<a href="other.html">By line</a>
+	<a href="unit.html" class="current">By unit</a>
       </div>
       <div id="controls" class="row">
 	<div class="control">
@@ -61,6 +59,18 @@
 	  <div class="enable" onclick="enable( 'meter' )">Select All</div>
 	  <div class="disable" onclick="disable( 'meter' )">Deselect All</div>
 	</div>
+
+	<div class="control">
+	  <div class="label">Meter Before:</div>
+	  <div class="enable" onclick="enable( 'meter_before' )">Select All</div>
+	  <div class="disable" onclick="disable( 'meter_before' )">Deselect All</div>
+	</div>
+	<div class="control">
+	  <div class="label">Meter After:</div>
+	  <div class="enable" onclick="enable( 'meter_after' )">Select All</div>
+	  <div class="disable" onclick="disable( 'meter_after' )">Deselect All</div>
+	</div>
+
       </div>
     </div>
     <div id="main" class="row">

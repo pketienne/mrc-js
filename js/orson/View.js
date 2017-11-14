@@ -145,7 +145,7 @@ ViewA2.prototype.draw = function( model ) {
 	.classed( 'verse-menu', true )
 	.append( 'span' )
 	.classed( 'text', true )
-	.html( 'Verse Groups' )
+	.html( 'Units' )
 	.after( 'span' )
 	.attr( 'id', 'menu' )
 	.after( 'span' )
