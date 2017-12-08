@@ -294,6 +294,10 @@ body div#main div.content ul.bulleted {
     list-style: disc;
 }
 
+body div#main div.content ul.bulleted ul {
+    list-style: circle;
+}
+
 body div#main div.content ul.bulleted li {
     padding-left: 30px;
 }
